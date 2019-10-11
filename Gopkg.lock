@@ -2,6 +2,14 @@
 
 
 [[projects]]
+  branch = "master"
+  digest = "1:0faae5778f40187f1995baa872bc39cf6f20f5a6051e012c2847ce527f9640a5"
+  name = "github.com/aybabtme/rgbterm"
+  packages = ["."]
+  pruneopts = ""
+  revision = "cc83f3b3ce5911279513a46d6d3316d67bedaa54"
+
+[[projects]]
   digest = "1:65c9e58c85d0791b146dc7f4387330329204a70fb34532e7ffce71a2f04f59a2"
   name = "github.com/gdamore/encoding"
   packages = ["."]
@@ -77,12 +85,59 @@
   version = "v1.0.2"
 
 [[projects]]
+  digest = "1:5794dadc5456af270fc564d98efbfa1f3627cd6c733ca772d14409793772064f"
+  name = "github.com/mattn/go-isatty"
+  packages = ["."]
+  pruneopts = ""
+  revision = "88ba11cfdc67c7588b30042edf244b2875f892b6"
+  version = "v0.0.10"
+
+[[projects]]
   digest = "1:84c28d9899cc4e00c38042d345cea8819275a5a62403a58530cac67022894776"
   name = "github.com/mattn/go-runewidth"
   packages = ["."]
   pruneopts = ""
   revision = "3ee7d812e62a0804a7d0a324e0249ca2db3476d3"
   version = "v0.0.4"
+
+[[projects]]
+  digest = "1:ccd0def9f0b82b61c5e54fcbfccf528eabb13b489d008e46dc16b808c2e1f765"
+  name = "github.com/naoina/go-stringutil"
+  packages = ["."]
+  pruneopts = ""
+  revision = "6b638e95a32d0c1131db0e7fe83775cbea4a0d0b"
+  version = "v0.1.0"
+
+[[projects]]
+  branch = "master"
+  digest = "1:1c96351a94bb68711cd7790e64cffa35d11da796c052aca1fe2b83bda856ef44"
+  name = "github.com/naoina/toml"
+  packages = [
+    ".",
+    "ast",
+  ]
+  pruneopts = ""
+  revision = "9fafd69674167c06933b1787ae235618431ce87f"
+
+[[projects]]
+  branch = "master"
+  digest = "1:088f61f6fd284c2dd680a95bda8c84160cfee3b7958aa688469f52702eae2a73"
+  name = "github.com/nfnt/resize"
+  packages = ["."]
+  pruneopts = ""
+  revision = "83c6a9932646f83e3267f353373d47347b6036b2"
+
+[[projects]]
+  branch = "master"
+  digest = "1:af284ba9039992932864fe38b1dd6bd06ca2ef34136ef5d51469d447236a8d6a"
+  name = "github.com/qeesung/image2ascii"
+  packages = [
+    "ascii",
+    "convert",
+    "terminal",
+  ]
+  pruneopts = ""
+  revision = "01cc27c94e08f572a2a11d09f8bb76d1c75e810a"
 
 [[projects]]
   branch = "master"
@@ -99,6 +154,14 @@
   pruneopts = ""
   revision = "f8f8f751c732fdcd5e158c13c28f8863ad80e9a5"
   version = "v0.1.0"
+
+[[projects]]
+  digest = "1:eebda427a2672f8d351927c4173fc009e6f2bd6509c97435348a113d8ba00a8e"
+  name = "github.com/wayneashleyberry/terminal-dimensions"
+  packages = ["."]
+  pruneopts = ""
+  revision = "29d939246793fbd8100dcf74700637adcb839bc5"
+  version = "v1.0.0"
 
 [[projects]]
   branch = "master"
@@ -125,6 +188,11 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  input-imports = ["github.com/rivo/tview"]
+  input-imports = [
+    "github.com/gdamore/tcell",
+    "github.com/naoina/toml",
+    "github.com/qeesung/image2ascii/convert",
+    "github.com/rivo/tview",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
