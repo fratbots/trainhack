@@ -9,7 +9,7 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		View:     NewVew(),
-		Dialoger: NewDialoger("./example/dialogs", "./example/peka.png", "PEKA"),
+		Dialoger: NewDialoger("./example/dialogs", "./example/bah.jpeg", "Иоган Себастья Бах"),
 	}
 }
 

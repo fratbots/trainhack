@@ -2,24 +2,24 @@ name = "pika_dialog1"
 
 [[scenes]]
 id = 0
-person_name = "Picka"
-person_img_path = "./example/p.jpg"
-phase = "What's you do?"
+person_name = "Андрей Аксёнов"
+person_img_path = "./example/a.jpeg"
+phase = "Вилкой в глаз или сервис на Паас?"
 
     [scenes.answer_one]
-    phase = "I ..."
+    phase = "Сервис на паас"
     scene_id = 1
 
     [scenes.answer_two]
-    phase = "I do ..."
+    phase = "Вилкой в глаз"
     scene_id = 2
 
     [scenes.answer_three]
-    phase = "I -_..."
+    phase = "Что?"
     scene_id = -1
 
     [scenes.answer_four]
-    phase = "???"
+    phase = "..."
     scene_id = -1
 
 [[scenes]]
