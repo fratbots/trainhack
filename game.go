@@ -12,21 +12,22 @@ func NewGame() *Game {
 }
 
 func (g *Game) Start(s Screen) {
-	g.View.Run(s.Do(g, g.callback()))
+	end := g.endCallback()
+	p := s.Do(g, end)
+	g.View.Run(p)
 }
 
-func (g *Game) callback() func(Screen) {
+func (g *Game) endCallback() func(Screen) {
 	var callback func(Screen)
 
 	callback = func(next Screen) {
-		if next == nil {
-			return
-		}
-		g.Screen = next
-		p := g.Screen.Do(g, callback)
-		if p != nil {
-			g.View.Focus(p)
-			return
+		if next != nil {
+			g.Screen = next
+			p := g.Screen.Do(g, callback)
+			if p != nil {
+				g.View.Focus(p)
+				return
+			}
 		}
 		g.View.Final()
 	}
@@ -35,7 +36,7 @@ func (g *Game) callback() func(Screen) {
 }
 
 func (g *Game) DoScreen(s Screen) {
-	g.callback()(s)
+	g.endCallback()(s)
 }
 
 func (g *Game) Final() {

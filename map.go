@@ -22,8 +22,8 @@ type Viewport struct {
 	Height int
 }
 
-// Actor is a behaving entity, for example, hero or enemy.
-type Actor struct {
+// Actor2 is a behaving entity, for example, hero or enemy.
+type Actor2 struct {
 	X       int
 	Y       int
 	Width   int
@@ -81,7 +81,7 @@ func NewMixer(buffer *RenderBuffer, levelMap *Map, viewport *Viewport) *Mixer {
 }
 
 // Mix fills the render buffer with ready to render image.
-func (m *Mixer) Mix(actors []*Actor) {
+func (m *Mixer) Mix(actors []*Actor2) {
 	// First layer: the map.
 	for x := 0; x < m.viewport.Width; x++ {
 		for y := 0; y < m.viewport.Height; y++ {
@@ -123,7 +123,7 @@ func (r *Renderer) Render() {
 	}
 }
 
-func main() {
+func main2() {
 	levelMapTexture := []Tile{
 		Tile("."), Tile("."), Tile("."), Tile("."), Tile("."), Tile("."), Tile("."), Tile("."),
 		Tile("."), Tile("."), Tile("."), Tile("."), Tile("."), Tile("."), Tile("."), Tile("."),
@@ -143,14 +143,14 @@ func main() {
 		Width:  8,
 		Height: 6,
 	}
-	hero := &Actor{
+	hero := &Actor2{
 		X:       4,
 		Y:       4,
 		Width:   1,
 		Height:  1,
 		Texture: []Tile{Tile("@")},
 	}
-	actors := []*Actor{
+	actors := []*Actor2{
 		hero,
 	}
 
