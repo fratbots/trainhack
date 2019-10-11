@@ -30,7 +30,9 @@ func (s *ScreenMap) Do(g *Game, end func(s Screen)) tview.Primitive {
 
 // draw is a callback function that draws the frame.
 func draw(screen tcell.Screen, screenWidth int, screenHeight int) {
-	levelMap := getMap(60, 30)
+	mapWidth := 60
+	mapHeight := 30
+	levelMap := getMap(mapWidth, mapHeight)
 
 	viewportX := 0
 	viewportY := 0
@@ -43,11 +45,13 @@ func draw(screen tcell.Screen, screenWidth int, screenHeight int) {
 	)
 
 	hero := ViewActor{
-		X:       rand.Intn(100),
-		Y:       rand.Intn(100),
-		Width:   1,
-		Height:  1,
-		Texture: []Tile{Tile('@')},
+		X:      rand.Intn(mapWidth),
+		Y:      rand.Intn(mapHeight),
+		Width:  1,
+		Height: 1,
+		Texture: []Tile{
+			Tile{Symbol: '@'},
+		},
 	}
 	actors := []ViewActor{
 		hero,
@@ -84,7 +88,7 @@ func (c *Composer) RenderLevelMap(levelMap LevelMap) {
 			if mapTile == nil {
 				continue
 			}
-			c.screen.SetContent(vpX, vpY, rune(*mapTile), nil, tcell.StyleDefault)
+			c.screen.SetContent(vpX, vpY, mapTile.Symbol, nil, tcell.StyleDefault)
 		}
 	}
 }
@@ -98,7 +102,7 @@ func (c *Composer) RenderActors(actors []ViewActor) {
 				vpY := c.viewport.ToViewportCoordY(actor.Y)
 				actorTile := actor.GetTile(actorX, actorY)
 				if vpX >= 0 && vpY >= 0 {
-					c.screen.SetContent(vpX, vpY, rune(actorTile), nil, tcell.StyleDefault)
+					c.screen.SetContent(vpX, vpY, actorTile.Symbol, nil, tcell.StyleDefault)
 				}
 			}
 		}
@@ -119,7 +123,7 @@ func getMap(width int, height int) LevelMap {
 			if x%10 == 0 {
 				symbol = '|'
 			}
-			levelMapTexture[y*width+x] = Tile(symbol)
+			levelMapTexture[y*width+x] = Tile{Symbol: symbol}
 		}
 	}
 	return LevelMap{
