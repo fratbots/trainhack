@@ -1,20 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"github.com/rivo/tview"
 )
 
 type Screen interface {
-	Do(g *Game)
-}
-
-type HelloScreen struct {
-}
-
-func (hs *HelloScreen) Do(g *Game) {
-	fmt.Printf("hello")
-}
-
-func init() {
-
+	Do(g *Game, end func(next Screen)) tview.Primitive
 }
