@@ -1,7 +1,5 @@
 package main
 
-import "errors"
-
 // LevelMap is a 2d map of a level.
 type LevelMap struct {
 	Width   int
@@ -10,13 +8,13 @@ type LevelMap struct {
 }
 
 // GetTile returns tile of a map from the specified coord.
-func (m *LevelMap) GetTile(x int, y int) (Tile, error) {
+func (m *LevelMap) GetTile(x int, y int) *Tile {
 	if x >= m.Width {
-		return Tile('X'), errors.New("X coord out of range.")
+		return nil
 	}
 	if y >= m.Height {
-		return Tile('X'), errors.New("Y coord out of range.")
+		return nil
 	}
 	idx := y*m.Width + x
-	return m.Texture[idx], nil
+	return &m.Texture[idx]
 }
