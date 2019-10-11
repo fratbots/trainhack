@@ -1,0 +1,66 @@
+name = "pika_dialog2"
+
+[[scenes]]
+id = 0
+person_name = "Picka2"
+person_img_path = "./example/p.jpg"
+phase = "What's you do?"
+
+    [scenes.answer_one]
+    phase = "I ..."
+    scene_id = 1
+
+    [scenes.answer_two]
+    phase = "I do ..."
+    scene_id = 2
+
+    [scenes.answer_three]
+    phase = "I ..."
+    scene_id = -1
+
+    [scenes.answer_four]
+    phase = "???"
+    scene_id = -1
+
+[[scenes]]
+id = 1
+person_name = "UNO"
+person_img_path = "./example/p.jpg"
+phase = "-_-"
+
+    [scenes.answer_one]
+    phase = "-__-"
+    scene_id = -1
+
+    [scenes.answer_two]
+    phase = "--_--"
+    scene_id = -1
+
+    [scenes.answer_three]
+    phase = "--_-"
+    scene_id = -1
+
+    [scenes.answer_four]
+    phase = "-_--"
+    scene_id = -1
+
+[[scenes]]
+id = 2
+person_name = "UNO"
+person_img_path = "./example/p.jpg"
+phase = "( ͡° ͜ʖ ͡°)"
+    [scenes.answer_one]
+    phase = "(ಥ﹏ಥ)"
+    scene_id = 0
+
+    [scenes.answer_two]
+    phase = "(ᵔᴥᵔ)"
+    scene_id = 0
+
+    [scenes.answer_three]
+    phase = "(ง ͠° ͟ل͜ ͡°)ง"
+    scene_id = 0
+
+    [scenes.answer_four]
+    phase = "(ง°ل͜°)ง"
+    scene_id = 0

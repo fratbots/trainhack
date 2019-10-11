@@ -1,13 +1,15 @@
 package main
 
 type Game struct {
-	View   *View
-	Screen Screen
+	View     *View
+	Screen   Screen
+	Dialoger DialogManager
 }
 
 func NewGame() *Game {
 	return &Game{
-		View: NewVew(),
+		View:     NewVew(),
+		Dialoger: NewDialoger("./example/dialogs", "./example/peka.png", "PEKA"),
 	}
 }
 
