@@ -42,6 +42,7 @@ func (v *View) Run(p tview.Primitive) {
 func (v *View) Focus(p tview.Primitive) {
 	v.App.SetRoot(p, true)
 	v.App.SetFocus(p)
+	v.App.Draw()
 }
 
 func (v *View) Draw() {
