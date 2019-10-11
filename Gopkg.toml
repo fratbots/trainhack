@@ -32,3 +32,11 @@
 [[constraint]]
   branch = "master"
   name = "github.com/rivo/tview"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/naoina/toml"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/qeesung/image2ascii"
