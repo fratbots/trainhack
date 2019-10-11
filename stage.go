@@ -7,16 +7,10 @@ type Stage struct {
 }
 
 func NewStage() *Stage {
-	hero := Actor{
-		IsHero:   true,
-		Position: Position{0, 0},
-		Energy:   Energy{energyAction},
-		Speed:    1,
-		Behavior: nil,
-	}
+	hero := NewHero()
 	return &Stage{
-		Hero:    &hero,
-		Actors:  []*Actor{&hero},
+		Hero:    hero,
+		Actors:  []*Actor{hero},
 		Actions: NewActions(),
 	}
 }
