@@ -30,7 +30,7 @@ func (s *ScreenMap) Do(g *Game, end func(s Screen)) tview.Primitive {
 
 // draw is a callback function that draws the frame.
 func draw(screen tcell.Screen, screenWidth int, screenHeight int) {
-	levelMap := getMap(100, 100)
+	levelMap := getMap(60, 30)
 
 	viewportX := 0
 	viewportY := 0
@@ -75,12 +75,15 @@ func NewComposer(screen tcell.Screen, viewport Viewport) Composer {
 
 // RenderLevelMap renders layer of level map.
 func (c *Composer) RenderLevelMap(levelMap LevelMap) {
-	for vpX := 0; vpX < c.viewport.Width; vpX++ {
-		for vpY := 0; vpY < c.viewport.Height; vpY++ {
-			mapTile := levelMap.GetTile(
+	for vpY := 0; vpY < c.viewport.Height; vpY++ {
+		for vpX := 0; vpX < c.viewport.Width; vpX++ {
+			mapTile, err := levelMap.GetTile(
 				c.viewport.ToMapCoordX(vpX),
 				c.viewport.ToMapCoordY(vpY),
 			)
+			if err != nil {
+				continue
+			}
 			c.screen.SetContent(vpX, vpY, rune(mapTile), nil, tcell.StyleDefault)
 		}
 	}
@@ -89,8 +92,8 @@ func (c *Composer) RenderLevelMap(levelMap LevelMap) {
 // RenderActors applies actors on top of levelMap.
 func (c *Composer) RenderActors(actors []Actor) {
 	for _, actor := range actors {
-		for actorX := 0; actorX < actor.Width; actorX++ {
-			for actorY := 0; actorY < actor.Height; actorY++ {
+		for actorY := 0; actorY < actor.Height; actorY++ {
+			for actorX := 0; actorX < actor.Width; actorX++ {
 				vpX := c.viewport.ToViewportCoordX(actor.X)
 				vpY := c.viewport.ToViewportCoordY(actor.Y)
 				actorTile := actor.GetTile(actorX, actorY)
@@ -110,13 +113,13 @@ func (c *Composer) Finalize() {
 // getMap returns pregenerated map of the level.
 func getMap(width int, height int) LevelMap {
 	levelMapTexture := make([]Tile, width*height)
-	for x := 0; x < width; x++ {
-		for y := 0; y < height; y++ {
+	for y := 0; y < height; y++ {
+		for x := 0; x < width; x++ {
 			symbol := '.'
 			if x%10 == 0 {
-				symbol = ','
+				symbol = '|'
 			}
-			levelMapTexture[x*y] = Tile(symbol)
+			levelMapTexture[y*width+x] = Tile(symbol)
 		}
 	}
 	return LevelMap{
