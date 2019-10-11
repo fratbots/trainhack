@@ -43,8 +43,8 @@ func draw(screen tcell.Screen, screenWidth int, screenHeight int) {
 	)
 
 	hero := Actor{
-		X:       rand.Intn(100),
-		Y:       rand.Intn(100),
+		X:       rand.Intn(screenWidth),
+		Y:       rand.Intn(screenHeight),
 		Width:   1,
 		Height:  1,
 		Texture: []Tile{Tile('@')},
