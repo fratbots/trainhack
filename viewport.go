@@ -6,12 +6,12 @@ type Viewport struct {
 	Y        int
 	Width    int
 	Height   int
-	levelMap *LevelMap
+	levelMap LevelMap
 }
 
 // NewViewport returns new Viewport.
-func NewViewport(x int, y int, width int, height int, levelMap *LevelMap) *Viewport {
-	return &Viewport{
+func NewViewport(x int, y int, width int, height int, levelMap LevelMap) Viewport {
+	return Viewport{
 		X:        x,
 		Y:        y,
 		Width:    width,
