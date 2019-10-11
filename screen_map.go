@@ -120,8 +120,8 @@ func getMap(width int, height int) LevelMap {
 		}
 	}
 	return LevelMap{
-		Width:   100,
-		Height:  100,
+		Width:   width,
+		Height:  height,
 		Texture: levelMapTexture,
 	}
 }
