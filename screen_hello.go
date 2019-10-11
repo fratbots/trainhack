@@ -9,7 +9,8 @@ type HelloScreen struct {
 
 func (s *HelloScreen) Do(g *Game, end func(next Screen)) tview.Primitive {
 
-	modal := tview.NewModal().
+	var modal *tview.Modal
+	modal = tview.NewModal().
 		SetText("Hello, чувак!").
 		AddButtons([]string{"Play", "Exit"}).
 		SetDoneFunc(
@@ -19,7 +20,7 @@ func (s *HelloScreen) Do(g *Game, end func(next Screen)) tview.Primitive {
 					return
 				}
 
-				g.Final()
+				modal.SetText("You win!")
 			},
 		)
 
