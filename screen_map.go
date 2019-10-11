@@ -30,7 +30,9 @@ func (s *ScreenMap) Do(g *Game, end func(s Screen)) tview.Primitive {
 
 // draw is a callback function that draws the frame.
 func draw(screen tcell.Screen, screenWidth int, screenHeight int) {
-	levelMap := getMap(60, 30)
+	mapWidth := 60
+	mapHeight := 30
+	levelMap := getMap(mapWidth, mapHeight)
 
 	viewportX := 0
 	viewportY := 0
@@ -43,8 +45,8 @@ func draw(screen tcell.Screen, screenWidth int, screenHeight int) {
 	)
 
 	hero := ViewActor{
-		X:       rand.Intn(screenWidth),
-		Y:       rand.Intn(screenHeight),
+		X:       rand.Intn(mapWidth),
+		Y:       rand.Intn(mapHeight),
 		Width:   1,
 		Height:  1,
 		Texture: []Tile{Tile('@')},
