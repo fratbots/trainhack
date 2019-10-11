@@ -31,7 +31,7 @@ func (g *Game) endCallback() func(Screen) {
 				return
 			}
 		}
-		g.View.Final()
+		g.Final()
 	}
 
 	return callback
