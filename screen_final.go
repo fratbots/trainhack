@@ -14,9 +14,9 @@ func (s *ScreenFinal) Do(g *Game, callback func(next Screen)) tview.Primitive {
 			g.View.Draw()
 		}).
 		SetText("bye bye").
-		SetDynamicColors(true).
-		SetRegions(true).
-		SetWordWrap(true).
+		// SetDynamicColors(true).
+		// SetRegions(true).
+		// SetWordWrap(true).
 		SetTitle("title").
 		SetBorder(true).
 		SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {

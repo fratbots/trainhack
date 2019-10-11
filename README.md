@@ -1,3 +1,4 @@
 # fratbots
 
-Micro minds rule the world.
+
+github.com/fratbots/trainhack

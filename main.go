@@ -1,10 +1,6 @@
 package main
 
 func main() {
-
-	game := Game{
-		View: NewVew(),
-	}
-
+	game := NewGame()
 	game.Start(&HelloScreen{})
 }

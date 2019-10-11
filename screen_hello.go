@@ -18,7 +18,8 @@ func (s *HelloScreen) Do(g *Game, end func(next Screen)) tview.Primitive {
 					end(&ScreenFinal{})
 					return
 				}
-				g.View.Final()
+
+				g.Final()
 			},
 		)
 
