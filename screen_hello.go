@@ -16,6 +16,10 @@ func (s *HelloScreen) Do(g *Game, end func(next Screen)) tview.Primitive {
 		SetDoneFunc(
 			func(buttonIndex int, buttonLabel string) {
 				if buttonIndex == 0 {
+					end(&ScreensStage{})
+					return
+				}
+				if buttonIndex == 1 {
 					end(&ScreenFinal{})
 					return
 				} else if buttonLabel == "DIALOG" {

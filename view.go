@@ -5,31 +5,19 @@ import (
 )
 
 type View struct {
-	App   *tview.Application
-	Pages *tview.Pages
+	App *tview.Application
 }
 
 func NewVew() *View {
 	view := View{
-		App:   tview.NewApplication(),
-		Pages: tview.NewPages(),
+		App: tview.NewApplication(),
 	}
 
-	view.App.SetRoot(view.Pages, true)
 	return &view
 }
 
 func (v *View) Final() {
 	v.App.Stop()
-}
-
-func (v *View) Page(name string) bool {
-	if v.Pages.HasPage("hello") {
-		v.Pages.SwitchToPage("hello")
-		return true
-	}
-
-	return false
 }
 
 func (v *View) Run(p tview.Primitive) {

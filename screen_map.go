@@ -42,14 +42,14 @@ func draw(screen tcell.Screen, screenWidth int, screenHeight int) {
 		levelMap,
 	)
 
-	hero := Actor{
+	hero := ViewActor{
 		X:       rand.Intn(screenWidth),
 		Y:       rand.Intn(screenHeight),
 		Width:   1,
 		Height:  1,
 		Texture: []Tile{Tile('@')},
 	}
-	actors := []Actor{
+	actors := []ViewActor{
 		hero,
 	}
 
@@ -77,20 +77,20 @@ func NewComposer(screen tcell.Screen, viewport Viewport) Composer {
 func (c *Composer) RenderLevelMap(levelMap LevelMap) {
 	for vpY := 0; vpY < c.viewport.Height; vpY++ {
 		for vpX := 0; vpX < c.viewport.Width; vpX++ {
-			mapTile, err := levelMap.GetTile(
+			mapTile := levelMap.GetTile(
 				c.viewport.ToMapCoordX(vpX),
 				c.viewport.ToMapCoordY(vpY),
 			)
-			if err != nil {
+			if mapTile == nil {
 				continue
 			}
-			c.screen.SetContent(vpX, vpY, rune(mapTile), nil, tcell.StyleDefault)
+			c.screen.SetContent(vpX, vpY, rune(*mapTile), nil, tcell.StyleDefault)
 		}
 	}
 }
 
 // RenderActors applies actors on top of levelMap.
-func (c *Composer) RenderActors(actors []Actor) {
+func (c *Composer) RenderActors(actors []ViewActor) {
 	for _, actor := range actors {
 		for actorY := 0; actorY < actor.Height; actorY++ {
 			for actorX := 0; actorX < actor.Width; actorX++ {
