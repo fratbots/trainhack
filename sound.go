@@ -26,7 +26,6 @@ func Sound() {
 	done := make(chan bool)
 	if true {
 		speaker.Play(beep.Seq(streamer, beep.Callback(func() {
-			done <- true
 		})))
 	}
 	<-done
