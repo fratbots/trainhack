@@ -23,11 +23,10 @@ func Sound() {
 	defer streamer.Close()
 	speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
 
+	loop := beep.Loop(3, streamer)
 	done := make(chan bool)
-	if true {
-		speaker.Play(beep.Seq(streamer, beep.Callback(func() {
-			done <- true
-		})))
-	}
+	speaker.Play(beep.Seq(loop, beep.Callback(func() {
+		done <- true
+	})))
 	<-done
 }
