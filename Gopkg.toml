@@ -40,3 +40,8 @@
 [[constraint]]
   branch = "master"
   name = "github.com/qeesung/image2ascii"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/faiface/beep"
+

@@ -10,6 +10,18 @@
   revision = "cc83f3b3ce5911279513a46d6d3316d67bedaa54"
 
 [[projects]]
+  branch = "master"
+  digest = "1:5ad5b655c95ae6fce0f94e8eaafbab5e32dbcdf602b5491537b8e135aac50de9"
+  name = "github.com/faiface/beep"
+  packages = [
+    ".",
+    "speaker",
+    "wav",
+  ]
+  pruneopts = ""
+  revision = "76df4462a36ade5a7f7602277567319dfd398937"
+
+[[projects]]
   digest = "1:65c9e58c85d0791b146dc7f4387330329204a70fb34532e7ffce71a2f04f59a2"
   name = "github.com/gdamore/encoding"
   packages = ["."]
@@ -77,6 +89,17 @@
   version = "v1.3.0"
 
 [[projects]]
+  digest = "1:609fb6ea3c5dfabf8d91645e19a0dac47724bd6fdcf1850e825c0f68ead1e13d"
+  name = "github.com/hajimehoshi/oto"
+  packages = [
+    ".",
+    "internal/mux",
+  ]
+  pruneopts = ""
+  revision = "811d7bf8568cd795f6c452037a9adeb347e791ca"
+  version = "v0.5.0"
+
+[[projects]]
   digest = "1:ae90995bad89e019ff65f8de58750555cdf01662a52aed7adb91acc8a95775c8"
   name = "github.com/lucasb-eyer/go-colorful"
   packages = ["."]
@@ -128,6 +151,14 @@
   revision = "83c6a9932646f83e3267f353373d47347b6036b2"
 
 [[projects]]
+  digest = "1:1d7e1867c49a6dd9856598ef7c3123604ea3daabf5b83f303ff457bcbc410b1d"
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  pruneopts = ""
+  revision = "ba968bfe8b2f7e042a574c888954fccecfa385b4"
+  version = "v0.8.1"
+
+[[projects]]
   branch = "master"
   digest = "1:af284ba9039992932864fe38b1dd6bd06ca2ef34136ef5d51469d447236a8d6a"
   name = "github.com/qeesung/image2ascii"
@@ -165,9 +196,57 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:ee68e56a9a0b7f6e2795ee803aa114e894b612040e21c86e949d86fd7d275cd8"
+  name = "golang.org/x/exp"
+  packages = [
+    "shiny/driver/gldriver",
+    "shiny/driver/internal/drawer",
+    "shiny/driver/internal/errscreen",
+    "shiny/driver/internal/event",
+    "shiny/driver/internal/lifecycler",
+    "shiny/driver/internal/win32",
+    "shiny/driver/internal/x11key",
+    "shiny/screen",
+  ]
+  pruneopts = ""
+  revision = "a1355ae1e2c30eb123356c2a35c2f420652999f9"
+
+[[projects]]
+  branch = "master"
+  digest = "1:590e4fb8d603b07c34e40cfaa695b13cf32bf54a7e8cd0304f95cfc570dbad2b"
+  name = "golang.org/x/image"
+  packages = ["math/f64"]
+  pruneopts = ""
+  revision = "e7c1f5e7dbb87d8921928a6d9fc52fb31ce73b24"
+
+[[projects]]
+  branch = "master"
+  digest = "1:49040754bf4388154f70d3a1eb5e92bf3aa7de5dcbf146f7d63eb44964726fd6"
+  name = "golang.org/x/mobile"
+  packages = [
+    "app",
+    "app/internal/callfn",
+    "event/key",
+    "event/lifecycle",
+    "event/mouse",
+    "event/paint",
+    "event/size",
+    "event/touch",
+    "geom",
+    "gl",
+    "internal/mobileinit",
+  ]
+  pruneopts = ""
+  revision = "6d0d39b2ca824d9f664f49cc75427cb806beee2e"
+
+[[projects]]
+  branch = "master"
   digest = "1:055771f25c4d6493a840af5cbdb8da461be2ec1192049dbaebd6ae1a8cbcdea0"
   name = "golang.org/x/sys"
-  packages = ["unix"]
+  packages = [
+    "unix",
+    "windows",
+  ]
   pruneopts = ""
   revision = "b09406accb4736d857a32bf9444cd7edae2ffa79"
 
@@ -189,6 +268,9 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/faiface/beep",
+    "github.com/faiface/beep/speaker",
+    "github.com/faiface/beep/wav",
     "github.com/gdamore/tcell",
     "github.com/naoina/toml",
     "github.com/qeesung/image2ascii/convert",
