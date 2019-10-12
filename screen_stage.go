@@ -16,7 +16,8 @@ func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 	s.Stage = NewStage(g)
 	s.Stage.Hero.Position = Position{X: 20, Y: 10}
 	s.Stage.Load("map2", "")
-	s.Stage.AddActor(Pursue(NewActor(Position{X: 7, Y: 5}, 0.3), s.Stage, s.Stage.Hero))
+	s.Stage.AddActor(Pursue(NewActor(Position{X: 7, Y: 5}, 0.3, '$'), s.Stage, s.Stage.Hero))
+	s.Stage.AddActor(NewActor(Position{X: 8, Y: 6}, 0, '#'))
 
 	lookAt := s.Stage.Hero.Position
 

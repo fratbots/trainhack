@@ -27,10 +27,10 @@ func NewHero() *Actor {
 	}
 }
 
-func NewActor(pos Position, speed float64) *Actor {
+func NewActor(pos Position, speed float64, rune rune) *Actor {
 	return &Actor{
 		IsHero:   false,
-		Rune:     '§',
+		Rune:     rune,
 		Position: pos,
 		Energy:   Energy{Value: 0},
 		Speed:    speed,
