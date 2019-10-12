@@ -7,21 +7,15 @@ import (
 	"github.com/rivo/tview"
 )
 
-type ScreensStage struct {
+type ScreenStage struct {
 	Stage *Stage
 }
 
-func (s *ScreensStage) Do(g *Game, end func(next Screen)) tview.Primitive {
+func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 
-	hero := Actor{
-		IsHero:   true,
-		Position: Position{X: 5, Y: 5},
-		Energy:   Energy{energyAction},
-		Speed:    1,
-		Behavior: nil,
-	}
-
-	s.Stage = NewStage(&hero)
+	s.Stage = NewStage()
+	s.Stage.Hero.Position = Position{X: 5, Y: 5}
+	s.Stage.AddActor(Pursue(NewActor(Position{X: 7, Y: 5}, 0.3), s.Stage, s.Stage.Hero))
 
 	box := tview.NewBox()
 	box.SetTitle("title")
@@ -29,32 +23,31 @@ func (s *ScreensStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 	box.SetBackgroundColor(tcell.ColorGreen)
 
 	box.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
-		var action Action
-
 		switch event.Key() {
 		case tcell.KeyUp:
-			action = ActionMove(s.Stage, DirectionTop)
+			s.Stage.HeroAction(ActionMove(s.Stage, s.Stage.Hero, DirectionTop))
 		case tcell.KeyDown:
-			action = ActionMove(s.Stage, DirectionDown)
+			s.Stage.HeroAction(ActionMove(s.Stage, s.Stage.Hero, DirectionDown))
 		case tcell.KeyLeft:
-			action = ActionMove(s.Stage, DirectionLeft)
+			s.Stage.HeroAction(ActionMove(s.Stage, s.Stage.Hero, DirectionLeft))
 		case tcell.KeyRight:
-			action = ActionMove(s.Stage, DirectionRight)
+			s.Stage.HeroAction(ActionMove(s.Stage, s.Stage.Hero, DirectionRight))
 		}
 
-		if action != nil {
-			hero.nextAction(action)
-			s.Stage.Update() // TODO: use in tick
-		}
-
-		return event
+		return nil
 	})
 
 	box.SetDrawFunc(func(screen tcell.Screen, x, y, width, height int) (int, int, int, int) {
 		x, y, width, height = box.GetInnerRect()
 
-		box.SetTitle(fmt.Sprintf("%dx%d", s.Stage.Hero.Position.X, s.Stage.Hero.Position.Y))
-		screen.SetContent(s.Stage.Hero.Position.X, s.Stage.Hero.Position.Y, '@', nil, tcell.StyleDefault)
+		for _, actor := range s.Stage.Actors {
+			if actor.IsHero {
+				box.SetTitle(fmt.Sprintf("%dx%d", actor.Position.X, actor.Position.Y))
+				screen.SetContent(actor.Position.X, actor.Position.Y, '@', nil, tcell.StyleDefault)
+			} else {
+				screen.SetContent(actor.Position.X, actor.Position.Y, '&', nil, tcell.StyleDefault)
+			}
+		}
 
 		return x, y, width, height
 	})

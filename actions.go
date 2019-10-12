@@ -19,15 +19,15 @@ func NewActions() *Actions {
 	return &Actions{list: list.New()}
 }
 
-func (a *Actions) Add(action *Action) {
+func (a *Actions) Add(action Action) {
 	a.list.PushBack(action)
 }
 
-func (a *Actions) Get() *Action {
+func (a *Actions) Get() Action {
 	f := a.list.Front()
 	if f != nil {
 		a.list.Remove(f)
-		return f.Value.(*Action)
+		return f.Value.(Action)
 	}
 	return nil
 }
@@ -67,11 +67,11 @@ func alternate(alt *Action) Result {
 	}
 }
 
-func ActionMove(stage *Stage, dir Direction) Action {
+func ActionMove(stage *Stage, actor *Actor, dir Direction) Action {
 	return func() Result {
 
 		// fmt.Printf("before: %#v\n", stage.Hero.Position)
-		pos := stage.Hero.Position.Shift(dir)
+		pos := actor.Position.Shift(dir)
 		// fmt.Printf("after: %#v\n", stage.Hero.Position)
 
 		target := stage.ActorAt(pos)
@@ -82,7 +82,8 @@ func ActionMove(stage *Stage, dir Direction) Action {
 
 		// TODO: collision
 
-		stage.Hero.Position = pos
+		actor.Position = pos
+		actor.Energy.Spend()
 		return success()
 	}
 }

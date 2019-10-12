@@ -6,7 +6,8 @@ type Stage struct {
 	Actions *Actions
 }
 
-func NewStage(hero *Actor) *Stage {
+func NewStage() *Stage {
+	hero := NewHero()
 	return &Stage{
 		Hero:    hero,
 		Actors:  []*Actor{hero},
@@ -24,6 +25,15 @@ func (s *Stage) ActorAt(pos Position) *Actor {
 	return nil
 }
 
+func (s *Stage) AddActor(actor *Actor) {
+	s.Actors = append(s.Actors, actor)
+}
+
+func (s *Stage) HeroAction(action Action) {
+	s.Hero.nextAction(action)
+	s.Update() // TODO: use in tick
+}
+
 func (s *Stage) Update() {
 	for {
 		action := s.Actions.Get()
@@ -31,7 +41,7 @@ func (s *Stage) Update() {
 			break
 		}
 
-		result := (*action)()
+		result := action()
 
 		for result.Alternative != nil {
 			result = (*result.Alternative)()
