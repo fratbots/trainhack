@@ -4,7 +4,10 @@ import (
 	"container/list"
 )
 
-type Action func() Result
+type Action struct {
+	Actor   *Actor
+	Perform func() Result
+}
 
 type Result struct {
 	Success     bool
@@ -19,15 +22,15 @@ func NewActions() *Actions {
 	return &Actions{list: list.New()}
 }
 
-func (a *Actions) Add(action Action) {
+func (a *Actions) Add(action *Action) {
 	a.list.PushBack(action)
 }
 
-func (a *Actions) Get() Action {
+func (a *Actions) Get() *Action {
 	f := a.list.Front()
 	if f != nil {
 		a.list.Remove(f)
-		return f.Value.(Action)
+		return f.Value.(*Action)
 	}
 	return nil
 }
@@ -67,23 +70,25 @@ func alternate(alt *Action) Result {
 	}
 }
 
-func ActionMove(stage *Stage, actor *Actor, dir Direction) Action {
-	return func() Result {
+// ============================================================ //
 
-		// fmt.Printf("before: %#v\n", stage.Hero.Position)
-		pos := actor.Position.Shift(dir)
-		// fmt.Printf("after: %#v\n", stage.Hero.Position)
+func ActionMove(stage *Stage, actor *Actor, dir Direction) *Action {
+	return &Action{
+		Actor: actor,
+		Perform: func() Result {
 
-		target := stage.ActorAt(pos)
+			pos := actor.Position.Shift(dir)
 
-		if target != nil {
-			return success() // rest
-		}
+			target := stage.ActorAt(pos)
 
-		// TODO: collision
+			if target != nil {
+				return success() // rest
+			}
 
-		actor.Position = pos
-		actor.Energy.Spend()
-		return success()
+			// TODO: collision
+
+			actor.Position = pos
+			return success()
+		},
 	}
 }
