@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	Map1 = "./levels/map1.txt"
+	Map2 = "./levels/map2_texture.json"
 )
 
 type ScreenMap struct {
@@ -39,7 +39,7 @@ func (s *ScreenMap) Do(g *Game, end func(s Screen)) tview.Primitive {
 // draw is a callback function that draws the frame.
 func draw(screen tcell.Screen, screenWidth int, screenHeight int) error {
 	mapLoader := MapLoader{}
-	levelMap, err := mapLoader.Load(Map1)
+	levelMap, err := mapLoader.Load(Map2)
 	if err != nil {
 		return err
 	}
