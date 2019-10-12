@@ -100,6 +100,5 @@ func (m *MapLoader) loadObstacles(path string) ([]Obstacle, error) {
 	if err := toml.NewDecoder(f).Decode(&fo); err != nil {
 		return obstacles, err
 	}
-	fmt.Println(fo)
 	return fo.Obstacles, nil
 }
