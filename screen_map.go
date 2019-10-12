@@ -1,10 +1,15 @@
 package main
 
 import (
+	"log"
 	"math/rand"
 
 	"github.com/gdamore/tcell"
 	"github.com/rivo/tview"
+)
+
+const (
+	Map1 = "./levels/map1.txt"
 )
 
 type ScreenMap struct {
@@ -15,7 +20,10 @@ func (s *ScreenMap) Do(g *Game, end func(s Screen)) tview.Primitive {
 	box.
 		SetDrawFunc(func(screen tcell.Screen, x int, y int, width int, height int) (int, int, int, int) {
 			_, _, innerRectWidth, innerRectHeight := box.GetInnerRect()
-			draw(screen, innerRectWidth, innerRectHeight)
+			err := draw(screen, innerRectWidth, innerRectHeight)
+			if err != nil {
+				log.Fatalf("Failed to draw the frame: %v", err)
+			}
 			return 0, 0, 0, 0
 		}).
 		SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
@@ -29,10 +37,12 @@ func (s *ScreenMap) Do(g *Game, end func(s Screen)) tview.Primitive {
 }
 
 // draw is a callback function that draws the frame.
-func draw(screen tcell.Screen, screenWidth int, screenHeight int) {
-	mapWidth := 60
-	mapHeight := 30
-	levelMap := getMap(mapWidth, mapHeight)
+func draw(screen tcell.Screen, screenWidth int, screenHeight int) error {
+	mapLoader := MapLoader{}
+	levelMap, err := mapLoader.Load(Map1)
+	if err != nil {
+		return err
+	}
 
 	viewportX := 0
 	viewportY := 0
@@ -45,8 +55,8 @@ func draw(screen tcell.Screen, screenWidth int, screenHeight int) {
 	)
 
 	hero := ViewActor{
-		X:      rand.Intn(mapWidth),
-		Y:      rand.Intn(mapHeight),
+		X:      rand.Intn(levelMap.Width),
+		Y:      rand.Intn(levelMap.Height),
 		Width:  1,
 		Height: 1,
 		Texture: []Tile{
@@ -61,6 +71,8 @@ func draw(screen tcell.Screen, screenWidth int, screenHeight int) {
 	composer.RenderLevelMap(levelMap)
 	composer.RenderActors(actors)
 	composer.Finalize()
+
+	return nil
 }
 
 // Composer is a manager of layers that is capable of layers ordering.
@@ -112,23 +124,4 @@ func (c *Composer) RenderActors(actors []ViewActor) {
 // Finalize completes frame rendering.
 func (c *Composer) Finalize() {
 	c.screen.Show()
-}
-
-// getMap returns pregenerated map of the level.
-func getMap(width int, height int) LevelMap {
-	levelMapTexture := make([]Tile, width*height)
-	for y := 0; y < height; y++ {
-		for x := 0; x < width; x++ {
-			symbol := '.'
-			if x%10 == 0 {
-				symbol = '|'
-			}
-			levelMapTexture[y*width+x] = Tile{Symbol: symbol}
-		}
-	}
-	return LevelMap{
-		Width:   width,
-		Height:  height,
-		Texture: levelMapTexture,
-	}
 }
