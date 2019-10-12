@@ -6,6 +6,13 @@ import (
 	"os"
 )
 
+const (
+	MapMeta      = "meta"
+	MapTexture   = "texture"
+	MapObstacles = "obstacles"
+	MapDir       = "./levels"
+)
+
 // MapLoader loads level maps from filesystem.
 type MapLoader struct {
 }
@@ -25,7 +32,8 @@ type FileTile struct {
 }
 
 // Load reads level map from file.
-func (m *MapLoader) Load(path string) (LevelMap, error) {
+func (m *MapLoader) Load(mapName string) (LevelMap, error) {
+	path := fmt.Sprintf("%s/%s/%s.json", MapDir, mapName, MapTexture)
 	fileReader, err := os.Open(path)
 	defer fileReader.Close()
 	if err != nil {
