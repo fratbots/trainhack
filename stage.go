@@ -29,7 +29,7 @@ func (s *Stage) AddActor(actor *Actor) {
 	s.Actors = append(s.Actors, actor)
 }
 
-func (s *Stage) HeroAction(action Action) {
+func (s *Stage) HeroAction(action *Action) {
 	s.Hero.nextAction(action)
 	s.Update() // TODO: use in tick
 }
@@ -41,10 +41,10 @@ func (s *Stage) Update() {
 			break
 		}
 
-		result := action()
+		result := action.Perform()
 
 		for result.Alternative != nil {
-			result = (*result.Alternative)()
+			result = result.Alternative.Perform()
 		}
 	}
 
