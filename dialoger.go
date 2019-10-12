@@ -96,11 +96,11 @@ func (d DialogManager) GetDialogPrimitive(dialogName string, sceneId int, callba
 	characterImgAscii := imageToAscii(d.CharacterImgPath)
 	personImgAscii := imageToAscii(scene.PersonImgPath)
 
-	newPrimitive := func(text string) tview.Primitive {
-		return tview.NewTextView().
-			SetTextAlign(tview.AlignCenter).
-			SetText(text)
-	}
+	//newPrimitive := func(text string) tview.Primitive {
+	//	return tview.NewTextView().
+	//		SetTextAlign(tview.AlignCenter).
+	//		SetText(text)
+	//}
 
 	list := tview.NewList()
 	list.AddItem(scene.AnswerOne.Phase, "", '1', func() { newScene(scene.AnswerOne.SceneId, dialogName, lastScreen, callback) })
@@ -111,21 +111,36 @@ func (d DialogManager) GetDialogPrimitive(dialogName string, sceneId int, callba
 	list.SetShortcutColor(tcell.Color18)
 	list.SetBackgroundColor(tcell.ColorDimGray)
 
-	grid := tview.NewGrid().
-		SetRows(20, 1, 7).
-		SetColumns(10, 0, 10).
-		SetBorders(true)
+	//grid := tview.NewGrid().
+	//	SetRows(20, 1, 7).
+	//	SetColumns(10, 0, 10).
+	//	SetBorders(true)
+	//
+	//grid.AddItem(newPrimitive(fmt.Sprintf(characterImgAscii)), 0, 0, 1, 2, 0, 0, false)
+	//grid.AddItem(newPrimitive(personImgAscii), 0, 2, 1, 2, 0, 0, false)
+	//
+	//grid.AddItem(newPrimitive(d.CharacterName), 1, 0, 1, 2, 0, 0, false)
+	//grid.AddItem(newPrimitive(scene.PersonName), 1, 2, 1, 2, 0, 0, false)
+	//
+	//grid.AddItem(list, 2, 0, 1, 2, 0, 0, true)
+	//grid.AddItem(newPrimitive(scene.Phase), 2, 2, 1, 2, 0, 0, false)
 
-	grid.AddItem(newPrimitive(fmt.Sprintf(characterImgAscii)), 0, 0, 1, 2, 0, 0, false)
-	grid.AddItem(newPrimitive(personImgAscii), 0, 2, 1, 2, 0, 0, false)
+	flex := tview.NewFlex().SetDirection(tview.FlexRow).
+		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
+			AddItem(tview.NewTextView().SetText(fmt.Sprint(characterImgAscii)), 65, 4, false).
+			AddItem(tview.NewBox(), 0, 2, false).
+			AddItem(tview.NewTextView().SetText(fmt.Sprint(personImgAscii)), 65, 4, false),
+			23, 6, false).
+		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
+			AddItem(tview.NewTextView().SetText(d.CharacterName).SetTextAlign(tview.AlignCenter), 0, 1, false).
+			AddItem(tview.NewTextView().SetTextAlign(tview.AlignCenter).SetText("|"), 0, 1, false).
+			AddItem(tview.NewTextView().SetText(scene.PersonName).SetTextAlign(tview.AlignCenter), 0, 1, false), 0, 1, false).
+		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
+			AddItem(list, 0, 4, true).
+			AddItem(tview.NewTextView().SetText("|").SetTextAlign(tview.AlignCenter), 0, 2, false).
+			AddItem(tview.NewTextView().SetTextAlign(tview.AlignCenter).SetText(scene.Phase), 0, 4, false), 0, 3, true)
 
-	grid.AddItem(newPrimitive(d.CharacterName), 1, 0, 1, 2, 0, 0, false)
-	grid.AddItem(newPrimitive(scene.PersonName), 1, 2, 1, 2, 0, 0, false)
-
-	grid.AddItem(list, 2, 0, 1, 2, 0, 0, true)
-	grid.AddItem(newPrimitive(scene.Phase), 2, 2, 1, 2, 0, 0, false)
-
-	return grid
+	return flex
 }
 
 func newScene(sceneId int, dialogName string, lastScreen Screen, callback func(s Screen)) {
