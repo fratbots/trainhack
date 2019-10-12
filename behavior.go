@@ -1,5 +1,9 @@
 package main
 
+import (
+	"fmt"
+)
+
 func abs(a int) int {
 	if a < 0 {
 		return -a
@@ -7,7 +11,7 @@ func abs(a int) int {
 	return a
 }
 
-func Pursue(actor *Actor, stage *Stage, target *Actor) *Actor {
+func BehaviorPursue(actor *Actor, stage *Stage, target *Actor) *Actor {
 
 	actor.Behavior = func() *Action {
 		dx := target.Position.X - actor.Position.X
@@ -35,6 +39,28 @@ func Pursue(actor *Actor, stage *Stage, target *Actor) *Actor {
 		}
 
 		return nil
+	}
+
+	return actor
+}
+
+func BehaviorGhost(actor *Actor, stage *Stage, target *Actor) *Actor {
+
+	actor.Behavior = func() *Action {
+		return &Action{
+			Actor: actor,
+			Perform: func() Result {
+				pos := actor.Position.FollowGap(target.Position, 7)
+				fmt.Printf("pos: %#v\n", pos)
+
+				if pos.IsOn(stage.LevelMap.Dimensions) {
+					actor.Position = pos
+					return successResult
+				}
+
+				return failureResult
+			},
+		}
 	}
 
 	return actor
