@@ -54,21 +54,12 @@ var (
 	DirectionDown  = Direction{X: 0, Y: +1}
 	DirectionLeft  = Direction{X: -1, Y: 0}
 	DirectionRight = Direction{X: +1, Y: 0}
-)
 
-func success() Result {
-	return Result{
+	successResult = Result{
 		Success:     true,
 		Alternative: nil,
 	}
-}
-
-func alternate(alt *Action) Result {
-	return Result{
-		Success:     true,
-		Alternative: alt,
-	}
-}
+)
 
 // ============================================================ //
 
@@ -82,13 +73,13 @@ func ActionMove(stage *Stage, actor *Actor, dir Direction) *Action {
 			target := stage.ActorAt(pos)
 
 			if target != nil {
-				return success() // rest
+				return successResult // rest
 			}
 
 			// TODO: collision
 
 			actor.Position = pos
-			return success()
+			return successResult
 		},
 	}
 }

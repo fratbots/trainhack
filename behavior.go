@@ -10,19 +10,23 @@ func abs(a int) int {
 func Pursue(actor *Actor, stage *Stage, target *Actor) *Actor {
 
 	actor.Behavior = func() *Action {
-		if abs(target.Position.X-actor.Position.X) > 5 ||
-			abs(target.Position.Y-actor.Position.Y) > 5 {
+		xd := target.Position.X - actor.Position.X
+		yd := target.Position.Y - actor.Position.Y
+		absXd := abs(xd)
+		absYd := abs(yd)
+
+		if absXd > 5 || absYd > 5 {
 			return nil
 		}
 
-		if abs(target.Position.X-actor.Position.X) > abs(target.Position.Y-actor.Position.Y) {
-			if target.Position.X-actor.Position.X < 0 {
+		if absXd > absYd {
+			if yd < 0 {
 				return ActionMove(stage, actor, DirectionLeft)
 			} else {
 				return ActionMove(stage, actor, DirectionRight)
 			}
 		} else {
-			if target.Position.Y-actor.Position.Y < 0 {
+			if yd < 0 {
 				return ActionMove(stage, actor, DirectionTop)
 			} else {
 				return ActionMove(stage, actor, DirectionDown)

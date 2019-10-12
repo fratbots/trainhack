@@ -27,31 +27,29 @@ type FileTile struct {
 // Load reads level map from file.
 func (m *MapLoader) Load(path string) (LevelMap, error) {
 	fileReader, err := os.Open(path)
-	defer fileReader.Close()
 	if err != nil {
 		return LevelMap{}, err
 	}
-	decoder := json.NewDecoder(fileReader)
+	defer fileReader.Close()
+
 	var tiles [][]FileTile
-	err = decoder.Decode(&tiles)
+	err = json.NewDecoder(fileReader).Decode(&tiles)
 	if err != nil {
-		return LevelMap{}, fmt.Errorf("Failed to load map texture from file %s: %v", path, err)
+		return LevelMap{}, fmt.Errorf("failed to load map texture from file %s: %v", path, err)
 	}
+
 	var width int
 	height := len(tiles)
-	var textureTiles []Tile
+	var tex Texture
 	for _, row := range tiles {
 		width = len(row)
 		for i := 0; i < width; i++ {
-			textureTiles = append(
-				textureTiles,
-				NewTile(rune(row[i].Symbol[0]), row[i].FgColor, row[i].BgColor),
-			)
+			tex = append(tex, NewTile(rune(row[i].Symbol[0]), row[i].FgColor, row[i].BgColor))
 		}
 	}
 	return LevelMap{
 		Width:   width,
 		Height:  height,
-		Texture: Texture(textureTiles),
+		Texture: tex,
 	}, nil
 }
