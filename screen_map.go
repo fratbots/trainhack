@@ -44,16 +44,6 @@ func draw(screen tcell.Screen, screenWidth int, screenHeight int) error {
 		return err
 	}
 
-	viewportX := 0
-	viewportY := 0
-	viewport := NewViewport(
-		viewportX,
-		viewportY,
-		screenWidth,
-		screenHeight,
-		levelMap,
-	)
-
 	hero := ViewActor{
 		X:      rand.Intn(levelMap.Width),
 		Y:      rand.Intn(levelMap.Height),
@@ -63,6 +53,17 @@ func draw(screen tcell.Screen, screenWidth int, screenHeight int) error {
 			Tile{Symbol: '@'},
 		},
 	}
+
+	viewportX := hero.Height - screenHeight/2
+	viewportY := hero.Width - screenWidth/2
+	viewport := NewViewport(
+		viewportX,
+		viewportY,
+		screenWidth,
+		screenHeight,
+		levelMap,
+	)
+
 	actors := []ViewActor{
 		hero,
 	}
