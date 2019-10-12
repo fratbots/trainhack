@@ -8,8 +8,9 @@ type Actor struct {
 	Behavior func() *Action
 }
 
-func (h *Actor) nextAction(action *Action) {
+func (h *Actor) NextAction(action *Action) {
 	h.Behavior = func() *Action {
+		h.Behavior = nil
 		return action
 	}
 }

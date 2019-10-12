@@ -5,6 +5,7 @@ import (
 )
 
 type Action struct {
+	Actor   *Actor
 	Perform func() Result
 }
 
@@ -73,6 +74,7 @@ func alternate(alt *Action) Result {
 
 func ActionMove(stage *Stage, actor *Actor, dir Direction) *Action {
 	return &Action{
+		Actor: actor,
 		Perform: func() Result {
 
 			pos := actor.Position.Shift(dir)
@@ -86,7 +88,6 @@ func ActionMove(stage *Stage, actor *Actor, dir Direction) *Action {
 			// TODO: collision
 
 			actor.Position = pos
-			actor.Energy.Spend()
 			return success()
 		},
 	}
