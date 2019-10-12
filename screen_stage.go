@@ -13,7 +13,7 @@ type ScreenStage struct {
 
 func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 
-	s.Stage = NewStage()
+	s.Stage = NewStage(g)
 	s.Stage.Hero.Position = Position{X: 5, Y: 5}
 	s.Stage.AddActor(Pursue(NewActor(Position{X: 7, Y: 5}, 0.3), s.Stage, s.Stage.Hero))
 
@@ -25,13 +25,13 @@ func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 	box.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 		switch event.Key() {
 		case tcell.KeyUp:
-			s.Stage.HeroAction(ActionMove(s.Stage, s.Stage.Hero, DirectionTop))
+			s.Stage.Hero.NextAction(ActionMove(s.Stage, s.Stage.Hero, DirectionTop))
 		case tcell.KeyDown:
-			s.Stage.HeroAction(ActionMove(s.Stage, s.Stage.Hero, DirectionDown))
+			s.Stage.Hero.NextAction(ActionMove(s.Stage, s.Stage.Hero, DirectionDown))
 		case tcell.KeyLeft:
-			s.Stage.HeroAction(ActionMove(s.Stage, s.Stage.Hero, DirectionLeft))
+			s.Stage.Hero.NextAction(ActionMove(s.Stage, s.Stage.Hero, DirectionLeft))
 		case tcell.KeyRight:
-			s.Stage.HeroAction(ActionMove(s.Stage, s.Stage.Hero, DirectionRight))
+			s.Stage.Hero.NextAction(ActionMove(s.Stage, s.Stage.Hero, DirectionRight))
 		}
 
 		return nil
@@ -51,6 +51,8 @@ func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 
 		return x, y, width, height
 	})
+
+	s.Stage.StartTime()
 
 	return box
 }

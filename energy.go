@@ -2,7 +2,7 @@ package main
 
 const (
 	energyGain   = 100
-	energyAction = 300
+	energyAction = 100
 )
 
 type Energy struct {
