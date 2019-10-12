@@ -1,10 +1,5 @@
 package main
 
-const (
-	energyGain   = 100
-	energyAction = 100
-)
-
 type Energy struct {
 	Value float64
 }

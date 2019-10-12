@@ -4,17 +4,14 @@ import (
 	"time"
 )
 
-const (
-	tickTimeout  = time.Second / 5
-	tickTimeoutF = float64(tickTimeout)
-)
-
 type Stage struct {
-	Game *Game
+	Name string
 
-	Hero    *Actor
-	Actors  []*Actor
-	Actions *Actions
+	Game     *Game
+	Hero     *Actor
+	Actors   []*Actor
+	Actions  *Actions
+	LevelMap *LevelMap
 
 	ticker *Ticker
 }
@@ -30,7 +27,40 @@ func NewStage(g *Game) *Stage {
 	}
 }
 
-func (s *Stage) StartTime() {
+func (s *Stage) Load(name, target string) *Stage {
+	s.Stop()
+
+	levelMap, err := (&MapLoader{}).Load(name)
+	if err != nil {
+		return s
+	}
+
+	// save state
+	s.Game.State.Stages[s.Name] = StateStage{
+		HeroPosition: s.Hero.Position,
+		Actors:       s.Actors,
+	}
+
+	// load or create state
+	if state, ok := s.Game.State.Stages[name]; ok {
+		// TODO: chage / cleanup actors from levelMap
+		s.Actors = state.Actors
+		// TODO: use target to locate or:
+		s.Hero.Position = state.HeroPosition
+	} else {
+		// TODO: create actors from levelMap
+		s.Actors = []*Actor{s.Hero}
+	}
+
+	s.Name = name
+	s.Actions.Reset()
+
+	s.LevelMap = &levelMap
+
+	return s
+}
+
+func (s *Stage) Start() {
 	s.ticker = NewTicker(tickTimeout, func(d time.Duration) {
 		if s.Update(d) {
 			s.Game.View.Draw()
@@ -38,10 +68,14 @@ func (s *Stage) StartTime() {
 	})
 }
 
-func (s *Stage) StopTime() {
+func (s *Stage) Stop() {
 	if s.ticker != nil {
 		s.ticker.Done()
 	}
+}
+
+func (s *Stage) TileAt(pos Position) *Tile {
+	return s.LevelMap.GetTile(pos)
 }
 
 func (s *Stage) ActorAt(pos Position) *Actor {

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/rivo/tview"
 )
 
@@ -56,18 +57,20 @@ func (b Battle) HeroTurn() tview.Primitive {
 		list.AddItem(item.Name, fmt.Sprintf("Урон: %d. Энергия: %d", item.Damage, item.Energy), rune(i+4), func() {})
 	}
 
+	return nil
+
 }
 
 func (b Battle) EnemyTurn() tview.Primitive {
-
+	return nil
 }
 
 func (b Battle) DamageScreen() tview.Primitive {
-
+	return nil
 }
 
 func NoManaPrimitive() tview.Primitive {
-
+	return nil
 }
 
 func Reaction() {

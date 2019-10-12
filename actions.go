@@ -35,6 +35,16 @@ func (a *Actions) Get() *Action {
 	return nil
 }
 
+func (a *Actions) Reset() {
+	for {
+		e := a.list.Front()
+		if e == nil {
+			return
+		}
+		a.list.Remove(e)
+	}
+}
+
 // ------------------------------------------------------------ //
 
 type Vec2 struct {
@@ -45,8 +55,43 @@ type Direction = Vec2
 
 type Position = Vec2
 
+type Dimensions = Vec2
+
 func (p Position) Shift(d Direction) Position {
 	return Position{p.X + d.X, p.Y + d.Y}
+}
+
+func (p Position) FollowGap(n Position, gap int) (result Position) {
+	result = p
+
+	dx := n.X - p.X
+	if abs(dx) > gap {
+		if dx < 0 {
+			result.X = n.X + gap
+		} else {
+			result.X = n.X - gap
+		}
+	}
+
+	dy := n.Y - p.Y
+	if abs(dy) > gap {
+		if dy < 0 {
+			result.Y = n.Y + gap
+		} else {
+			result.Y = n.Y - gap
+		}
+	}
+
+	return
+}
+
+func (p Position) IsOn(d Dimensions) bool {
+	if p.X >= 0 && p.X < d.X &&
+		p.Y >= 0 && p.Y < d.Y {
+		return true
+	}
+
+	return false
 }
 
 var (
@@ -76,7 +121,9 @@ func ActionMove(stage *Stage, actor *Actor, dir Direction) *Action {
 				return successResult // rest
 			}
 
-			// TODO: collision
+			if !pos.IsOn(stage.LevelMap.Dimensions) {
+				return successResult // rest, TODO: hit
+			}
 
 			actor.Position = pos
 			return successResult

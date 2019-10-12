@@ -4,12 +4,16 @@ type Game struct {
 	View     *View
 	Screen   Screen
 	Dialoger DialogManager
+
+	State State
 }
 
 func NewGame() *Game {
 	return &Game{
 		View:     NewVew(),
 		Dialoger: NewDialoger("./example/dialogs", "./example/bah.jpeg", "Иоган Себастья Бах"),
+
+		State: State{Stages: map[string]StateStage{}},
 	}
 }
 

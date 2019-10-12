@@ -54,10 +54,11 @@ func (m *MapLoader) Load(mapName string) (LevelMap, error) {
 	}
 
 	return LevelMap{
-		Width:     width,
-		Height:    height,
-		Texture:   Texture(textureTiles),
-		Obstacles: obstacles,
+		Dimensions: Dimensions{width, height},
+		Width:      width,
+		Height:     height,
+		Texture:    Texture(textureTiles),
+		Obstacles:  obstacles,
 	}, nil
 }
 

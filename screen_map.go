@@ -54,14 +54,13 @@ func draw(screen tcell.Screen, screenWidth int, screenHeight int) error {
 		},
 	}
 
-	viewportX := hero.Height - screenHeight/2
-	viewportY := hero.Width - screenWidth/2
+	viewportX := hero.X - screenWidth/2
+	viewportY := hero.Y - screenHeight/2
 	viewport := NewViewport(
 		viewportX,
 		viewportY,
 		screenWidth,
 		screenHeight,
-		levelMap,
 	)
 
 	actors := []ViewActor{
@@ -94,10 +93,10 @@ func NewComposer(screen tcell.Screen, viewport Viewport) Composer {
 func (c *Composer) RenderLevelMap(levelMap LevelMap) {
 	for vpY := 0; vpY < c.viewport.Height; vpY++ {
 		for vpX := 0; vpX < c.viewport.Width; vpX++ {
-			mapTile := levelMap.GetTile(
-				c.viewport.ToMapCoordX(vpX),
-				c.viewport.ToMapCoordY(vpY),
-			)
+			mapTile := levelMap.GetTile(Position{
+				X: c.viewport.ToMapCoordX(vpX),
+				Y: c.viewport.ToMapCoordY(vpY),
+			})
 			if mapTile == nil {
 				continue
 			}
