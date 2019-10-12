@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	Map2 = "./levels/map2_texture.json"
+	Map2 = "map2"
 )
 
 type ScreenMap struct {

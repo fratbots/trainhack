@@ -2,9 +2,10 @@ package main
 
 // LevelMap is a 2d map of a level.
 type LevelMap struct {
-	Width   int
-	Height  int
-	Texture Texture
+	Width     int
+	Height    int
+	Texture   Texture
+	Obstacles []Obstacle
 }
 
 // GetTile returns tile of a map from the specified coord.

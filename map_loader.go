@@ -4,6 +4,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+
+	"github.com/naoina/toml"
+)
+
+const (
+	MapMeta           = "meta"
+	MapLayerTexture   = "texture"
+	MapLayerObstacles = "obstacles"
+	MapDir            = "./levels"
 )
 
 // MapLoader loads level maps from filesystem.
@@ -24,32 +33,72 @@ type FileTile struct {
 	BgColor string         `json:"background"`
 }
 
+type FileObstacles struct {
+	Obstacles []Obstacle
+}
+
 // Load reads level map from file.
-func (m *MapLoader) Load(path string) (LevelMap, error) {
+func (m *MapLoader) Load(mapName string) (LevelMap, error) {
+	// Load texture.
+	texturePath := fmt.Sprintf("%s/%s/%s.json", MapDir, mapName, MapLayerTexture)
+	width, height, textureTiles, err := m.loadTexture(texturePath)
+	if err != nil {
+		return LevelMap{}, fmt.Errorf("Failed to load map texture: %v", err)
+	}
+
+	// Load obstacles.
+	obstaclesPath := fmt.Sprintf("%s/%s/%s.toml", MapDir, mapName, MapLayerObstacles)
+	obstacles, err := m.loadObstacles(obstaclesPath)
+	if err != nil {
+		return LevelMap{}, fmt.Errorf("Failed to load map obstacles: %v", err)
+	}
+
+	return LevelMap{
+		Width:     width,
+		Height:    height,
+		Texture:   Texture(textureTiles),
+		Obstacles: obstacles,
+	}, nil
+}
+
+// loadTexture loads map texture from file.
+func (m *MapLoader) loadTexture(path string) (int, int, []Tile, error) {
 	fileReader, err := os.Open(path)
-	if err != nil {
-		return LevelMap{}, err
-	}
 	defer fileReader.Close()
-
-	var tiles [][]FileTile
-	err = json.NewDecoder(fileReader).Decode(&tiles)
+	var textureTiles []Tile
 	if err != nil {
-		return LevelMap{}, fmt.Errorf("failed to load map texture from file %s: %v", path, err)
+		return 0, 0, Texture(textureTiles), err
 	}
-
+	decoder := json.NewDecoder(fileReader)
+	var tiles [][]FileTile
+	err = decoder.Decode(&tiles)
+	if err != nil {
+		return 0, 0, Texture(textureTiles), fmt.Errorf("Failed to load map texture from file %s: %v", path, err)
+	}
 	var width int
 	height := len(tiles)
-	var tex Texture
 	for _, row := range tiles {
 		width = len(row)
 		for i := 0; i < width; i++ {
-			tex = append(tex, NewTile(rune(row[i].Symbol[0]), row[i].FgColor, row[i].BgColor))
+			textureTiles = append(
+				textureTiles,
+				NewTile(rune(row[i].Symbol[0]), row[i].FgColor, row[i].BgColor),
+			)
 		}
 	}
-	return LevelMap{
-		Width:   width,
-		Height:  height,
-		Texture: tex,
-	}, nil
+	return width, height, Texture(textureTiles), nil
+}
+
+// loadObstacles loads obstacles from file.
+func (m *MapLoader) loadObstacles(path string) ([]Obstacle, error) {
+	var fo FileObstacles
+	var obstacles []Obstacle
+	f, err := os.Open(path)
+	if err != nil {
+		return obstacles, err
+	}
+	if err := toml.NewDecoder(f).Decode(&fo); err != nil {
+		return obstacles, err
+	}
+	return fo.Obstacles, nil
 }
