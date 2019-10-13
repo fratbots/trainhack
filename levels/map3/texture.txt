@@ -1,5 +1,5 @@
 yyyyyuuuuuuuuuuu.uuu.uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuhuh
-yyyyyyyyyuuuuu.uu.uuu.uuuuu...uuuuuuuuu.uuuu map3 uuuu.uu.uuu..uuuuuuuuuuuuuuhuh
+yyyyyyyyyuuuuu.uu.uuu.uuuuu...uuuuuuuuu.uuuu mapIIIuuu.uu.uuu..uuuuuuuuuuuuuuhuh
 yyy........uuu.u...u..........u....uuuu....uuuu........u..uu..uuuuuuu.uuuuuuuhhh
 yyyy.........u.......................u...............................u.u..u..hhh
 yy...........u.......................u................................uu.u...hhh
@@ -23,4 +23,4 @@ yyyy..................kkk..kkkk.................k.........kk..........kk.......h
 yy..yykkkkk.kkkkkkkkkkkkkkkkkkkkkkkkkkk1kkkkkkkkkkkkkkkkkkkk...k......k.kk..h..h
 yyyyyy.kkkkkkkkkkk.kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk.kkkkkkkkkkkkkkkkhhhh
 
-// rune:1 display:= map:map2 location:1
+// rune:1 display:= map:map2 location:2
