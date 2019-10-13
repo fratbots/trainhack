@@ -1,7 +1,9 @@
 package main
 
+import "log"
+
 type Game struct {
-	//Sound    *Sound
+	Sound    *SoundLibrary
 	View     *View
 	Screen   Screen
 	Dialoger DialogManager
@@ -10,8 +12,12 @@ type Game struct {
 }
 
 func NewGame() *Game {
+	soundLibrary, err := NewSoundLibrary()
+	if err != nil {
+		log.Fatalf("Failed to init sound library: %v", err)
+	}
 	return &Game{
-		//Sound:    InitSound(),
+		Sound:    soundLibrary,
 		View:     NewVew(),
 		Dialoger: NewDialoger("./example/dialogs", "./example/bah.jpeg", "Иоган Себастья Бах"),
 
@@ -20,6 +26,7 @@ func NewGame() *Game {
 }
 
 func (g *Game) Start(s Screen) {
+	g.Sound.SetTheme(SoundThemePursuit)
 	end := g.endCallback()
 	p := s.Do(g, end)
 	g.View.Run(p)

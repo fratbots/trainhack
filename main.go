@@ -10,10 +10,10 @@ func main() {
 	os.Setenv("TERM", "xterm-256color")
 
 	//contextSoundsTest()
-	themeSoundsTest()
+	//themeSoundsTest()
 
-	//game := NewGame()
-	//game.Start(&HelloScreen{})
+	game := NewGame()
+	game.Start(&HelloScreen{})
 }
 
 func contextSoundsTest() {
