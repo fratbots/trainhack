@@ -190,6 +190,7 @@ func TileParser(g *Game, r rune, pos Position, doors map[rune]door) Tile {
 				Actor: actor,
 				Perform: func() Result {
 					d := door.Door
+					g.Sound.PlayContext(SoundContextDoor)
 					g.DoScreen(NewScreenStage(g, door.Map, &d))
 					return Result{}
 				},
