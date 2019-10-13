@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
+	"os"
+
 	"github.com/gdamore/tcell"
 	"github.com/naoina/toml"
 	"github.com/qeesung/image2ascii/convert"
 	"github.com/rivo/tview"
-	"io/ioutil"
-	"os"
 )
 
 type DialogManager struct {
@@ -67,16 +68,16 @@ func NewDialoger(dialogDirPath string, characterImgPath string, characterName st
 	return DialogManager{Dialogs: dialogs, CharacterImgPath: characterImgPath, CharacterName: characterName}
 }
 
-//func (d DialogManager) StartDialog(dialogName string, render func(s Screen)) tview.Primitive {
+// func (d DialogManager) StartDialog(dialogName string, render func(s Screen)) tview.Primitive {
 //	dialog, ok := d.Dialogs[dialogName]
 //	if ok {
 //		render(d.getDialogScene(dialog.Scenes, 0))
 //	}  else {
 //		panic("Диалог не найден")
 //	}
-//}
+// }
 
-//func (d DialogManager) getDialogPrimitive(dialogName string, sceneId int) {
+// func (d DialogManager) getDialogPrimitive(dialogName string, sceneId int) {
 //
 //	dialog, ok := d.Dialogs[dialogName]
 //	if ok {
@@ -85,7 +86,7 @@ func NewDialoger(dialogDirPath string, characterImgPath string, characterName st
 //		panic("Диалог не найден")
 //	}
 //
-//}
+// }
 
 func (d DialogManager) GetDialogPrimitive(dialogName string, sceneId int, callback func(s Screen), lastScreen Screen) tview.Primitive {
 	dialog, ok := d.Dialogs[dialogName]
@@ -96,11 +97,11 @@ func (d DialogManager) GetDialogPrimitive(dialogName string, sceneId int, callba
 	characterImgAscii := imageToAscii(d.CharacterImgPath)
 	personImgAscii := imageToAscii(scene.PersonImgPath)
 
-	//newPrimitive := func(text string) tview.Primitive {
+	// newPrimitive := func(text string) tview.Primitive {
 	//	return tview.NewTextView().
 	//		SetTextAlign(tview.AlignCenter).
 	//		SetText(text)
-	//}
+	// }
 
 	list := tview.NewList()
 	list.AddItem(scene.AnswerOne.Phase, "", '1', func() { newScene(scene.AnswerOne.SceneId, dialogName, lastScreen, callback) })
@@ -111,19 +112,19 @@ func (d DialogManager) GetDialogPrimitive(dialogName string, sceneId int, callba
 	list.SetShortcutColor(tcell.Color18)
 	list.SetBackgroundColor(tcell.ColorDimGray)
 
-	//grid := tview.NewGrid().
+	// grid := tview.NewGrid().
 	//	SetRows(20, 1, 7).
 	//	SetColumns(10, 0, 10).
 	//	SetBorders(true)
 	//
-	//grid.AddItem(newPrimitive(fmt.Sprintf(characterImgAscii)), 0, 0, 1, 2, 0, 0, false)
-	//grid.AddItem(newPrimitive(personImgAscii), 0, 2, 1, 2, 0, 0, false)
+	// grid.AddItem(newPrimitive(fmt.Sprintf(characterImgAscii)), 0, 0, 1, 2, 0, 0, false)
+	// grid.AddItem(newPrimitive(personImgAscii), 0, 2, 1, 2, 0, 0, false)
 	//
-	//grid.AddItem(newPrimitive(d.CharacterName), 1, 0, 1, 2, 0, 0, false)
-	//grid.AddItem(newPrimitive(scene.PersonName), 1, 2, 1, 2, 0, 0, false)
+	// grid.AddItem(newPrimitive(d.CharacterName), 1, 0, 1, 2, 0, 0, false)
+	// grid.AddItem(newPrimitive(scene.PersonName), 1, 2, 1, 2, 0, 0, false)
 	//
-	//grid.AddItem(list, 2, 0, 1, 2, 0, 0, true)
-	//grid.AddItem(newPrimitive(scene.Phase), 2, 2, 1, 2, 0, 0, false)
+	// grid.AddItem(list, 2, 0, 1, 2, 0, 0, true)
+	// grid.AddItem(newPrimitive(scene.Phase), 2, 2, 1, 2, 0, 0, false)
 
 	flex := tview.NewFlex().SetDirection(tview.FlexRow).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).

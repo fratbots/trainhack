@@ -1,6 +1,5 @@
 package main
 
-
 type Vec2 struct {
 	X, Y int
 }
@@ -10,6 +9,13 @@ type Direction = Vec2
 type Position = Vec2
 
 type Dimensions = Vec2
+
+var (
+	DirectionTop   = Direction{X: 0, Y: -1}
+	DirectionDown  = Direction{X: 0, Y: +1}
+	DirectionLeft  = Direction{X: -1, Y: 0}
+	DirectionRight = Direction{X: +1, Y: 0}
+)
 
 func (p Position) Shift(d Direction) Position {
 	return Position{p.X + d.X, p.Y + d.Y}
@@ -47,10 +53,3 @@ func (p Position) IsOn(d Dimensions) bool {
 
 	return false
 }
-
-var (
-	DirectionTop   = Direction{X: 0, Y: -1}
-	DirectionDown  = Direction{X: 0, Y: +1}
-	DirectionLeft  = Direction{X: -1, Y: 0}
-	DirectionRight = Direction{X: +1, Y: 0}
-)
