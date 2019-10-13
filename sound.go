@@ -11,7 +11,7 @@ import (
 
 const (
 	SoundSampleRate        = 44100
-	SoundSpeakerBufferSize = 10000
+	SoundSpeakerBufferSize = 200
 
 	SoundDir          = "./music"
 	SoundThemeAutumn  = "theme-autumn"
@@ -30,11 +30,11 @@ type SoundTheme struct {
 }
 
 func (s SoundTheme) Unpause() {
-	s.ctrl.Paused = true
+	s.ctrl.Paused = false
 }
 
 func (s SoundTheme) Pause() {
-	s.ctrl.Paused = false
+	s.ctrl.Paused = true
 }
 
 func (s SoundTheme) Paused() bool {
@@ -104,7 +104,7 @@ func (l *SoundLibrary) loadThemeSound(soundID string, filename string) error {
 	buffer.Append(streamer)
 	streamer.Close()
 	loop := beep.Loop(-1, buffer.Streamer(0, buffer.Len()))
-	ctrl := &beep.Ctrl{Streamer: loop, Paused: false}
+	ctrl := &beep.Ctrl{Streamer: loop, Paused: true}
 
 	speaker.Play(ctrl)
 
@@ -141,11 +141,9 @@ func (l *SoundLibrary) loadContextSound(soundID string, filename string) error {
 
 // SetTheme starts to play theme sound infinitely.
 func (l *SoundLibrary) SetTheme(soundID string) {
-	for theme, sound := range l.themes {
-		if theme != soundID && !sound.Paused() {
-			fmt.Printf("pausing %s\n", soundID)
-			l.themes[soundID].Pause()
-		}
+	for theme, _ := range l.themes {
+		fmt.Printf("pausing %s\n", soundID)
+		l.themes[theme].Pause()
 	}
 	fmt.Printf("unpausing %s\n", soundID)
 	l.themes[soundID].Unpause()
