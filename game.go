@@ -1,6 +1,7 @@
 package main
 
 type Game struct {
+	//Sound    *Sound
 	View     *View
 	Screen   Screen
 	Dialoger DialogManager
@@ -10,6 +11,7 @@ type Game struct {
 
 func NewGame() *Game {
 	return &Game{
+		//Sound:    InitSound(),
 		View:     NewVew(),
 		Dialoger: NewDialoger("./example/dialogs", "./example/bah.jpeg", "Иоган Себастья Бах"),
 

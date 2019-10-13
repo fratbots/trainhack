@@ -1,11 +1,22 @@
 package main
 
-import "os"
+import (
+	"log"
+	"os"
+)
 
 func main() {
-	go Sound()
 	os.Setenv("TERM", "xterm-256color")
-	game := NewGame()
-	game.Start(&HelloScreen{})
-	// game.Start(&ScreenMap{})
+	soundTest()
+
+	//game := NewGame()
+	//game.Start(&HelloScreen{})
+}
+
+func soundTest() {
+	snd, err := InitSound()
+	if err != nil {
+		log.Fatalf("Failed to init sound: %v", err)
+	}
+	snd.PlayTheme(SoundThemeAutumn)
 }
