@@ -67,9 +67,15 @@ func LoadLevel(name string) *Level {
 }
 
 var (
-	styleGrass  = tcell.StyleDefault.Background(tcell.ColorDarkOliveGreen).Foreground(tcell.ColorDarkGreen)
-	styleForest = tcell.StyleDefault.Background(tcell.ColorDarkGreen).Foreground(tcell.ColorForestGreen)
-	styleWater  = tcell.StyleDefault.Background(tcell.ColorDarkBlue).Foreground(tcell.ColorBlue)
+	colorDarkGreen   = tcell.NewRGBColor(0, 200, 0)
+	colorGreen       = tcell.NewRGBColor(0, 255, 0)
+	colorForestGreen = tcell.NewRGBColor(0, 200, 0)
+	colorDarkBlue    = tcell.NewRGBColor(0, 0, 200)
+	colorBlue        = tcell.NewRGBColor(0, 0, 255)
+
+	styleGrass  = tcell.StyleDefault.Background(colorGreen).Foreground(colorDarkGreen)
+	styleForest = tcell.StyleDefault.Background(colorDarkGreen).Foreground(colorForestGreen)
+	styleWater  = tcell.StyleDefault.Background(colorDarkBlue).Foreground(colorBlue)
 
 	tiles = map[rune]Til{
 		'.': {
