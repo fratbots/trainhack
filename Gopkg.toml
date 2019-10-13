@@ -45,3 +45,7 @@
   branch = "master"
   name = "github.com/faiface/beep"
 
+
+[[constraint]]
+  name = "github.com/hajimehoshi/go-mp3"
+  version = "0.2.1"

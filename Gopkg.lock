@@ -15,8 +15,8 @@
   name = "github.com/faiface/beep"
   packages = [
     ".",
+    "mp3",
     "speaker",
-    "wav",
   ]
   pruneopts = ""
   revision = "76df4462a36ade5a7f7602277567319dfd398937"
@@ -87,6 +87,24 @@
   pruneopts = ""
   revision = "4d152cc2622d491e1b0a034c3211b9df28c0ba2d"
   version = "v1.3.0"
+
+[[projects]]
+  digest = "1:c408155c0f3baddd7e936925da7c5ce938dbdfdfa48d972e1e31a26259636c0f"
+  name = "github.com/hajimehoshi/go-mp3"
+  packages = [
+    ".",
+    "internal/bits",
+    "internal/consts",
+    "internal/frame",
+    "internal/frameheader",
+    "internal/huffman",
+    "internal/imdct",
+    "internal/maindata",
+    "internal/sideinfo",
+  ]
+  pruneopts = ""
+  revision = "96c001d18d97b5b09170cab468347a368c3130de"
+  version = "v0.2.1"
 
 [[projects]]
   digest = "1:609fb6ea3c5dfabf8d91645e19a0dac47724bd6fdcf1850e825c0f68ead1e13d"
@@ -269,9 +287,10 @@
   analyzer-version = 1
   input-imports = [
     "github.com/faiface/beep",
+    "github.com/faiface/beep/mp3",
     "github.com/faiface/beep/speaker",
-    "github.com/faiface/beep/wav",
     "github.com/gdamore/tcell",
+    "github.com/hajimehoshi/go-mp3",
     "github.com/naoina/toml",
     "github.com/qeesung/image2ascii/convert",
     "github.com/rivo/tview",
