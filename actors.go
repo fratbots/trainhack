@@ -2,6 +2,7 @@ package main
 
 type Actor struct {
 	IsHero   bool
+	Rune     rune
 	Position Position
 	Energy   Energy
 	Speed    float64
@@ -18,6 +19,7 @@ func (h *Actor) NextAction(action *Action) {
 func NewHero() *Actor {
 	return &Actor{
 		IsHero:   true,
+		Rune:     '@',
 		Position: Position{0, 0},
 		Energy:   Energy{Value: energyAction},
 		Speed:    1,
@@ -25,9 +27,10 @@ func NewHero() *Actor {
 	}
 }
 
-func NewActor(pos Position, speed float64) *Actor {
+func NewActor(pos Position, speed float64, rune rune) *Actor {
 	return &Actor{
 		IsHero:   false,
+		Rune:     rune,
 		Position: pos,
 		Energy:   Energy{Value: 0},
 		Speed:    speed,

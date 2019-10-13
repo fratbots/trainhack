@@ -2,20 +2,27 @@ package main
 
 // LevelMap is a 2d map of a level.
 type LevelMap struct {
-	Width     int
-	Height    int
-	Texture   Texture
-	Obstacles []Obstacle
+	Dimensions Dimensions
+	Width      int
+	Height     int
+	Texture    Texture
+	Obstacles  []Obstacle
 }
 
 // GetTile returns tile of a map from the specified coord.
-func (m *LevelMap) GetTile(x int, y int) *Tile {
-	if x >= m.Width {
+func (m *LevelMap) GetTile(pos Position) *Tile {
+	if pos.X >= m.Dimensions.X || pos.X < 0 {
 		return nil
 	}
-	if y >= m.Height {
+	if pos.Y >= m.Dimensions.Y || pos.Y < 0 {
 		return nil
 	}
-	idx := y*m.Width + x
-	return &m.Texture[idx]
+
+	i := pos.Y*m.Dimensions.X + pos.X
+
+	if i >= 0 && i < len(m.Texture) {
+		return &m.Texture[i]
+	}
+
+	return nil
 }

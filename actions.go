@@ -2,6 +2,7 @@ package main
 
 import (
 	"container/list"
+	"sync"
 )
 
 type Action struct {
@@ -16,6 +17,7 @@ type Result struct {
 
 type Actions struct {
 	list *list.List
+	mu   sync.Mutex
 }
 
 func NewActions() *Actions {
@@ -23,10 +25,16 @@ func NewActions() *Actions {
 }
 
 func (a *Actions) Add(action *Action) {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+
 	a.list.PushBack(action)
 }
 
 func (a *Actions) Get() *Action {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+
 	f := a.list.Front()
 	if f != nil {
 		a.list.Remove(f)
@@ -35,42 +43,30 @@ func (a *Actions) Get() *Action {
 	return nil
 }
 
-// ------------------------------------------------------------ //
+func (a *Actions) Reset() {
+	a.mu.Lock()
+	defer a.mu.Unlock()
 
-type Vec2 struct {
-	X, Y int
-}
-
-type Direction = Vec2
-
-type Position = Vec2
-
-func (p Position) Shift(d Direction) Position {
-	return Position{p.X + d.X, p.Y + d.Y}
+	for {
+		e := a.list.Front()
+		if e == nil {
+			return
+		}
+		a.list.Remove(e)
+	}
 }
 
 var (
-	DirectionTop   = Direction{X: 0, Y: -1}
-	DirectionDown  = Direction{X: 0, Y: +1}
-	DirectionLeft  = Direction{X: -1, Y: 0}
-	DirectionRight = Direction{X: +1, Y: 0}
-)
-
-func success() Result {
-	return Result{
+	successResult = Result{
 		Success:     true,
 		Alternative: nil,
 	}
-}
 
-func alternate(alt *Action) Result {
-	return Result{
-		Success:     true,
-		Alternative: alt,
+	failureResult = Result{
+		Success:     false,
+		Alternative: nil,
 	}
-}
-
-// ============================================================ //
+)
 
 func ActionMove(stage *Stage, actor *Actor, dir Direction) *Action {
 	return &Action{
@@ -82,13 +78,20 @@ func ActionMove(stage *Stage, actor *Actor, dir Direction) *Action {
 			target := stage.ActorAt(pos)
 
 			if target != nil {
-				return success() // rest
+				return successResult // rest
 			}
 
-			// TODO: collision
+			if !pos.IsOn(stage.Level.Dimensions) {
+				return successResult // rest, TODO: hit
+			}
+
+			tile := stage.Level.GetTile(pos)
+			if !tile.IsWalkable {
+				return successResult // rest
+			}
 
 			actor.Position = pos
-			return success()
+			return successResult
 		},
 	}
 }
