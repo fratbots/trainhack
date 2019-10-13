@@ -1,16 +1,16 @@
 ﻿yyyyyuuuuuuuuuuu.uuu.uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuhuh
-yyyyyyyyyuuuuu.uu.uuu.uuuuu...uuuuuuuuu.uuuuuuuuuuuuuu.uu.uuu..uuuuuuuuuuuuuuhuh
-yyy........uuu.u...u..........u....uuuu....uuuu........u..uu..uuuuuuu.uuuuuuuhhh
-yyyy.........u.......................u...............................u.u..u..hhh
+yyyyyyyyyuuuuu.uu.uuu.uuuuu...uuuuuuuuu2uu mapII uuuuu.uu.uuu..uuuuuuuuuuuuuuhuh
+yyy........uuu.u...u..........u....uuuu___.uuuu........u..uu..uuuuuuu.uuuuuuuhhh
+yyyy.........u.......................u__.............................u.u..u..hhh
 yy...........u.......................u................................uu.u...hhh
 yyy....................................................................uu....hhh
 yy.yy........................................................................hhh
 yyyy.........................................................................hhh
 yyy..........................................................................hhh
 .yy..........................................................................hhh
-yyy..................................gggggooooo................kkk..........hhhh
-yy...................................gggggooooo................kkk.........hhhhh
-yy...................................gggggooooo................kkk.........hhhhh
+yyy............................................................kkk..........hhhh
+yy...................................#######...................kkk.........hhhhh
+yy...................................###1###...................kkk.........hhhhh
 yy.........................................................................hhhhh
 yy............/^^^^^//^//..................................................hhhhh
 yy............//////^^^//.....................................................hh
@@ -22,3 +22,6 @@ yy............................................................................hh
 yyyy..................kkk..kkkk.................k.........kk..........kk.......h
 yy..yykkkkk.kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk...k......k.kk..h..h
 yyyyyy.kkkkkkkkkkk.kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk.kkkkkkkkkkkkkkkkhhhh
+
+// rune:1 display:= map:house location:1
+// rune:2 display:_ map:map3 location:1

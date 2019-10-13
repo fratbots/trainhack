@@ -6,8 +6,14 @@ type Actor struct {
 	Position Position
 	Energy   Energy
 	Speed    float64
-	Behavior func() *Action
+
+	Behavior    Behavior
+	Interaction Interaction
 }
+
+type Behavior func() *Action
+
+type Interaction func(actor *Actor) *Action
 
 func (h *Actor) NextAction(action *Action) {
 	h.Behavior = func() *Action {

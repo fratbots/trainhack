@@ -16,7 +16,7 @@ func NewTicker(timeout time.Duration, callback func(delta time.Duration)) *Ticke
 	t := &Ticker{
 		ticker: ticker,
 		last:   time.Now(),
-		ch:     make(chan bool),
+		ch:     make(chan bool, 2),
 	}
 
 	go func() {
