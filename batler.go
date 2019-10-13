@@ -107,6 +107,8 @@ func (b Battle) DamageScreen(w Weapon, isHeroTurn bool) {
 			return nil
 		}), 120, 1, true)
 
+	panic(ImageToAscii(w.ImgPath, 65, 23))
+
 	b.Callback(NewBattleScreen(b.Hero, b.Enemy, b.BackScreen, view))
 }
 
@@ -132,6 +134,7 @@ func (b Battle) reaction(w Weapon, isHeroTurn bool) {
 		}
 
 		b.Enemy.SetHp(b.Enemy.GetHp() - w.Damage)
+		b.Hero.SetMp(b.Hero.GetMp() - w.Energy)
 	} else {
 		b.Hero.SetHp(b.Hero.GetHp() - w.Damage)
 	}
@@ -148,11 +151,11 @@ func (b Battle) renderBattleScreen(isHeroTurn bool) tview.Primitive {
 	flex := tview.NewFlex().SetDirection(tview.FlexColumn).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
 			AddItem(list, 0, 2, isHeroTurn).
-			AddItem(tview.NewTextView().SetText(b.renderBattleLog()).SetTextAlign(tview.AlignCenter), 0, 2, false), 23, 2, true).
+			AddItem(tview.NewTextView().SetText(b.renderBattleLog()).SetTextAlign(tview.AlignCenter), 0, 2, false), 0, 1, true).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexRow).
 			AddItem(tview.NewTextView().SetTextAlign(tview.AlignCenter).SetText(fmt.Sprintf("Жизни: %d, Энергия: %d", b.Hero.GetHp(), b.Hero.GetMp())), 0, 1, false).
-			AddItem(tview.NewTextView().SetTextAlign(tview.AlignCenter).SetText(ImageToAscii(b.Hero.GetImagePath(), 65, 23)), 65, 4, false).
-			AddItem(tview.NewTextView().SetTextAlign(tview.AlignCenter).SetText(ImageToAscii(b.Enemy.GetImagePath(), 65, 23)), 65, 4, false).
+			AddItem(tview.NewTextView().SetTextAlign(tview.AlignCenter).SetText(ImageToAscii(b.Hero.GetImagePath(), 65, 23)), 0, 4, false).
+			AddItem(tview.NewTextView().SetTextAlign(tview.AlignCenter).SetText(ImageToAscii(b.Enemy.GetImagePath(), 65, 23)), 0, 4, false).
 			AddItem(tview.NewTextView().SetTextAlign(tview.AlignCenter).SetText(fmt.Sprintf("Жизни: %d, Энергия: %d", b.Enemy.GetHp(), b.Enemy.GetMp())), 0, 1, false), 0, 2, false)
 
 	return flex

@@ -26,7 +26,7 @@ func NewGame() *Game {
 }
 
 func (g *Game) Start(s Screen) {
-	g.Sound.SetTheme(SoundThemePursuit)
+	g.Sound.SetTheme(SoundThemeAutumn)
 	end := g.endCallback()
 	p := s.Do(g, end)
 	g.View.Run(p)

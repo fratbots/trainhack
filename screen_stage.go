@@ -79,6 +79,7 @@ func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 							if s.Stage != nil {
 								s.Stage.Stop()
 							}
+							g.Sound.SetTheme(SoundThemePursuit)
 							end(NewBattleScreen(s.Stage.Hero, c, NewScreenStage(g, "map2", nil), nil))
 							return Result{}
 						},
