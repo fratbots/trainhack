@@ -1,4 +1,4 @@
-name = "pika_dialog1"
+name = "a_dialog"
 
 [[scenes]]
 id = 0
@@ -8,59 +8,150 @@ phase = "Вилкой в глаз или сервис на Паас?"
 
     [scenes.answer_one]
     phase = "Сервис на паас"
-    scene_id = 1
+    scene_id = 3
 
     [scenes.answer_two]
     phase = "Вилкой в глаз"
-    scene_id = 2
+    scene_id = 4
 
     [scenes.answer_three]
     phase = "Что?"
-    scene_id = -1
+    scene_id = 1
 
     [scenes.answer_four]
     phase = "..."
-    scene_id = -1
+    scene_id = 5
 
 [[scenes]]
 id = 1
-person_name = "UNO"
-person_img_path = "./example/p.jpg"
-phase = "-_-"
+person_name = "Андрей аксенов"
+person_img_path = "./example/a.jpeg"
+phase = "Что что? Загадку отгадаешь пропущу"
 
     [scenes.answer_one]
-    phase = "-__-"
+    phase = "Вилкой в глаз"
+    scene_id = 3
+
+    [scenes.answer_two]
+    phase = "Сервис на ПааС"
+    scene_id = 4
+
+    [scenes.answer_three]
+    phase = "Я не знаю"
+    scene_id = 5
+
+    [scenes.answer_four]
+    phase = "Я не хочу отвечать"
+    scene_id = 5
+
+[[scenes]]
+id = 3
+person_name = "Андрей аксенов"
+person_img_path = "./example/a.jpeg"
+phase = "А ты из архитектуры?"
+
+    [scenes.answer_one]
+    phase = "Да"
+    scene_id = 6
+
+    [scenes.answer_two]
+    phase = "Нет"
+    scene_id = 7
+
+    [scenes.answer_three]
+    phase = "Я не знаю"
+    scene_id = 7
+
+    [scenes.answer_four]
+    phase = "Я не хочу отвечать"
+    scene_id = 7
+
+[[scenes]]
+id = 4
+person_name = "Андрей аксенов"
+person_img_path = "./example/a.jpeg"
+phase = "А ты из архитектуры?"
+
+    [scenes.answer_one]
+    phase = "Да"
+    scene_id = 7
+
+    [scenes.answer_two]
+    phase = "Нет"
+    scene_id = 6
+
+    [scenes.answer_three]
+    phase = "Я не знаю"
+    scene_id = 7
+
+    [scenes.answer_four]
+    phase = "Я не хочу отвечать"
+    scene_id = 7
+
+
+[[scenes]]
+id = 5
+person_name = "Андрей аксенов"
+person_img_path = "./example/a.jpeg"
+phase = "Тебе придется ответиь!"
+
+    [scenes.answer_one]
+    phase = "Вилкой в глаз"
+    scene_id = 3
+
+    [scenes.answer_two]
+    phase = "Сервис на ПааС"
+    scene_id = 4
+
+    [scenes.answer_three]
+    phase = "Скажи свою загадку еще раз, о великий  сфинкс"
+    scene_id = 1
+
+    [scenes.answer_four]
+    phase = "Я не хочу отвечать"
+    scene_id = 5
+
+
+[[scenes]]
+id = 6
+person_name = "Андрей аксенов"
+person_img_path = "./example/a.jpeg"
+phase = "Ты ответил правильно поздравляю"
+
+    [scenes.answer_one]
+    phase = "Ура"
     scene_id = -1
 
     [scenes.answer_two]
-    phase = "--_--"
+    phase = "Да!"
     scene_id = -1
 
     [scenes.answer_three]
-    phase = "--_-"
+    phase = "-_-"
     scene_id = -1
 
     [scenes.answer_four]
-    phase = "-_--"
+    phase = "Я тебе отомщу!"
     scene_id = -1
 
 [[scenes]]
-id = 2
-person_name = "UNO"
-person_img_path = "./example/p.jpg"
-phase = "( ͡° ͜ʖ ͡°)"
+id = 7
+person_name = "Андрей аксенов"
+person_img_path = "./example/a.jpeg"
+phase = "Ты ответил неправильно. Теперь ты будешь вечно писать на c++ на винде"
+
     [scenes.answer_one]
-    phase = "(ಥ﹏ಥ)"
-    scene_id = 0
+    phase = "Ура"
+    scene_id = -1
 
     [scenes.answer_two]
-    phase = "(ᵔᴥᵔ)"
-    scene_id = 0
+    phase = "Нет!"
+    scene_id = -1
 
     [scenes.answer_three]
-    phase = "(ง ͠° ͟ل͜ ͡°)ง"
-    scene_id = 0
+    phase = "-_-"
+    scene_id = -1
 
     [scenes.answer_four]
-    phase = "(ง°ل͜°)ง"
-    scene_id = 0
+    phase = "Я тебе отомщу!"
+    scene_id = -1

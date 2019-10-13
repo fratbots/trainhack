@@ -19,7 +19,7 @@ func NewGame() *Game {
 	return &Game{
 		Sound:    soundLibrary,
 		View:     NewVew(),
-		Dialoger: NewDialoger("./example/dialogs", "./example/bah.jpeg", "Иоган Себастья Бах"),
+		Dialoger: NewDialoger("./example/dialogs", "./example/hero.png", "Великий поработитель Уно"),
 
 		State: State{Stages: map[string]StateStage{}},
 	}
