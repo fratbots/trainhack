@@ -141,11 +141,9 @@ func (l *SoundLibrary) loadContextSound(soundID string, filename string) error {
 
 // SetTheme starts to play theme sound infinitely.
 func (l *SoundLibrary) SetTheme(soundID string) {
-	for theme, sound := range l.themes {
-		if theme != soundID && !sound.Paused() {
-			fmt.Printf("pausing %s\n", soundID)
-			l.themes[soundID].Pause()
-		}
+	for theme, _ := range l.themes {
+		fmt.Printf("pausing %s\n", soundID)
+		l.themes[theme].Pause()
 	}
 	fmt.Printf("unpausing %s\n", soundID)
 	l.themes[soundID].Unpause()

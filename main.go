@@ -9,22 +9,10 @@ import (
 func main() {
 	os.Setenv("TERM", "xterm-256color")
 
-	//contextSoundsTest()
-	//themeSoundsTest()
+	themeSoundsTest()
 
-	game := NewGame()
-	game.Start(&HelloScreen{})
-}
-
-func contextSoundsTest() {
-	soundLibrary, err := NewSoundLibrary()
-	if err != nil {
-		log.Fatalf("Failed to init sound library: %v", err)
-	}
-	soundLibrary.PlayContext(SoundContextDoor)
-	time.Sleep(time.Second * 1)
-	soundLibrary.PlayContext(SoundContextDoor)
-	time.Sleep(time.Second * 1)
+	// game := NewGame()
+	// game.Start(&HelloScreen{})
 }
 
 func themeSoundsTest() {
@@ -32,6 +20,8 @@ func themeSoundsTest() {
 	if err != nil {
 		log.Fatalf("Failed to init sound library: %v", err)
 	}
+	soundLibrary.SetTheme(SoundThemeAutumn)
+	time.Sleep(time.Second * 2)
 	soundLibrary.SetTheme(SoundThemePursuit)
-	time.Sleep(time.Second * 5)
+	time.Sleep(time.Second * 2)
 }
