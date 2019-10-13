@@ -17,7 +17,7 @@ type Stage struct {
 }
 
 func NewStage(g *Game) *Stage {
-	hero := NewHero()
+	hero := NewHero(DefaultWeapons)
 	return &Stage{
 		Game: g,
 		Hero: hero,
@@ -48,7 +48,7 @@ func (s *Stage) Load(name string, location *rune) *Stage {
 		s.Hero.Position = state.HeroPosition
 	} else {
 		// TODO: create actors from levelMap
-		s.Hero = NewHero()
+		s.Hero = NewHero(DefaultWeapons)
 		s.Hero.Position = Position{X: 20, Y: 10}
 		s.Actors = []*Actor{s.Hero}
 	}
