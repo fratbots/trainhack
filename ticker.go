@@ -10,13 +10,13 @@ type Ticker struct {
 	ch     chan bool
 }
 
-func NewTicker(timeout time.Duration, f func(delta time.Duration)) *Ticker {
+func NewTicker(timeout time.Duration, callback func(delta time.Duration)) *Ticker {
 	ticker := time.NewTicker(timeout)
 
 	t := &Ticker{
 		ticker: ticker,
 		last:   time.Now(),
-		ch:     make(chan bool),
+		ch:     make(chan bool, 2),
 	}
 
 	go func() {
@@ -28,7 +28,8 @@ func NewTicker(timeout time.Duration, f func(delta time.Duration)) *Ticker {
 				}
 			case <-ticker.C:
 			}
-			f(time.Since(t.last))
+
+			callback(time.Since(t.last))
 			t.last = time.Now()
 		}
 	}()

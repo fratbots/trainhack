@@ -21,6 +21,7 @@ func (v *View) Final() {
 }
 
 func (v *View) Run(p tview.Primitive) {
+	// v.App.SetAfterDrawFunc() TODO: use to get flow
 	v.App.SetRoot(p, true)
 	if err := v.App.Run(); err != nil {
 		panic(err)

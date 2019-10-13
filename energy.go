@@ -1,17 +1,16 @@
 package main
 
-const (
-	energyGain   = 100
-	energyAction = 100
-)
-
 type Energy struct {
 	Value float64
 }
 
 func (e *Energy) Gain(speed float64) bool {
-	e.Value += speed * energyGain
-	return e.CanTakeTurn()
+	result := e.CanTakeTurn()
+	if !result {
+		e.Value += speed * energyGain
+		return e.CanTakeTurn()
+	}
+	return result
 }
 
 func (e *Energy) Spend() {
