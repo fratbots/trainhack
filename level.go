@@ -38,7 +38,7 @@ func LoadLevel(name string) *Level {
 
 	b, err := ioutil.ReadFile(path)
 	if err != nil {
-		return nil
+		panic("cannot load map " + name)
 	}
 
 	b = b[3:]
