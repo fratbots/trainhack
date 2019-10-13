@@ -11,7 +11,7 @@ import (
 
 const (
 	SoundSampleRate        = 44100
-	SoundSpeakerBufferSize = 10000
+	SoundSpeakerBufferSize = 200
 
 	SoundDir          = "./music"
 	SoundThemeAutumn  = "theme-autumn"
