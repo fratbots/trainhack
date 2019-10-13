@@ -39,7 +39,7 @@ func NewHero(weapons []Weapon) *Actor {
 		Hp:        100,
 		Mp:        100,
 		ManaRegen: 5,
-		ImagePath: "./example/k.png",
+		ImagePath: "./example/hero.png",
 		Weapons:   weapons,
 	}
 }
