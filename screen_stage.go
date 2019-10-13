@@ -20,6 +20,8 @@ func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 	s.Stage.AddActor(NewActor(Position{X: 8, Y: 6}, 0, '#'))
 	s.Stage.AddActor(BehaviorGhost(NewActor(Position{X: 13, Y: 13}, 0, 'G'), s.Stage, s.Stage.Hero))
 
+	s.Stage.Start()
+
 	lookAt := s.Stage.Hero.Position
 
 	box := tview.NewBox()
@@ -54,7 +56,7 @@ func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 		for iy := 0; iy < height; iy++ {
 			for ix := 0; ix < width; ix++ {
 				mapPos := port.ToMap(Position{ix, iy})
-				if tile := s.Stage.LevelMap.GetTile(mapPos); tile != nil {
+				if tile := s.Stage.Level.GetTile(mapPos); tile != nil {
 					s.drawTile(screen, tile, mapPos, Position{X: ix + shift.X, Y: iy + shift.Y})
 				}
 			}
@@ -81,14 +83,17 @@ func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 
 var backStyle = tcell.StyleDefault.Background(tcell.ColorGreen).Foreground(tcell.ColorForestGreen)
 
-func (s *ScreenStage) drawTile(screen tcell.Screen, tile *Tile, mapPos, screenPos Position) {
+func (s *ScreenStage) drawTile(screen tcell.Screen, tile *Til, mapPos, screenPos Position) {
 
-	screen.SetContent(screenPos.X, screenPos.Y, tile.Symbol, nil, backStyle)
+	screen.SetContent(screenPos.X, screenPos.Y, tile.Rune, nil, tile.Style)
 
 }
 
 func (s *ScreenStage) drawActor(screen tcell.Screen, actor *Actor, screenPos Position) {
 
-	screen.SetContent(screenPos.X, screenPos.Y, actor.Rune, nil, tcell.StyleDefault)
+	style := tcell.StyleDefault.Foreground(tcell.ColorWhite)
+	_, bg, _ := s.Stage.Level.GetTile(actor.Position).Style.Decompose()
+	style = style.Background(bg)
+	screen.SetContent(screenPos.X, screenPos.Y, actor.Rune, nil, style)
 
 }

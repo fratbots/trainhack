@@ -53,7 +53,7 @@ func BehaviorGhost(actor *Actor, stage *Stage, target *Actor) *Actor {
 				pos := actor.Position.FollowGap(target.Position, 7)
 				fmt.Printf("pos: %#v\n", pos)
 
-				if pos.IsOn(stage.LevelMap.Dimensions) {
+				if pos.IsOn(stage.Level.Dimensions) {
 					actor.Position = pos
 					return successResult
 				}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"container/list"
+	"sync"
 )
 
 type Action struct {
@@ -16,6 +17,7 @@ type Result struct {
 
 type Actions struct {
 	list *list.List
+	mu   sync.Mutex
 }
 
 func NewActions() *Actions {
@@ -23,10 +25,16 @@ func NewActions() *Actions {
 }
 
 func (a *Actions) Add(action *Action) {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+
 	a.list.PushBack(action)
 }
 
 func (a *Actions) Get() *Action {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+
 	f := a.list.Front()
 	if f != nil {
 		a.list.Remove(f)
@@ -36,6 +44,9 @@ func (a *Actions) Get() *Action {
 }
 
 func (a *Actions) Reset() {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+
 	for {
 		e := a.list.Front()
 		if e == nil {
@@ -70,8 +81,13 @@ func ActionMove(stage *Stage, actor *Actor, dir Direction) *Action {
 				return successResult // rest
 			}
 
-			if !pos.IsOn(stage.LevelMap.Dimensions) {
+			if !pos.IsOn(stage.Level.Dimensions) {
 				return successResult // rest, TODO: hit
+			}
+
+			tile := stage.Level.GetTile(pos)
+			if !tile.IsWalkable {
+				return successResult // rest
 			}
 
 			actor.Position = pos

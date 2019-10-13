@@ -7,11 +7,11 @@ import (
 type Stage struct {
 	Name string
 
-	Game     *Game
-	Hero     *Actor
-	Actors   []*Actor
-	Actions  *Actions
-	LevelMap *LevelMap
+	Game    *Game
+	Hero    *Actor
+	Actors  []*Actor
+	Actions *Actions
+	Level   *Level
 
 	ticker *Ticker
 }
@@ -30,8 +30,9 @@ func NewStage(g *Game) *Stage {
 func (s *Stage) Load(name, target string) *Stage {
 	s.Stop()
 
-	levelMap, err := (&MapLoader{}).Load(name)
-	if err != nil {
+	level := LoadLevel(name)
+	if level == nil {
+		// TODO: handle error
 		return s
 	}
 
@@ -55,7 +56,7 @@ func (s *Stage) Load(name, target string) *Stage {
 	s.Name = name
 	s.Actions.Reset()
 
-	s.LevelMap = &levelMap
+	s.Level = level
 
 	return s
 }
@@ -72,10 +73,6 @@ func (s *Stage) Stop() {
 	if s.ticker != nil {
 		s.ticker.Done()
 	}
-}
-
-func (s *Stage) TileAt(pos Position) *Tile {
-	return s.LevelMap.GetTile(pos)
 }
 
 func (s *Stage) ActorAt(pos Position) *Actor {
