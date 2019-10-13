@@ -48,7 +48,48 @@ func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 				},
 			}
 		}
+
+		b := NewActor(Position{X: 25, Y: 15}, 0, '*')
+		b.Interaction = func(actor *Actor) *Action {
+			return &Action{
+				Actor: b,
+				Perform: func() Result {
+					return alternativeAction(&Action{
+						Actor: b,
+						Perform: func() Result {
+							if s.Stage != nil {
+								s.Stage.Stop()
+							}
+							end(NewDialogScreen("pika_dialog1", 0, NewScreenStage(g, "map2", nil)))
+							return Result{}
+						},
+					})
+				},
+			}
+		}
+
+		c := NewActor(Position{X: 25, Y: 20}, 0, '%')
+		c.Interaction = func(actor *Actor) *Action {
+			return &Action{
+				Actor: c,
+				Perform: func() Result {
+					return alternativeAction(&Action{
+						Actor: c,
+						Perform: func() Result {
+							if s.Stage != nil {
+								s.Stage.Stop()
+							}
+							end(NewBattleScreen(s.Stage.Hero, c, NewScreenStage(g, "map2", nil), nil))
+							return Result{}
+						},
+					})
+				},
+			}
+		}
+
+		s.Stage.AddActor(c)
 		s.Stage.AddActor(a)
+		s.Stage.AddActor(b)
 		s.Stage.AddActor(BehaviorPursue(NewActor(Position{X: 7, Y: 5}, 0.3, '$'), s.Stage, s.Stage.Hero))
 	}
 

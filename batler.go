@@ -35,8 +35,6 @@ type Weapon struct {
 type Character interface {
 	GetHp() int
 	GetMp() int
-	GetHandDamage() int
-	GetFootDamage() int
 	GetWeapons() []Weapon
 	GetManaRegen() int
 	GetImagePath() string
