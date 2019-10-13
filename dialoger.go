@@ -7,7 +7,6 @@ import (
 
 	"github.com/gdamore/tcell"
 	"github.com/naoina/toml"
-	"github.com/qeesung/image2ascii/convert"
 	"github.com/rivo/tview"
 )
 
@@ -94,8 +93,8 @@ func (d DialogManager) GetDialogPrimitive(dialogName string, sceneId int, callba
 		panic("Диалог не найден")
 	}
 	scene := dialog.Scenes[sceneId]
-	characterImgAscii := imageToAscii(d.CharacterImgPath)
-	personImgAscii := imageToAscii(scene.PersonImgPath)
+	characterImgAscii := ImageToAscii(d.CharacterImgPath, 65, 23)
+	personImgAscii := ImageToAscii(scene.PersonImgPath, 65, 23)
 
 	// newPrimitive := func(text string) tview.Primitive {
 	//	return tview.NewTextView().
@@ -128,9 +127,9 @@ func (d DialogManager) GetDialogPrimitive(dialogName string, sceneId int, callba
 
 	flex := tview.NewFlex().SetDirection(tview.FlexRow).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
-			AddItem(tview.NewTextView().SetText(fmt.Sprint(characterImgAscii)), 65, 4, false).
+			AddItem(tview.NewTextView().SetText(characterImgAscii), 65, 4, false).
 			AddItem(tview.NewBox(), 0, 2, false).
-			AddItem(tview.NewTextView().SetText(fmt.Sprint(personImgAscii)), 65, 4, false),
+			AddItem(tview.NewTextView().SetText(personImgAscii), 65, 4, false),
 			23, 6, false).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexColumn).
 			AddItem(tview.NewTextView().SetText(d.CharacterName).SetTextAlign(tview.AlignCenter), 0, 1, false).
@@ -150,16 +149,4 @@ func newScene(sceneId int, dialogName string, lastScreen Screen, callback func(s
 		return
 	}
 	callback(NewDialogScreen(dialogName, sceneId, lastScreen))
-}
-
-func imageToAscii(imgPath string) string {
-	convertOptions := convert.DefaultOptions
-	convertOptions.Ratio = 5
-	convertOptions.FitScreen = true
-	convertOptions.FixedWidth = 65
-	convertOptions.FixedHeight = 23
-	convertOptions.Colored = false
-
-	converter := convert.NewImageConverter()
-	return converter.ImageFile2ASCIIString(imgPath, &convertOptions)
 }
