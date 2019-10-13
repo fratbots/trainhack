@@ -20,8 +20,6 @@ func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 	s.Stage.AddActor(NewActor(Position{X: 8, Y: 6}, 0, '#'))
 	s.Stage.AddActor(BehaviorGhost(NewActor(Position{X: 13, Y: 13}, 0, 'G'), s.Stage, s.Stage.Hero))
 
-	s.Stage.Start()
-
 	lookAt := s.Stage.Hero.Position
 
 	box := tview.NewBox()
