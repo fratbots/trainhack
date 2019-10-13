@@ -10,18 +10,27 @@ import (
 	"github.com/gdamore/tcell"
 )
 
-type Til struct {
-	Rune       rune
-	Style      tcell.Style
-	IsWalkable bool
+type Tile struct {
+	Rune        rune
+	Style       tcell.Style
+	IsWalkable  bool
+	Interaction Interaction
 }
 
 type Level struct {
 	Dimensions Dimensions
-	Tiles      []Til
+	Tiles      []Tile
+	Doors      map[rune]Position
 }
 
-func (l *Level) GetTile(pos Position) *Til {
+type door struct {
+	Rune     rune
+	Map      string
+	Door     rune
+	Position Position
+}
+
+func (l *Level) GetTile(pos Position) *Tile {
 	if !pos.IsOn(l.Dimensions) {
 		return nil
 	}
@@ -34,7 +43,7 @@ func (l *Level) GetTile(pos Position) *Til {
 	return nil
 }
 
-func LoadLevel(name string) *Level {
+func LoadLevel(g *Game, name string) *Level {
 	path := fmt.Sprintf("./levels/%s/texture.txt", name)
 
 	b, err := ioutil.ReadFile(path)
@@ -42,46 +51,18 @@ func LoadLevel(name string) *Level {
 		panic("cannot load map " + name)
 	}
 
+	// skip BOM
 	if bytes.HasPrefix(b, []byte{0xEF, 0xBB, 0xBF}) {
 		b = b[3:]
 	}
 
-	l := Level{
+	level := Level{
 		Dimensions: Dimensions{},
 		Tiles:      nil,
+		Doors:      map[rune]Position{},
 	}
 
-	type loc struct {
-		DisplayRune rune
-		Map         string
-		Location    rune
-	}
-
-	/*
-		locations := map[rune]loc{}
-
-		scanner := bufio.NewScanner(bytes.NewReader(b))
-		for scanner.Scan() {
-			if strings.HasPrefix(scanner.Text(), "// ") {
-				s := scanner.Text()
-				s = s[3:]
-				var meanRune, displayRune, mapName, mapLocation string
-				n, err := fmt.Sscanf(s, ":%s:%s:%s:%s", &meanRune, &displayRune, &mapName, &mapLocation)
-
-				// fmt.Fprintf(os.Stderr, "n: %#v\n", []string{meanRune, displayRune, mapName, mapLocation})
-
-				if err == nil && n == 4 {
-					locations[rune(meanRune[0])] = loc{
-						DisplayRune: rune(displayRune[0]),
-						Map:         mapName,
-						Location:    rune(mapLocation[0]),
-					}
-				}
-			}
-		}
-	*/
-
-	// fmt.Fprintf(os.Stderr, "locations: %#v\n", locations)
+	doors := scanDoors(b)
 
 	scanner := bufio.NewScanner(bytes.NewReader(b))
 	for scanner.Scan() {
@@ -91,18 +72,48 @@ func LoadLevel(name string) *Level {
 
 		w := len(scanner.Text())
 
-		if l.Dimensions.X != 0 && l.Dimensions.X != w {
+		if level.Dimensions.X != 0 && level.Dimensions.X != w {
 			return nil
 		}
-		l.Dimensions.X = w
+		level.Dimensions.X = w
 
-		for _, r := range scanner.Text() {
-			l.Tiles = append(l.Tiles, TileParser(r))
+		for x, r := range scanner.Text() {
+			pos := Position{X: x, Y: level.Dimensions.Y}
+			level.Tiles = append(level.Tiles, TileParser(g, r, pos, doors))
 		}
-		l.Dimensions.Y++
+		level.Dimensions.Y++
 	}
 
-	return &l
+	// doors has positions after TileParser
+	for k, door := range doors {
+		level.Doors[k] = door.Position
+	}
+
+	return &level
+}
+
+func scanDoors(b []byte) map[rune]door {
+	doors := map[rune]door{}
+
+	scanner := bufio.NewScanner(bytes.NewReader(b))
+	for scanner.Scan() {
+		if strings.HasPrefix(scanner.Text(), "// ") {
+			var run, displayRune, mapLocation rune
+			var mapName string
+			n, err := fmt.Sscanf(scanner.Text()[3:], "rune:%c display:%c map:%s location:%c",
+				&run, &displayRune, &mapName, &mapLocation)
+
+			if err == nil && n == 4 {
+				doors[run] = door{
+					Rune: displayRune,
+					Map:  mapName,
+					Door: mapLocation,
+				}
+			}
+		}
+	}
+
+	return doors
 }
 
 var (
@@ -115,8 +126,9 @@ var (
 	styleGrass  = tcell.StyleDefault.Background(colorGreen).Foreground(colorDarkGreen)
 	styleForest = tcell.StyleDefault.Background(colorDarkGreen).Foreground(colorForestGreen)
 	styleWater  = tcell.StyleDefault.Background(colorDarkBlue).Foreground(colorBlue)
+	styleGround = tcell.StyleDefault.Background(tcell.ColorSandyBrown).Foreground(tcell.ColorSandyBrown)
 
-	tiles = map[rune]Til{
+	tiles = map[rune]Tile{
 		'.': {
 			Rune:       '.',
 			Style:      styleGrass,
@@ -152,16 +164,51 @@ var (
 			Style:      styleWater,
 			IsWalkable: true,
 		},
+		'_': {
+			Rune:       ' ',
+			Style:      styleGround,
+			IsWalkable: true,
+		},
 	}
 )
 
-func TileParser(r rune) Til {
+func TileParser(g *Game, r rune, pos Position, doors map[rune]door) Tile {
+
+	isWalkable := false
+	var interaction Interaction
+	// rune is door
+	if door, ok := doors[r]; ok {
+
+		// set position
+		door.Position = pos
+		doors[r] = door
+
+		r = door.Rune
+		isWalkable = true
+		interaction = func(actor *Actor) *Action {
+			return &Action{
+				Actor: actor,
+				Perform: func() Result {
+					d := door.Door
+					g.DoScreen(NewScreenStage(g, door.Map, &d))
+					return Result{}
+				},
+			}
+		}
+	}
+
 	if t, ok := tiles[r]; ok {
+		if !t.IsWalkable && isWalkable {
+			t.IsWalkable = true
+		}
+		t.Interaction = interaction
 		return t
 	}
 
-	return Til{
-		Rune:  r,
-		Style: tcell.StyleDefault,
+	return Tile{
+		Rune:        r,
+		Style:       tcell.StyleDefault,
+		Interaction: interaction,
+		IsWalkable:  isWalkable,
 	}
 }

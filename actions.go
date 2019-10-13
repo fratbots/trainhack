@@ -102,6 +102,11 @@ func ActionMove(stage *Stage, actor *Actor, dir Direction) *Action {
 			}
 
 			actor.Position = pos
+
+			if tile.Interaction != nil {
+				stage.Actions.Add(tile.Interaction(actor))
+			}
+
 			return successResult
 		},
 	}

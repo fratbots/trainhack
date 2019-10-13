@@ -1,7 +1,7 @@
 ﻿yyyyyuuuuuuuuuuu.uuu.uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuhuh
-yyyyyyyyyuuuuu.uu.uuu.uuuuu...uuuuuuuuu.uu map2 uuuuuu.uu.uuu..uuuuuuuuuuuuuuhuh
-yyy........uuu.u...u..........u....uuuu....uuuu........u..uu..uuuuuuu.uuuuuuuhhh
-yyyy.........u.......................u...............................u.u..u..hhh
+yyyyyyyyyuuuuu.uu.uuu.uuuuu...uuuuuuuuu2uu map2 uuuuuu.uu.uuu..uuuuuuuuuuuuuuhuh
+yyy........uuu.u...u..........u....uuuu___.uuuu........u..uu..uuuuuuu.uuuuuuuhhh
+yyyy.........u.......................u__.............................u.u..u..hhh
 yy...........u.......................u................................uu.u...hhh
 yyy....................................................................uu....hhh
 yy.yy........................................................................hhh
@@ -23,5 +23,5 @@ yyyy..................kkk..kkkk.................k.........kk..........kk.......h
 yy..yykkkkk.kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk...k......k.kk..h..h
 yyyyyy.kkkkkkkkkkk.kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk.kkkkkkkkkkkkkkkkhhhh
 
-// формат: "// :<rune>:<display rune>:<map>:<location rune>:"
-// :1:%:map3:1:
+// rune:1 display:= map:house location:1
+// rune:2 display:_ map:map3 location:1

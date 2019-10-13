@@ -7,9 +7,9 @@ import (
 	"github.com/rivo/tview"
 )
 
-func NewScreenStage(g *Game, mapName string) *ScreenStage {
+func NewScreenStage(g *Game, mapName string, location *rune) *ScreenStage {
 	stage := NewStage(g)
-	stage.Load(mapName)
+	stage.Load(mapName, location)
 
 	return &ScreenStage{
 		Stage: stage,
@@ -41,7 +41,7 @@ func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 							if s.Stage != nil {
 								s.Stage.Stop()
 							}
-							end(NewScreenStage(g, "map3"))
+							end(NewScreenStage(g, "map3", nil))
 							return Result{}
 						},
 					})
@@ -61,7 +61,7 @@ func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 					// if s.Stage != nil {
 					// 	s.Stage.Stop()
 					// }
-					end(NewScreenStage(g, "map2"))
+					end(NewScreenStage(g, "map2", nil))
 					return Result{}
 				},
 			}
@@ -130,7 +130,7 @@ func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 
 var backStyle = tcell.StyleDefault.Background(tcell.ColorGreen).Foreground(tcell.ColorForestGreen)
 
-func (s *ScreenStage) drawTile(screen tcell.Screen, tile *Til, mapPos, screenPos Position) {
+func (s *ScreenStage) drawTile(screen tcell.Screen, tile *Tile, mapPos, screenPos Position) {
 
 	screen.SetContent(screenPos.X, screenPos.Y, tile.Rune, nil, tile.Style)
 

@@ -23,4 +23,4 @@ yyyy..................kkk..kkkk.................k.........kk..........kk.......h
 yy..yykkkkk.kkkkkkkkkkkkkkkkkkkkkkkkkkk1kkkkkkkkkkkkkkkkkkkk...k......k.kk..h..h
 yyyyyy.kkkkkkkkkkk.kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk.kkkkkkkkkkkkkkkkhhhh
 
-// :1:_:map2:1:
+// rune:1 display:= map:map2 location:1

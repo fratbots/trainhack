@@ -27,10 +27,10 @@ func NewStage(g *Game) *Stage {
 	}
 }
 
-func (s *Stage) Load(name string) *Stage {
+func (s *Stage) Load(name string, location *rune) *Stage {
 	s.Stop()
 
-	level := LoadLevel(name)
+	level := LoadLevel(s.Game, name)
 	if level == nil {
 		panic("cannot load level " + name)
 		// TODO: handle error
@@ -51,6 +51,12 @@ func (s *Stage) Load(name string) *Stage {
 		s.Hero = NewHero()
 		s.Hero.Position = Position{X: 20, Y: 10}
 		s.Actors = []*Actor{s.Hero}
+	}
+
+	if location != nil {
+		if pos, ok := level.Doors[*location]; ok {
+			s.Hero.Position = pos
+		}
 	}
 
 	s.Name = name
