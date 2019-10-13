@@ -9,10 +9,10 @@ import (
 func main() {
 	os.Setenv("TERM", "xterm-256color")
 
-	themeSoundsTest()
+	// themeSoundsTest()
 
-	// game := NewGame()
-	// game.Start(&HelloScreen{})
+	game := NewGame()
+	game.Start(&HelloScreen{})
 }
 
 func themeSoundsTest() {
