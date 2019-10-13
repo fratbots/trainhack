@@ -1,10 +1,6 @@
 package main
 
-import (
-	"fmt"
-	"github.com/rivo/tview"
-)
-
+/*
 type Battle struct {
 	Enemy      Character
 	Hero       Character
@@ -73,3 +69,4 @@ func NoManaPrimitive() tview.Primitive {
 func Reaction() {
 
 }
+*/
