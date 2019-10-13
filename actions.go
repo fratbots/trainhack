@@ -68,6 +68,13 @@ var (
 	}
 )
 
+func alternativeAction(action *Action) Result {
+	return Result{
+		Success:     false,
+		Alternative: action,
+	}
+}
+
 func ActionMove(stage *Stage, actor *Actor, dir Direction) *Action {
 	return &Action{
 		Actor: actor,
@@ -76,8 +83,12 @@ func ActionMove(stage *Stage, actor *Actor, dir Direction) *Action {
 			pos := actor.Position.Shift(dir)
 
 			target := stage.ActorAt(pos)
-
 			if target != nil {
+				// target interacts to actor
+				if target.Interaction != nil {
+					return alternativeAction(target.Interaction(actor))
+				}
+
 				return successResult // rest
 			}
 

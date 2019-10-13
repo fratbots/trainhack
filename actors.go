@@ -1,12 +1,13 @@
 package main
 
 type Actor struct {
-	IsHero   bool
-	Rune     rune
-	Position Position
-	Energy   Energy
-	Speed    float64
-	Behavior func() *Action
+	IsHero      bool
+	Rune        rune
+	Position    Position
+	Energy      Energy
+	Speed       float64
+	Behavior    func() *Action
+	Interaction func(actor *Actor) *Action
 }
 
 func (h *Actor) NextAction(action *Action) {

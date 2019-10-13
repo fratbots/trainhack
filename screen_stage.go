@@ -7,18 +7,67 @@ import (
 	"github.com/rivo/tview"
 )
 
+func NewScreenStage(g *Game, mapName string) *ScreenStage {
+	stage := NewStage(g)
+	stage.Load(mapName)
+
+	return &ScreenStage{
+		Stage: stage,
+	}
+}
+
 type ScreenStage struct {
 	Stage *Stage
 }
 
 func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 
-	s.Stage = NewStage(g)
-	s.Stage.Hero.Position = Position{X: 20, Y: 10}
-	s.Stage.Load("map2", "")
-	s.Stage.AddActor(BehaviorPursue(NewActor(Position{X: 7, Y: 5}, 0.3, '$'), s.Stage, s.Stage.Hero))
-	s.Stage.AddActor(NewActor(Position{X: 8, Y: 6}, 0, '#'))
-	s.Stage.AddActor(BehaviorGhost(NewActor(Position{X: 13, Y: 13}, 0, 'G'), s.Stage, s.Stage.Hero))
+	// s.Stage = NewStage(g)
+	// s.Stage.Hero.Position = Position{X: 20, Y: 10}
+	// s.Stage.Load("map2", "")
+	// s.Stage.AddActor(BehaviorPursue(NewActor(Position{X: 7, Y: 5}, 0.3, '$'), s.Stage, s.Stage.Hero))
+	// s.Stage.AddActor(NewActor(Position{X: 8, Y: 6}, 0, '#'))
+	// s.Stage.AddActor(BehaviorGhost(NewActor(Position{X: 13, Y: 13}, 0, 'G'), s.Stage, s.Stage.Hero))
+
+	if s.Stage.Name == "map2" {
+		a := NewActor(Position{X: 22, Y: 10}, 0, '?')
+		a.Interaction = func(actor *Actor) *Action {
+			return &Action{
+				Actor: a,
+				Perform: func() Result {
+					return alternativeAction(&Action{
+						Actor: a,
+						Perform: func() Result {
+							if s.Stage != nil {
+								s.Stage.Stop()
+							}
+							end(NewScreenStage(g, "map3"))
+							return Result{}
+						},
+					})
+				},
+			}
+		}
+		s.Stage.AddActor(a)
+		s.Stage.AddActor(BehaviorPursue(NewActor(Position{X: 7, Y: 5}, 0.3, '$'), s.Stage, s.Stage.Hero))
+	}
+
+	if s.Stage.Name == "map3" {
+		a := NewActor(Position{X: 22, Y: 10}, 0, '?')
+		a.Interaction = func(actor *Actor) *Action {
+			return &Action{
+				Actor: a,
+				Perform: func() Result {
+					// if s.Stage != nil {
+					// 	s.Stage.Stop()
+					// }
+					end(NewScreenStage(g, "map2"))
+					return Result{}
+				},
+			}
+		}
+		s.Stage.AddActor(a)
+	}
 
 	lookAt := s.Stage.Hero.Position
 

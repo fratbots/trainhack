@@ -27,20 +27,18 @@ func NewStage(g *Game) *Stage {
 	}
 }
 
-func (s *Stage) Load(name, target string) *Stage {
+func (s *Stage) Load(name string) *Stage {
 	s.Stop()
 
 	level := LoadLevel(name)
 	if level == nil {
+		panic("cannot load level " + name)
 		// TODO: handle error
 		return s
 	}
 
 	// save state
-	s.Game.State.Stages[s.Name] = StateStage{
-		HeroPosition: s.Hero.Position,
-		Actors:       s.Actors,
-	}
+	s.Save()
 
 	// load or create state
 	if state, ok := s.Game.State.Stages[name]; ok {
@@ -50,6 +48,8 @@ func (s *Stage) Load(name, target string) *Stage {
 		s.Hero.Position = state.HeroPosition
 	} else {
 		// TODO: create actors from levelMap
+		s.Hero = NewHero()
+		s.Hero.Position = Position{X: 20, Y: 10}
 		s.Actors = []*Actor{s.Hero}
 	}
 
@@ -59,6 +59,17 @@ func (s *Stage) Load(name, target string) *Stage {
 	s.Level = level
 
 	return s
+}
+
+func (s *Stage) Save() string {
+	if s.Name == "" {
+		return ""
+	}
+	s.Game.State.Stages[s.Name] = StateStage{
+		HeroPosition: s.Hero.Position,
+		Actors:       s.Actors,
+	}
+	return s.Name
 }
 
 func (s *Stage) Start() {

@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
+	"strings"
 
 	"github.com/gdamore/tcell"
 )
@@ -41,15 +42,53 @@ func LoadLevel(name string) *Level {
 		panic("cannot load map " + name)
 	}
 
-	b = b[3:]
+	if bytes.HasPrefix(b, []byte{0xEF, 0xBB, 0xBF}) {
+		b = b[3:]
+	}
 
 	l := Level{
 		Dimensions: Dimensions{},
 		Tiles:      nil,
 	}
 
+	type loc struct {
+		DisplayRune rune
+		Map         string
+		Location    rune
+	}
+
+	/*
+		locations := map[rune]loc{}
+
+		scanner := bufio.NewScanner(bytes.NewReader(b))
+		for scanner.Scan() {
+			if strings.HasPrefix(scanner.Text(), "// ") {
+				s := scanner.Text()
+				s = s[3:]
+				var meanRune, displayRune, mapName, mapLocation string
+				n, err := fmt.Sscanf(s, ":%s:%s:%s:%s", &meanRune, &displayRune, &mapName, &mapLocation)
+
+				// fmt.Fprintf(os.Stderr, "n: %#v\n", []string{meanRune, displayRune, mapName, mapLocation})
+
+				if err == nil && n == 4 {
+					locations[rune(meanRune[0])] = loc{
+						DisplayRune: rune(displayRune[0]),
+						Map:         mapName,
+						Location:    rune(mapLocation[0]),
+					}
+				}
+			}
+		}
+	*/
+
+	// fmt.Fprintf(os.Stderr, "locations: %#v\n", locations)
+
 	scanner := bufio.NewScanner(bytes.NewReader(b))
 	for scanner.Scan() {
+		if len(scanner.Text()) == 0 || strings.HasPrefix(scanner.Text(), "// ") {
+			continue
+		}
+
 		w := len(scanner.Text())
 
 		if l.Dimensions.X != 0 && l.Dimensions.X != w {
