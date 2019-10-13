@@ -1,0 +1,13 @@
+﻿    k1111111111kkkkkk     
+   k.....^.^.........kkkkk
+  k.....^ ^^^^^.......k k 
+  k.....^^^/// ^^..k..kk  
+ k......^////////^^.kkk   
+  k....^ /////// ^..kk k  
+  kk....^^^^///^^...kkk   
+   kk.....^.^^^^....k k   
+     kk............kkkkk  
+       kkkk....kkkkkk     
+           kkkk           
+
+// rune:1 display:. map:map2 location:3
