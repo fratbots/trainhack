@@ -49,7 +49,7 @@ func (s *Stage) Load(name string, location *rune) *Stage {
 	} else {
 		// TODO: create actors from levelMap
 		s.Hero = NewHero(DefaultWeapons)
-		s.Hero.Position = Position{X: 20, Y: 10}
+		s.Hero.Position = Position{X: 39, Y: 5}
 		s.Actors = []*Actor{s.Hero}
 	}
 

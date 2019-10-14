@@ -74,6 +74,14 @@ func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 		s.Stage.AddActor(BehaviorPursue(NewActor(Position{X: 7, Y: 5}, 0.3, '$'), s.Stage, s.Stage.Hero))
 	}
 
+	if s.Stage.Name == "map3" {
+		for y := 5; y <= 20; y = y + 3 {
+			for x := 5; x <= 68; x = x + 3 {
+				s.Stage.AddActor(BehaviorPursue(NewActor(Position{X: x, Y: y}, 0.3, '$'), s.Stage, s.Stage.Hero))
+			}
+		}
+	}
+
 	lookAt := s.Stage.Hero.Position
 
 	box := tview.NewBox()
