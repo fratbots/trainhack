@@ -30,7 +30,7 @@ func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 	// s.Stage.AddActor(BehaviorGhost(NewActor(Position{X: 13, Y: 13}, 0, 'G'), s.Stage, s.Stage.Hero))
 
 	if s.Stage.Name == "map2" {
-		b := NewActor(Position{X: 25, Y: 15}, 0, '*')
+		b := NewActor(Position{X: 22, Y: 6}, 0, 'D')
 		b.Interaction = func(actor *Actor) *Action {
 			return &Action{
 				Actor: b,
@@ -49,7 +49,7 @@ func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 			}
 		}
 
-		c := NewActor(Position{X: 25, Y: 20}, 0, '%')
+		c := NewActor(Position{X: 46, Y: 6}, 0, 'B')
 		c.Interaction = func(actor *Actor) *Action {
 			return &Action{
 				Actor: c,
