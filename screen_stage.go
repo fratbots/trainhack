@@ -74,23 +74,6 @@ func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 		s.Stage.AddActor(BehaviorPursue(NewActor(Position{X: 7, Y: 5}, 0.3, '$'), s.Stage, s.Stage.Hero))
 	}
 
-	if s.Stage.Name == "map3" {
-		a := NewActor(Position{X: 22, Y: 10}, 0, '?')
-		a.Interaction = func(actor *Actor) *Action {
-			return &Action{
-				Actor: a,
-				Perform: func() Result {
-					// if s.Stage != nil {
-					// 	s.Stage.Stop()
-					// }
-					end(NewScreenStage(g, "map2", nil))
-					return Result{}
-				},
-			}
-		}
-		s.Stage.AddActor(a)
-	}
-
 	lookAt := s.Stage.Hero.Position
 
 	box := tview.NewBox()
