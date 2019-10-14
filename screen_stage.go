@@ -151,7 +151,7 @@ func (s *ScreenStage) drawTile(screen tcell.Screen, tile *Tile, mapPos, screenPo
 
 func (s *ScreenStage) drawActor(screen tcell.Screen, actor *Actor, screenPos Position) {
 
-	style := tcell.StyleDefault.Foreground(tcell.ColorWhite)
+	style := tcell.StyleDefault.Foreground(tcell.ColorRed)
 	_, bg, _ := s.Stage.Level.GetTile(actor.Position).Style.Decompose()
 	style = style.Background(bg)
 	screen.SetContent(screenPos.X, screenPos.Y, actor.Rune, nil, style)
