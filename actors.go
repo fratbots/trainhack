@@ -52,38 +52,38 @@ func NewActor(pos Position, speed float64, rune rune) *Actor {
 		Energy:    Energy{Value: 0},
 		Speed:     speed,
 		Behavior:  nil,
-		Hp:        20,
-		Mp:        0,
-		ManaRegen: 0,
+		Hp:        120,
+		Mp:        20,
+		ManaRegen: 1,
 		ImagePath: "./example/a.jpeg",
 		Weapons:   DefaultWeapons,
 	}
 }
 
-func (a Actor) GetHp() int {
+func (a *Actor) GetHp() int {
 	return a.Hp
 }
 
-func (a Actor) GetMp() int {
+func (a *Actor) GetMp() int {
 	return a.Mp
 }
 
-func (a Actor) GetWeapons() []Weapon {
+func (a *Actor) GetWeapons() []Weapon {
 	return a.Weapons
 }
 
-func (a Actor) GetManaRegen() int {
+func (a *Actor) GetManaRegen() int {
 	return a.ManaRegen
 }
 
-func (a Actor) GetImagePath() string {
+func (a *Actor) GetImagePath() string {
 	return a.ImagePath
 }
 
-func (a Actor) SetHp(hp int) {
+func (a *Actor) SetHp(hp int) {
 	a.Hp = hp
 }
 
-func (a Actor) SetMp(mp int) {
+func (a *Actor) SetMp(mp int) {
 	a.Mp = mp
 }

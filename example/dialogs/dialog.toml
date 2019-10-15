@@ -44,6 +44,30 @@ phase = "Что что? Загадку отгадаешь пропущу"
     phase = "Я не хочу отвечать"
     scene_id = 5
 
+
+[[scenes]]
+id = 2
+person_name = "Андрей аксенов"
+person_img_path = "./example/a.jpeg"
+phase = "Что что? Загадку отгадаешь пропущу"
+
+    [scenes.answer_one]
+    phase = "Вилкой в глаз"
+    scene_id = 3
+
+    [scenes.answer_two]
+    phase = "Сервис на ПааС"
+    scene_id = 4
+
+    [scenes.answer_three]
+    phase = "Я не знаю"
+    scene_id = 5
+
+    [scenes.answer_four]
+    phase = "Я не хочу отвечать"
+    scene_id = 5
+
+
 [[scenes]]
 id = 3
 person_name = "Андрей аксенов"
