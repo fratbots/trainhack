@@ -76,10 +76,12 @@ func (b Battle) Start() tview.Primitive {
 
 func (b Battle) HeroTurn() {
 	b.Callback(NewBattleScreen(b.Hero, b.Enemy, b.BackScreen, b.renderBattleScreen(true)))
+	return
 }
 
 func (b Battle) EnemyTurn() {
 	b.reaction(DefaultWeapons[0], false)
+	return
 }
 
 func (b Battle) DamageScreen(w Weapon, isHeroTurn bool) {
@@ -97,43 +99,50 @@ func (b Battle) DamageScreen(w Weapon, isHeroTurn bool) {
 	view.AddItem(tview.NewTextView().SetTextAlign(tview.AlignCenter).SetText(ImageToAscii(w.ImgPath, 120, 40)), 120, 99, true)
 
 	b.Callback(NewBattleScreen(b.Hero, b.Enemy, b.BackScreen, view))
+	return
 }
 
 func (b Battle) noMana() {
 	view := tview.NewFlex().SetDirection(tview.FlexRow).
-		AddItem(tview.NewTextView().SetTextAlign(tview.AlignCenter).SetText(ImageToAscii(noManaImgPath, 120, 40)).SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+		AddItem(tview.NewTextView().SetTextAlign(tview.AlignCenter).SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+			b.Log = append(b.Log, fmt.Sprintf("Недостаточно маны"))
 			b.HeroTurn()
 			return nil
-		}), 120, 1, true)
+		}), 0, 1, true)
+	view.AddItem(tview.NewTextView().SetTextAlign(tview.AlignCenter).SetText(ImageToAscii(noManaImgPath, 120, 40)), 120, 99, true)
+
 
 	b.Callback(NewBattleScreen(b.Hero, b.Enemy, b.BackScreen, view))
+	return
 }
 
 func (b Battle) reaction(w Weapon, isHeroTurn bool) {
-	if b.Hero.GetHp() == 0 || b.Enemy.GetHp() == 0 {
-		b.Callback(b.BackScreen)
-		return
-	}
-
 	if isHeroTurn {
 		if b.Hero.GetMp() < w.Energy {
 			b.noMana()
+			return
 		}
 
 		b.Enemy.SetHp(b.Enemy.GetHp() - w.Damage)
-		b.Hero.SetMp(b.Hero.GetMp() - w.Energy)
+		b.Hero.SetMp(b.Hero.GetMp() - w.Energy + b.Hero.GetManaRegen())
 	} else {
 		b.Hero.SetHp(b.Hero.GetHp() - w.Damage)
 	}
 
+	if b.Hero.GetHp() <= 0 || b.Enemy.GetHp() <= 0 {
+		b.Callback(b.BackScreen)
+		return
+	}
+
 	b.DamageScreen(w, isHeroTurn)
+	return
 }
 
 func (b Battle) renderBattleScreen(isHeroTurn bool) tview.Primitive {
 	list := tview.NewList()
 	list.AddItem(b.Hero.GetWeapons()[0].Name, fmt.Sprintf("Урон: %d. Энергия: %d", b.Hero.GetWeapons()[0].Damage, b.Hero.GetWeapons()[0].Energy), rune(49), func() { b.reaction(b.Hero.GetWeapons()[0], isHeroTurn) })
-	list.AddItem(b.Hero.GetWeapons()[1].Name, fmt.Sprintf("Урон: %d. Энергия: %d", b.Hero.GetWeapons()[1].Damage, b.Hero.GetWeapons()[1].Energy), rune(49), func() { b.reaction(b.Hero.GetWeapons()[1], isHeroTurn) })
-	list.AddItem(b.Hero.GetWeapons()[2].Name, fmt.Sprintf("Урон: %d. Энергия: %d", b.Hero.GetWeapons()[2].Damage, b.Hero.GetWeapons()[2].Energy), rune(49), func() { b.reaction(b.Hero.GetWeapons()[2], isHeroTurn) })
+	list.AddItem(b.Hero.GetWeapons()[1].Name, fmt.Sprintf("Урон: %d. Энергия: %d", b.Hero.GetWeapons()[1].Damage, b.Hero.GetWeapons()[1].Energy), rune(50), func() { b.reaction(b.Hero.GetWeapons()[1], isHeroTurn) })
+	list.AddItem(b.Hero.GetWeapons()[2].Name, fmt.Sprintf("Урон: %d. Энергия: %d", b.Hero.GetWeapons()[2].Damage, b.Hero.GetWeapons()[2].Energy), rune(51), func() { b.reaction(b.Hero.GetWeapons()[2], isHeroTurn) })
 
 	flex := tview.NewFlex().SetDirection(tview.FlexColumn).
 		AddItem(tview.NewFlex().SetDirection(tview.FlexRow).

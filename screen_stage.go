@@ -41,7 +41,7 @@ func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 							if s.Stage != nil {
 								s.Stage.Stop()
 							}
-							end(NewDialogScreen("pika_dialog1", 0, NewScreenStage(g, "map2", nil)))
+							end(NewDialogScreen("a_dialog", 0, NewScreenStage(g, "map2", nil)))
 							return Result{}
 						},
 					})
