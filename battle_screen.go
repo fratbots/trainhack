@@ -11,7 +11,10 @@ type BattleScreen struct {
 	primitive  tview.Primitive
 }
 
-func (b *BattleScreen) Do(g *Game, callback func(s Screen)) tview.Primitive {
+func (b *BattleScreen) Init(g *Game) tview.Primitive {
+	callback := func(s Screen) {
+		g.SetScreen(s)
+	}
 	battle := NewBattle(b.enemy, b.hero, callback, b.lastScreen)
 	if b.primitive == nil {
 		return battle.Start()
@@ -19,6 +22,8 @@ func (b *BattleScreen) Do(g *Game, callback func(s Screen)) tview.Primitive {
 		return b.primitive
 	}
 }
+
+func (b *BattleScreen) Finalize() {}
 
 func NewBattleScreen(hero, enemy Character, lastScreen Screen, primitive tview.Primitive) *BattleScreen {
 	return &BattleScreen{

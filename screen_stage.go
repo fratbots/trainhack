@@ -20,7 +20,9 @@ type ScreenStage struct {
 	Stage *Stage
 }
 
-func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
+func (s *ScreenStage) Finalize() {}
+
+func (s *ScreenStage) Init(game *Game) tview.Primitive {
 
 	// s.Stage = NewStage(g)
 	// s.Stage.Hero.Position = Position{X: 20, Y: 10}
@@ -41,7 +43,7 @@ func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 							if s.Stage != nil {
 								s.Stage.Stop()
 							}
-							end(NewDialogScreen("a_dialog", 0, NewScreenStage(g, "map2", nil)))
+							game.SetScreen(NewDialogScreen("a_dialog", 0, NewScreenStage(game, "map2", nil)))
 							return Result{}
 						},
 					})
@@ -60,8 +62,8 @@ func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 							if s.Stage != nil {
 								s.Stage.Stop()
 							}
-							g.Sound.SetTheme(SoundThemePursuit)
-							end(NewBattleScreen(s.Stage.Hero, c, NewScreenStage(g, "map2", nil), nil))
+							game.Sound.SetTheme(SoundThemePursuit)
+							game.SetScreen(NewBattleScreen(s.Stage.Hero, c, NewScreenStage(game, "map2", nil), nil))
 							return Result{}
 						},
 					})
@@ -140,8 +142,6 @@ func (s *ScreenStage) Do(g *Game, end func(next Screen)) tview.Primitive {
 
 	return box
 }
-
-var backStyle = tcell.StyleDefault.Background(tcell.ColorGreen).Foreground(tcell.ColorForestGreen)
 
 func (s *ScreenStage) drawTile(screen tcell.Screen, tile *Tile, mapPos, screenPos Position) {
 

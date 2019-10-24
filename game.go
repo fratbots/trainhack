@@ -1,7 +1,40 @@
 package main
 
-import "log"
+type Game struct {
+	UI UI
 
+	State State
+
+	Dialoger DialogManager
+	Sound    *SoundLibrary
+}
+
+func NewGame() *Game {
+	sound, _ := NewSoundLibrary()
+	sound.SetTheme(SoundThemeAutumn)
+
+	return &Game{
+		UI: UI{},
+
+		Dialoger: NewDialoger("./example/dialogs", "./example/hero.png", "Великий поработитель Уно"),
+		Sound:    sound,
+	}
+}
+
+func (g *Game) SetScreen(screen Screen) {
+	g.UI.SetScreen(g, screen)
+}
+
+func (g *Game) Draw() {
+	g.UI.Draw()
+}
+
+func (g *Game) Finish() {
+	g.UI.Finalize()
+}
+
+/*
+import "log"
 type Game struct {
 	Sound    *SoundLibrary
 	View     *View
@@ -57,3 +90,4 @@ func (g *Game) DoScreen(s Screen) {
 func (g *Game) Final() {
 	g.View.Final()
 }
+*/

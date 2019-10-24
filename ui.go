@@ -4,30 +4,21 @@ import (
 	"github.com/rivo/tview"
 )
 
-type UI interface {
-	SetScreen(*Game, Screen)
-	Finalize()
-}
-
-type ui struct {
+type UI struct {
 	app    *tview.Application
 	screen Screen
 }
 
-func NewUI() UI {
-	return &ui{}
-}
-
-func (u *ui) SetScreen(g *Game, screen Screen) {
+func (u *UI) SetScreen(game *Game, screen Screen) {
 
 	// start app
 	if u.app == nil {
 
 		u.screen = screen
-		p := u.screen.Init(g)
+		primitive := u.screen.Init(game)
 
 		u.app = tview.NewApplication()
-		u.app.SetRoot(p, true)
+		u.app.SetRoot(primitive, true)
 
 		err := u.app.Run()
 		if err != nil {
@@ -44,18 +35,25 @@ func (u *ui) SetScreen(g *Game, screen Screen) {
 		}
 
 		u.screen = screen
-		p := u.screen.Init(g)
-		u.app.SetRoot(p, true)
-		u.app.SetFocus(p)
+		primitive := u.screen.Init(game)
+
+		u.app.SetRoot(primitive, true)
+		u.app.SetFocus(primitive)
 		u.app.Draw()
 	})
 }
 
-func (u *ui) Finalize() {
+func (u *UI) Finalize() {
 	if u.screen != nil {
 		u.screen.Finalize()
 	}
 	if u.app != nil {
 		u.app.Stop()
+	}
+}
+
+func (u *UI) Draw() {
+	if u.app != nil {
+		u.app.Draw()
 	}
 }

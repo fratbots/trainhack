@@ -22,29 +22,19 @@ const WelcomeMessage = `Ты представитель расы инфузор�
 Не дай своему человеку умереть от болезней и направь
 его слабый ум в нужное русло.`
 
-type HelloScreen struct {
+func NewScreenHello() Screen {
+	return NewScreen(
+		func(game *Game) tview.Primitive {
+			return NewUIModal(WelcomeMessage,
+				"Play", func() {
+					game.SetScreen(NewScreenStage(game, "map2", nil))
+				},
+				"Exit", func() {
+					game.SetScreen(NewScreenFinal())
+				},
+			)
+		},
+	)
 }
 
-func (s *HelloScreen) Do(g *Game, end func(next Screen)) tview.Primitive {
 
-	var modal *tview.Modal
-	modal = tview.NewModal().
-		SetText(WelcomeMessage).
-		AddButtons([]string{"Play", "Exit"}).
-		SetDoneFunc(
-			func(buttonIndex int, buttonLabel string) {
-				if buttonIndex == 0 {
-					end(NewScreenStage(g, "map2", nil))
-					return
-				}
-				if buttonIndex == 1 {
-					end(&ScreenFinal{})
-					return
-				}
-
-				modal.SetText("You win!")
-			},
-		)
-
-	return modal
-}

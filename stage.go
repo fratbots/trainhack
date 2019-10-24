@@ -81,7 +81,7 @@ func (s *Stage) Save() string {
 func (s *Stage) Start() {
 	s.ticker = NewTicker(tickTimeout, func(d time.Duration) {
 		if s.Update(d) {
-			s.Game.View.Draw()
+			s.Game.Draw()
 		}
 	})
 }

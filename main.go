@@ -8,5 +8,5 @@ func main() {
 	os.Setenv("TERM", "xterm-256color")
 
 	game := NewGame()
-	game.Start(&HelloScreen{})
+	game.SetScreen(NewScreenHello())
 }
