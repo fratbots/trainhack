@@ -5,8 +5,8 @@ import (
 )
 
 const (
-	tickTimeout  = time.Second / 6
-	tickTimeoutF = float64(tickTimeout)
+	tickTimeout      = time.Second / 6
+	tickTimeoutFloat = float64(tickTimeout)
 
 	energyGain   = 100
 	energyAction = 100

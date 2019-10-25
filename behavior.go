@@ -11,7 +11,7 @@ func abs(a int) int {
 	return a
 }
 
-func BehaviorPursue2(actor *Actor, stage *Stage, target *Actor) Behavior {
+func BehaviorPursue(stage *Stage, actor *Actor, target *Actor) Behavior {
 	return func() *Action {
 		dx := target.Position.X - actor.Position.X
 		dy := target.Position.Y - actor.Position.Y
@@ -39,39 +39,6 @@ func BehaviorPursue2(actor *Actor, stage *Stage, target *Actor) Behavior {
 
 		return nil
 	}
-}
-
-func BehaviorPursue(actor *Actor, stage *Stage, target *Actor) *Actor {
-
-	actor.Behavior = func() *Action {
-		dx := target.Position.X - actor.Position.X
-		dy := target.Position.Y - actor.Position.Y
-		dxAbs := abs(dx)
-		dyAbs := abs(dy)
-
-		// do not follow at 5 distance
-		if dxAbs > 5 || dyAbs > 5 {
-			return nil
-		}
-
-		if dxAbs > dyAbs {
-			if dx < 0 {
-				return ActionMove(stage, actor, DirectionLeft)
-			} else if dy > 0 {
-				return ActionMove(stage, actor, DirectionRight)
-			}
-		} else {
-			if dy < 0 {
-				return ActionMove(stage, actor, DirectionTop)
-			} else if dy > 0 {
-				return ActionMove(stage, actor, DirectionDown)
-			}
-		}
-
-		return nil
-	}
-
-	return actor
 }
 
 func BehaviorGhost(actor *Actor, stage *Stage, target *Actor) *Actor {

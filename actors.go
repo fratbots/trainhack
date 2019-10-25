@@ -18,7 +18,7 @@ type Actor struct {
 
 type Behavior func() *Action
 
-type Interaction func(actor *Actor) *Action
+type Interaction func(target *Actor) *Action
 
 func (a *Actor) SetNextAction(action *Action) {
 	a.Behavior = func() *Action {
@@ -33,7 +33,7 @@ func NewClassActor(stage *Stage, pos Position, class string) *Actor {
 		return nil
 	}
 
-	a := &Actor{
+	actor := &Actor{
 		Class: cls,
 
 		Position: pos,
@@ -44,16 +44,16 @@ func NewClassActor(stage *Stage, pos Position, class string) *Actor {
 	}
 
 	// default behavior
-	if a.Class.Behavior != nil {
-		a.Behavior = a.Class.Behavior(a, stage)
+	if actor.Class.BehaviorInit != nil {
+		actor.Behavior = actor.Class.BehaviorInit(stage, actor)
 	}
 
 	// default interaction
-	if a.Class.Interaction != nil {
-		a.Interaction = a.Class.Interaction(a, stage)
+	if actor.Class.InteractionInit != nil {
+		actor.Interaction = actor.Class.InteractionInit(stage, actor)
 	}
 
-	return a
+	return actor
 }
 
 func NewHero() *Actor {

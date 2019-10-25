@@ -24,65 +24,22 @@ func (s *ScreenStage) Finalize() {}
 
 func (s *ScreenStage) Init(game *Game) tview.Primitive {
 
-	// s.Stage = NewStage(g)
-	// s.Stage.Hero.Position = Position{X: 20, Y: 10}
-	// s.Stage.Load("map2", "")
-	// s.Stage.AddActor(BehaviorPursue(NewActor(Position{X: 7, Y: 5}, 0.3, '$'), s.Stage, s.Stage.Hero))
-	// s.Stage.AddActor(NewActor(Position{X: 8, Y: 6}, 0, '#'))
-	// s.Stage.AddActor(BehaviorGhost(NewActor(Position{X: 13, Y: 13}, 0, 'G'), s.Stage, s.Stage.Hero))
-
+	// TODO: move to levels' meta data
 	if s.Stage.Name == "map2" {
-		b := NewActor(Position{X: 22, Y: 6}, 0, 'D')
-		b.Interaction = func(actor *Actor) *Action {
-			return &Action{
-				Actor: b,
-				Perform: func() Result {
-					return alternativeAction(&Action{
-						Actor: b,
-						Perform: func() Result {
-							if s.Stage != nil {
-								s.Stage.Stop()
-							}
-							game.SetScreen(NewDialogScreen("a_dialog", 0, NewScreenStage(game, "map2", nil)))
-							return Result{}
-						},
-					})
-				},
-			}
-		}
-
-		c := NewActor(Position{X: 46, Y: 6}, 0, 'B')
-		c.Interaction = func(actor *Actor) *Action {
-			return &Action{
-				Actor: c,
-				Perform: func() Result {
-					return alternativeAction(&Action{
-						Actor: c,
-						Perform: func() Result {
-							if s.Stage != nil {
-								s.Stage.Stop()
-							}
-							game.Sound.SetTheme(SoundThemePursuit)
-							game.SetScreen(NewBattleScreen(s.Stage.Hero, c, NewScreenStage(game, "map2", nil), nil))
-							return Result{}
-						},
-					})
-				},
-			}
-		}
-
-		s.Stage.AddActor(c)
-		s.Stage.AddActor(b)
+		s.Stage.AddActor(NewClassActor(s.Stage, Position{X: 22, Y: 6}, ClassDialog))
+		s.Stage.AddActor(NewClassActor(s.Stage, Position{X: 46, Y: 6}, ClassBattle))
 		s.Stage.AddActor(NewClassActor(s.Stage, Position{X: 7, Y: 5}, ClassPursue))
 	}
 
 	if s.Stage.Name == "map3" {
 		for y := 5; y <= 20; y = y + 3 {
 			for x := 5; x <= 68; x = x + 3 {
-				s.Stage.AddActor(BehaviorPursue(NewActor(Position{X: x, Y: y}, 0.3, '$'), s.Stage, s.Stage.Hero))
+				s.Stage.AddActor(NewClassActor(s.Stage, Position{X: x, Y: y}, ClassPursue))
 			}
 		}
 	}
+
+	// stage stuff:
 
 	lookAt := s.Stage.Hero.Position
 

@@ -111,7 +111,7 @@ func (s *Stage) Update(d time.Duration) bool {
 	if d > tickTimeout {
 		d = tickTimeout
 	}
-	timeFactor := float64(d) / tickTimeoutF
+	timeFactor := float64(d) / tickTimeoutFloat
 
 	l := len(s.Actors)
 	for i := 0; i < l; i++ {
