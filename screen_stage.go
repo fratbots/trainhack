@@ -94,13 +94,13 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 	box.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 		switch event.Key() {
 		case tcell.KeyUp:
-			s.Stage.Hero.NextAction(ActionMove(s.Stage, s.Stage.Hero, DirectionTop))
+			s.Stage.Hero.SetNextAction(ActionMove(s.Stage, s.Stage.Hero, DirectionTop))
 		case tcell.KeyDown:
-			s.Stage.Hero.NextAction(ActionMove(s.Stage, s.Stage.Hero, DirectionDown))
+			s.Stage.Hero.SetNextAction(ActionMove(s.Stage, s.Stage.Hero, DirectionDown))
 		case tcell.KeyLeft:
-			s.Stage.Hero.NextAction(ActionMove(s.Stage, s.Stage.Hero, DirectionLeft))
+			s.Stage.Hero.SetNextAction(ActionMove(s.Stage, s.Stage.Hero, DirectionLeft))
 		case tcell.KeyRight:
-			s.Stage.Hero.NextAction(ActionMove(s.Stage, s.Stage.Hero, DirectionRight))
+			s.Stage.Hero.SetNextAction(ActionMove(s.Stage, s.Stage.Hero, DirectionRight))
 		}
 
 		return nil
@@ -154,6 +154,6 @@ func (s *ScreenStage) drawActor(screen tcell.Screen, actor *Actor, screenPos Pos
 	style := tcell.StyleDefault.Foreground(tcell.ColorRed)
 	_, bg, _ := s.Stage.Level.GetTile(actor.Position).Style.Decompose()
 	style = style.Background(bg)
-	screen.SetContent(screenPos.X, screenPos.Y, actor.Rune, nil, style)
+	screen.SetContent(screenPos.X, screenPos.Y, actor.Class.Rune, nil, style)
 
 }

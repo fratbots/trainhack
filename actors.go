@@ -1,57 +1,72 @@
 package main
 
 type Actor struct {
-	IsHero   bool
-	Rune     rune
+	Class Class
+
 	Position Position
 	Energy   Energy
-	Speed    float64
+
+	Behavior    Behavior
+	Interaction Interaction
 
 	Hp        int
 	Mp        int
 	Weapons   []Weapon
 	ManaRegen int
 	ImagePath string
-
-	Behavior    Behavior
-	Interaction Interaction
 }
 
 type Behavior func() *Action
 
 type Interaction func(actor *Actor) *Action
 
-func (h *Actor) NextAction(action *Action) {
-	h.Behavior = func() *Action {
-		h.Behavior = nil
+func (a *Actor) SetNextAction(action *Action) {
+	a.Behavior = func() *Action {
+		a.Behavior = nil
 		return action
 	}
 }
 
-func NewHero(weapons []Weapon) *Actor {
+func NewHero() *Actor {
 	return &Actor{
-		IsHero:    true,
-		Rune:      '@',
-		Position:  Position{0, 0},
-		Energy:    Energy{Value: energyAction},
-		Speed:     1,
-		Behavior:  nil,
+		Class: Class{
+			Name:   "hero",
+			IsHero: true,
+			Rune:   '@',
+			Speed:  1,
+		},
+
+		Position: Position{0, 0},
+		Energy:   Energy{Value: energyAction}, // full
+
+		Behavior:    nil,
+		Interaction: nil,
+
+
+		// TODO rid off:
 		Hp:        100,
 		Mp:        100,
 		ManaRegen: 5,
 		ImagePath: "./example/hero.png",
-		Weapons:   weapons,
+		Weapons:   DefaultWeapons,
 	}
 }
 
 func NewActor(pos Position, speed float64, rune rune) *Actor {
 	return &Actor{
-		IsHero:    false,
-		Rune:      rune,
-		Position:  pos,
-		Energy:    Energy{Value: 0},
-		Speed:     speed,
-		Behavior:  nil,
+		Class: Class{
+			Name:   "actor",
+			IsHero: false,
+			Rune:   rune,
+			Speed:  speed,
+		},
+
+		Position: pos,
+		Energy:   Energy{Value: 0}, // empty
+
+		Behavior:    nil,
+		Interaction: nil,
+
 		Hp:        120,
 		Mp:        20,
 		ManaRegen: 1,
