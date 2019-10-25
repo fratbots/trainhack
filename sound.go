@@ -19,39 +19,70 @@ const (
 	SoundContextDoor  = "context-door"
 )
 
-// SoundLibrary is a collection of all the game sounds.
-type SoundLibrary struct {
+// SoundLibrary is an interface of sound library.
+type SoundLibrary interface {
+	SetTheme(soundID string)
+	PlayContext(soundID string)
+}
+
+// SoundLibraryNoop is an implementation of a sound library that just mimics an interface and does nothing.
+type SoundLibraryNoop struct {
+}
+
+// NewSoundLibraryNoop returns a sound library that does nothing.
+func NewSoundLibraryNoop() *SoundLibraryNoop {
+	return &SoundLibraryNoop{}
+}
+
+// SetTheme does nothing by design.
+func (s *SoundLibraryNoop) SetTheme(soundID string) {
+	// does nothing
+}
+
+// PlayContext does nothing by design.
+func (s *SoundLibraryNoop) PlayContext(soundID string) {
+	// does nothing
+}
+
+// SoundLibraryDefault is a default sound library implementation that actually plays sounds.
+type SoundLibraryDefault struct {
 	themes        map[string]SoundTheme
 	contextSounds map[string]SoundContext
 }
 
+// SoundTheme is a background music.
 type SoundTheme struct {
 	ctrl *beep.Ctrl
 }
 
+// Unpause resumes sound theme playback.
 func (s SoundTheme) Unpause() {
 	s.ctrl.Paused = false
 }
 
+// Pause temporarily stops sound theme playback.
 func (s SoundTheme) Pause() {
 	s.ctrl.Paused = true
 }
 
+// Paused returns pause state of sound theme.
 func (s SoundTheme) Paused() bool {
 	return s.ctrl.Paused
 }
 
+// SoundContext is a decently short sound that is played in case of specified event.
 type SoundContext struct {
 	buffer *beep.Buffer
 }
 
+// Play asynchronously plays context sound from start to end.
 func (s SoundContext) Play() {
 	streamer := s.buffer.Streamer(0, s.buffer.Len())
 	speaker.Play(streamer)
 }
 
-// NewSoundLibrary creates a library containing all the preloaded game sounds.
-func NewSoundLibrary() (*SoundLibrary, error) {
+// NewSoundLibraryDefault creates a sound library able to play sounds.
+func NewSoundLibraryDefault() (*SoundLibraryDefault, error) {
 	// List game sounds: themes and context sounds.
 	themeFiles := map[string]string{
 		SoundThemeAutumn:  "theme-autumn.mp3",
@@ -61,7 +92,7 @@ func NewSoundLibrary() (*SoundLibrary, error) {
 		SoundContextDoor: "context-door.mp3",
 	}
 
-	soundLibrary := &SoundLibrary{
+	soundLibrary := &SoundLibraryDefault{
 		themes:        make(map[string]SoundTheme, len(themeFiles)),
 		contextSounds: make(map[string]SoundContext, len(contextFiles)),
 	}
@@ -88,7 +119,7 @@ func NewSoundLibrary() (*SoundLibrary, error) {
 }
 
 // loadThemeSound reads the theme sound from file and stores it in a memory buffer.
-func (l *SoundLibrary) loadThemeSound(soundID string, filename string) error {
+func (l *SoundLibraryDefault) loadThemeSound(soundID string, filename string) error {
 	path := fmt.Sprintf("%s/%s", SoundDir, filename)
 	f, err := os.Open(path)
 	if err != nil {
@@ -116,7 +147,7 @@ func (l *SoundLibrary) loadThemeSound(soundID string, filename string) error {
 }
 
 // loadContextSound reads the context sound from file and stores it in a memory buffer.
-func (l *SoundLibrary) loadContextSound(soundID string, filename string) error {
+func (l *SoundLibraryDefault) loadContextSound(soundID string, filename string) error {
 	path := fmt.Sprintf("%s/%s", SoundDir, filename)
 	f, err := os.Open(path)
 	if err != nil {
@@ -140,7 +171,7 @@ func (l *SoundLibrary) loadContextSound(soundID string, filename string) error {
 }
 
 // SetTheme starts to play theme sound infinitely.
-func (l *SoundLibrary) SetTheme(soundID string) {
+func (l *SoundLibraryDefault) SetTheme(soundID string) {
 	for theme, _ := range l.themes {
 		l.themes[theme].Pause()
 	}
@@ -148,7 +179,7 @@ func (l *SoundLibrary) SetTheme(soundID string) {
 }
 
 // PlayContext plays context sound once.
-func (l *SoundLibrary) PlayContext(soundID string) {
+func (l *SoundLibraryDefault) PlayContext(soundID string) {
 	sound := l.contextSounds[soundID]
 	sound.Play()
 }
