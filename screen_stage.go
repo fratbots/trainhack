@@ -73,7 +73,7 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 
 		s.Stage.AddActor(c)
 		s.Stage.AddActor(b)
-		s.Stage.AddActor(BehaviorPursue(NewActor(Position{X: 7, Y: 5}, 0.3, '$'), s.Stage, s.Stage.Hero))
+		s.Stage.AddActor(NewClassActor(s.Stage, Position{X: 7, Y: 5}, ClassPursue))
 	}
 
 	if s.Stage.Name == "map3" {

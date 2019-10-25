@@ -27,6 +27,35 @@ func (a *Actor) SetNextAction(action *Action) {
 	}
 }
 
+func NewClassActor(stage *Stage, pos Position, class string) *Actor {
+	cls, ok := Classes[class]
+	if !ok {
+		return nil
+	}
+
+	a := &Actor{
+		Class: cls,
+
+		Position: pos,
+		Energy:   Energy{Value: 0},
+
+		Behavior:    nil,
+		Interaction: nil,
+	}
+
+	// default behavior
+	if a.Class.Behavior != nil {
+		a.Behavior = a.Class.Behavior(a, stage)
+	}
+
+	// default interaction
+	if a.Class.Interaction != nil {
+		a.Interaction = a.Class.Interaction(a, stage)
+	}
+
+	return a
+}
+
 func NewHero() *Actor {
 	return &Actor{
 		Class: Class{
@@ -55,7 +84,7 @@ func NewHero() *Actor {
 func NewActor(pos Position, speed float64, rune rune) *Actor {
 	return &Actor{
 		Class: Class{
-			Name:   "actor",
+			Name:   "",
 			IsHero: false,
 			Rune:   rune,
 			Speed:  speed,
