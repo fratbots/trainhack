@@ -9,18 +9,19 @@ func NewUIModal(text string, buttons ...interface{}) tview.Primitive {
 	p.SetText(text)
 
 	var functions []func()
-	var texts []string
 
+	buttonsList := make([]string, len(buttons)/2)
 	for i := 0; i < len(buttons); i += 2 {
 		if s, ok := buttons[i].(string); ok {
-			texts = append(texts, s)
+			buttonsList[(i+1)/2] = s
 		}
-		if f, ok := buttons[i+1].(func()); ok {
-			functions = append(functions, f)
+		if p, ok := buttons[i+1].(func()); ok {
+			functions = append(functions, p)
 		}
 	}
 
-	p.AddButtons(texts)
+	p.AddButtons(buttonsList)
+
 	p.SetDoneFunc(func(i int, l string) {
 		if i < len(functions) {
 			functions[i]()

@@ -36,5 +36,3 @@ func NewScreenHello() Screen {
 		},
 	)
 }
-
-
