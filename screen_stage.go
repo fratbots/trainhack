@@ -20,7 +20,9 @@ type ScreenStage struct {
 	Stage *Stage
 }
 
-func (s *ScreenStage) Finalize() {}
+func (s *ScreenStage) Finalize() {
+	s.Stage.Stop()
+}
 
 func (s *ScreenStage) Init(game *Game) tview.Primitive {
 
@@ -38,6 +40,7 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 			}
 		}
 	}
+	//
 
 	// stage stuff:
 

@@ -23,11 +23,10 @@ const (
 var Classes = map[string]Class{
 
 	ClassHero: {
-		Name:         ClassHero,
-		IsHero:       true,
-		Rune:         '@',
-		Speed:        1,
-		BehaviorInit: nil,
+		Name:   ClassHero,
+		IsHero: true,
+		Rune:   '@',
+		Speed:  1,
 	},
 
 	ClassPursue: {
@@ -52,8 +51,6 @@ var Classes = map[string]Class{
 						return alternativeAction(&Action{
 							Actor: actor,
 							Perform: func() Result {
-								stage.Stop()
-
 								stage.Game.Sound.SetTheme(SoundThemePursuit)
 								stage.Game.SetScreen(NewDialogScreen("a_dialog", 0, NewScreenStage(stage.Game, "map2", nil)))
 								return Result{}
@@ -78,8 +75,6 @@ var Classes = map[string]Class{
 						return alternativeAction(&Action{
 							Actor: actor,
 							Perform: func() Result {
-								stage.Stop()
-
 								stage.Game.Sound.SetTheme(SoundThemePursuit)
 								stage.Game.SetScreen(NewBattleScreen(stage.Hero, target, NewScreenStage(stage.Game, "map2", nil), nil))
 								return Result{}

@@ -81,29 +81,6 @@ func NewHero() *Actor {
 	}
 }
 
-func NewActor(pos Position, speed float64, rune rune) *Actor {
-	return &Actor{
-		Class: Class{
-			Name:   "",
-			IsHero: false,
-			Rune:   rune,
-			Speed:  speed,
-		},
-
-		Position: pos,
-		Energy:   Energy{Value: 0}, // empty
-
-		Behavior:    nil,
-		Interaction: nil,
-
-		Hp:        120,
-		Mp:        20,
-		ManaRegen: 1,
-		ImagePath: "./example/a.jpeg",
-		Weapons:   DefaultWeapons,
-	}
-}
-
 func (a *Actor) GetHp() int {
 	return a.Hp
 }
