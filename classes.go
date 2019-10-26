@@ -20,6 +20,7 @@ const (
 	ClassBattle     = "battle"
 	ClassThink      = "think"
 	ClassMirrorDown = "mirrorDown"
+	ClassMirrorUp   = "mirrorUp"
 )
 
 var Classes = map[string]Class{
@@ -36,13 +37,19 @@ var Classes = map[string]Class{
 		Rune:  'd',
 		Speed: 0.1,
 		BehaviorInit: func(stage *Stage, actor *Actor) Behavior {
-			return BehaviorThink(stage, actor, stage.Hero)
+			return BehaviorThink(stage, actor, stage.Hero, ClassMirrorUp)
 		},
 	},
 
 	ClassMirrorDown: {
 		Name:  ClassMirrorDown,
 		Rune:  '↓',
+		Speed: 0,
+	},
+
+	ClassMirrorUp: {
+		Name:  ClassMirrorDown,
+		Rune:  '↑',
 		Speed: 0,
 	},
 

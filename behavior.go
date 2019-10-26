@@ -42,7 +42,7 @@ func BehaviorPursue(stage *Stage, actor *Actor, target *Actor) Behavior {
 	}
 }
 
-func BehaviorThink(stage *Stage, actor *Actor, mirrors []*Actor) Behavior {
+func BehaviorThink(stage *Stage, actor *Actor, mirrorUp, mirrorDown, mirrorLeft, mirrorRight Actor) Behavior {
 	return func() *Action {
 
 		return ActionMove(stage, actor, DirectionLeft)
