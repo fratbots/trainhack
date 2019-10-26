@@ -147,15 +147,45 @@ var (
 			style:    styleForest,
 			walkable: false,
 		},
-		'/': TileStatic{
-			tileRune: ' ',
-			style:    styleWater,
-			walkable: false,
+		'/': TileAnimated{
+			frames: []TileAnimatedFrame{
+				TileAnimatedFrame{
+					tileRune: '/',
+					style:    styleWater,
+				},
+				TileAnimatedFrame{
+					tileRune: '^',
+					style:    styleWater,
+				},
+				TileAnimatedFrame{
+					tileRune: '-',
+					style:    styleWater,
+				},
+				TileAnimatedFrame{
+					tileRune: '\\',
+					style:    styleWater,
+				},
+			},
+			animationSpeed: 1,
+			walkable:       false,
 		},
-		'^': TileStatic{
-			tileRune: '^',
-			style:    styleWater,
-			walkable: true,
+		'^': TileAnimated{
+			frames: []TileAnimatedFrame{
+				TileAnimatedFrame{
+					tileRune: '.',
+					style:    styleWater,
+				},
+				TileAnimatedFrame{
+					tileRune: '^',
+					style:    styleWater,
+				},
+				TileAnimatedFrame{
+					tileRune: '-',
+					style:    styleWater,
+				},
+			},
+			animationSpeed: 1,
+			walkable:       true,
 		},
 		'_': TileStatic{
 			tileRune: ' ',
@@ -170,7 +200,6 @@ func TileParser(g *Game, r rune, pos Position, doors map[rune]door) Tile {
 	var interaction Interaction
 	// rune is door
 	if door, ok := doors[r]; ok {
-
 		// set position
 		door.Position = pos
 		doors[r] = door

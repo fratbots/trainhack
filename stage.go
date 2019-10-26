@@ -115,6 +115,7 @@ func (s *Stage) AddActor(actor *Actor) {
 }
 
 func (s *Stage) Update(d time.Duration) bool {
+	s.frame = s.frame + 1
 
 	if d > tickTimeout {
 		d = tickTimeout

@@ -2,15 +2,21 @@ package main
 
 import "github.com/gdamore/tcell"
 
-type TileAnimated struct {
-	walkable    bool
-	interaction Interaction
-	tileRune    rune
-	style       tcell.Style
+type TileAnimatedFrame struct {
+	tileRune rune
+	style    tcell.Style
 }
 
-func (t TileAnimated) GetAppearance(frame int, x int, y int) (rune, tcell.Style) {
-	return t.tileRune, t.style
+type TileAnimated struct {
+	walkable       bool
+	interaction    Interaction
+	frames         []TileAnimatedFrame
+	animationSpeed int
+}
+
+func (t TileAnimated) GetAppearance(frame int, position Position) (rune, tcell.Style) {
+	idx := frame % len(t.frames)
+	return t.frames[idx].tileRune, t.frames[idx].style
 }
 
 func (t TileAnimated) GetWalkable() bool {
