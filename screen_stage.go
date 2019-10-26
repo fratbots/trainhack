@@ -71,10 +71,25 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 			s.Stage.Hero.SetNextAction(ActionMove(s.Stage, s.Stage.Hero, DirectionLeft))
 		case tcell.KeyRight:
 			s.Stage.Hero.SetNextAction(ActionMove(s.Stage, s.Stage.Hero, DirectionRight))
+		case tcell.KeyCtrlA:
+			if s.Stage.Name == "mapMiniGame" {
+				s.Stage.RegisterRune('←', Position{s.Stage.Hero.Position.X + 1, s.Stage.Hero.Position.Y})
+				s.Stage.AddActor(NewClassActor(s.Stage, Position{s.Stage.Hero.Position.X + 1, s.Stage.Hero.Position.Y}, Direction{}, ClassMirrorLeft))
+			}
 		case tcell.KeyCtrlD:
+			if s.Stage.Name == "mapMiniGame" {
+				s.Stage.RegisterRune('→', Position{s.Stage.Hero.Position.X + 1, s.Stage.Hero.Position.Y})
+				s.Stage.AddActor(NewClassActor(s.Stage, Position{s.Stage.Hero.Position.X + 1, s.Stage.Hero.Position.Y}, Direction{}, ClassMirrorRight))
+			}
+		case tcell.KeyCtrlS:
 			if s.Stage.Name == "mapMiniGame" {
 				s.Stage.RegisterRune('↓', Position{s.Stage.Hero.Position.X + 1, s.Stage.Hero.Position.Y})
 				s.Stage.AddActor(NewClassActor(s.Stage, Position{s.Stage.Hero.Position.X + 1, s.Stage.Hero.Position.Y}, Direction{}, ClassMirrorDown))
+			}
+		case tcell.KeyCtrlW:
+			if s.Stage.Name == "mapMiniGame" {
+				s.Stage.RegisterRune('↑', Position{s.Stage.Hero.Position.X + 1, s.Stage.Hero.Position.Y})
+				s.Stage.AddActor(NewClassActor(s.Stage, Position{s.Stage.Hero.Position.X + 1, s.Stage.Hero.Position.Y}, Direction{}, ClassMirrorUp))
 			}
 		}
 

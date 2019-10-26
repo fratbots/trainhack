@@ -46,7 +46,7 @@ func BehaviorThink(stage *Stage, actor *Actor, mirrorUp, mirrorDown, mirrorLeft,
 	return func() *Action {
 		switch actor.Direction {
 		case DirectionTop:
-			findPos := Position{actor.Position.X, actor.Position.Y + 1}
+			findPos := Position{actor.Position.X, actor.Position.Y - 1}
 			if value, ok := stage.RuneCoords[findPos]; ok {
 				switch value {
 				case mirrorLeft:
@@ -58,7 +58,7 @@ func BehaviorThink(stage *Stage, actor *Actor, mirrorUp, mirrorDown, mirrorLeft,
 				}
 			}
 		case DirectionDown:
-			findPos := Position{actor.Position.X, actor.Position.Y - 1}
+			findPos := Position{actor.Position.X, actor.Position.Y + 1}
 			if value, ok := stage.RuneCoords[findPos]; ok {
 				switch value {
 				case mirrorLeft:
