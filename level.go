@@ -113,13 +113,17 @@ var (
 	colorDarkGreen   = tcell.NewRGBColor(0, 200, 0)
 	colorGreen       = tcell.NewRGBColor(0, 255, 0)
 	colorForestGreen = tcell.NewRGBColor(0, 200, 0)
-	colorDarkBlue    = tcell.NewRGBColor(0, 0, 200)
-	colorBlue        = tcell.NewRGBColor(0, 0, 255)
+	colorDarkBlue    = tcell.NewRGBColor(0, 10, 215)
+	colorBlue        = tcell.NewRGBColor(10, 30, 240)
+	colorLightBlue   = tcell.NewRGBColor(50, 50, 255)
+	colorWhite       = tcell.NewRGBColor(255, 255, 255)
 
-	styleGrass  = tcell.StyleDefault.Background(colorGreen).Foreground(colorDarkGreen)
-	styleForest = tcell.StyleDefault.Background(colorDarkGreen).Foreground(colorForestGreen)
-	styleWater  = tcell.StyleDefault.Background(colorDarkBlue).Foreground(colorBlue)
-	styleGround = tcell.StyleDefault.Background(tcell.ColorSandyBrown).Foreground(tcell.ColorSandyBrown)
+	styleGrass       = tcell.StyleDefault.Background(colorGreen).Foreground(colorDarkGreen)
+	styleForest      = tcell.StyleDefault.Background(colorDarkGreen).Foreground(colorForestGreen)
+	styleWaterDark   = tcell.StyleDefault.Background(colorDarkBlue).Foreground(colorBlue)
+	styleWaterMedium = tcell.StyleDefault.Background(colorBlue).Foreground(colorLightBlue)
+	styleWaterLight  = tcell.StyleDefault.Background(colorLightBlue).Foreground(colorWhite)
+	styleGround      = tcell.StyleDefault.Background(tcell.ColorSandyBrown).Foreground(tcell.ColorSandyBrown)
 
 	tiles = map[rune]Tile{
 		'.': &TileStatic{
@@ -150,20 +154,36 @@ var (
 		'/': &TileAnimated{
 			frames: []TileAnimatedFrame{
 				TileAnimatedFrame{
-					tileRune: '/',
-					style:    styleWater,
+					tileRune: '-',
+					style:    styleWaterDark,
 				},
 				TileAnimatedFrame{
 					tileRune: '^',
-					style:    styleWater,
+					style:    styleWaterDark,
+				},
+				TileAnimatedFrame{
+					tileRune: ' ',
+					style:    styleWaterDark,
+				},
+				TileAnimatedFrame{
+					tileRune: '.',
+					style:    styleWaterDark,
 				},
 				TileAnimatedFrame{
 					tileRune: '-',
-					style:    styleWater,
+					style:    styleWaterMedium,
 				},
 				TileAnimatedFrame{
-					tileRune: '\\',
-					style:    styleWater,
+					tileRune: '^',
+					style:    styleWaterMedium,
+				},
+				TileAnimatedFrame{
+					tileRune: ' ',
+					style:    styleWaterMedium,
+				},
+				TileAnimatedFrame{
+					tileRune: '.',
+					style:    styleWaterMedium,
 				},
 			},
 			animationSpeed: 1,
@@ -173,15 +193,27 @@ var (
 			frames: []TileAnimatedFrame{
 				TileAnimatedFrame{
 					tileRune: '.',
-					style:    styleWater,
-				},
-				TileAnimatedFrame{
-					tileRune: '^',
-					style:    styleWater,
+					style:    styleWaterMedium,
 				},
 				TileAnimatedFrame{
 					tileRune: '-',
-					style:    styleWater,
+					style:    styleWaterMedium,
+				},
+				TileAnimatedFrame{
+					tileRune: ' ',
+					style:    styleWaterMedium,
+				},
+				TileAnimatedFrame{
+					tileRune: '.',
+					style:    styleWaterLight,
+				},
+				TileAnimatedFrame{
+					tileRune: '-',
+					style:    styleWaterLight,
+				},
+				TileAnimatedFrame{
+					tileRune: ' ',
+					style:    styleWaterLight,
 				},
 			},
 			animationSpeed: 1,
