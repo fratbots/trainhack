@@ -134,12 +134,6 @@ func (s *ScreenStage) drawActor(screen tcell.Screen, actor *Actor, screenPos Pos
 func (s *ScreenStage) drawEffect(port Port, screen tcell.Screen, width int, height int, effect Effect) {
 	renderedEffect := effect.Render()
 	for _, effectTile := range renderedEffect {
-		if effectTile.Position.X < 0 || effectTile.Position.X >= width {
-			continue
-		}
-		if effectTile.Position.Y < 0 || effectTile.Position.Y >= height {
-			continue
-		}
 		screenPos := port.ToScreen(effectTile.Position)
 		style := tcell.StyleDefault.Foreground(tcell.ColorGreen)
 		tile := s.Stage.Level.GetTile(effectTile.Position)
