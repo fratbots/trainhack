@@ -31,7 +31,7 @@ var Classes = map[string]Class{
 
 	ClassPursue: {
 		Name:  ClassPursue,
-		Rune:  '@',
+		Rune:  '$',
 		Speed: 0.3,
 		BehaviorInit: func(stage *Stage, actor *Actor) Behavior {
 			return BehaviorPursue(stage, actor, stage.Hero)
