@@ -15,7 +15,7 @@ type TileAnimated struct {
 }
 
 func (t *TileAnimated) GetAppearance(frame int, position Position) (rune, tcell.Style) {
-	idx := frame % len(t.frames)
+	idx := (frame + position.X + position.Y) % len(t.frames)
 	return t.frames[idx].tileRune, t.frames[idx].style
 }
 
