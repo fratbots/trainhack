@@ -117,3 +117,19 @@ func ActionMove(stage *Stage, actor *Actor, dir Direction) *Action {
 		},
 	}
 }
+
+func ActionInteract(stage *Stage, actor *Actor) *Action {
+	return &Action{
+		Actor: actor,
+		Perform: func() Result {
+
+			tile := stage.Level.GetTile(stage.Hero.Position)
+			interaction := tile.GetInteraction()
+			if interaction != nil {
+				return AlternativeAction(interaction(actor), false)
+			}
+
+			return UpdatedResult
+		},
+	}
+}

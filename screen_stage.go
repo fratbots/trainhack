@@ -63,15 +63,25 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 		switch event.Key() {
 		case tcell.KeyUp:
 			s.Stage.Hero.SetNextAction(ActionMove(s.Stage, s.Stage.Hero, DirectionTop))
+			return nil
 		case tcell.KeyDown:
 			s.Stage.Hero.SetNextAction(ActionMove(s.Stage, s.Stage.Hero, DirectionDown))
+			return nil
 		case tcell.KeyLeft:
 			s.Stage.Hero.SetNextAction(ActionMove(s.Stage, s.Stage.Hero, DirectionLeft))
+			return nil
 		case tcell.KeyRight:
 			s.Stage.Hero.SetNextAction(ActionMove(s.Stage, s.Stage.Hero, DirectionRight))
+			return nil
 		}
 
-		return nil
+		switch event.Rune() {
+		case ' ':
+			s.Stage.Hero.SetNextAction(ActionInteract(s.Stage, s.Stage.Hero))
+			return nil
+		}
+
+		return event
 	})
 
 	// Add helicopter effect.
