@@ -131,6 +131,7 @@ func (s *Stage) Update(d time.Duration) bool {
 
 	needToDraw := false
 
+	deferredActions := NewActions()
 	for {
 		action := s.Actions.Get()
 		if action == nil {
@@ -140,16 +141,25 @@ func (s *Stage) Update(d time.Duration) bool {
 		result := action.Perform()
 
 		for result.Alternative != nil {
+			// action for the next update
+			if result.AlternativeIsDeferred {
+				deferredActions.Add(result.Alternative)
+				break
+			}
 			result = result.Alternative.Perform()
 		}
 
-		if result.Success {
+		if result.Updated {
 			needToDraw = true
 
 			if action.Actor != nil {
 				action.Actor.Energy.Spend()
 			}
 		}
+	}
+
+	if deferredActions.Len() > 0 {
+		s.Actions = deferredActions
 	}
 
 	return needToDraw
