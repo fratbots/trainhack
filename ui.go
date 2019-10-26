@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+
 	"github.com/rivo/tview"
 )
 
@@ -22,7 +24,7 @@ func (u *UI) SetScreen(game *Game, screen Screen) {
 
 		err := u.app.Run()
 		if err != nil {
-			panic(err)
+			log.Fatalf("Failed to run app", err)
 		}
 
 		return

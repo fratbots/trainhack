@@ -16,5 +16,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to initialize game: %v", err)
 	}
-	game.SetScreen(NewScreenHello())
+	// game.SetScreen(NewScreenHello())
+	game.SetScreen(NewScreenStage(game, "map2", nil))
 }

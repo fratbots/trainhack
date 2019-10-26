@@ -25,7 +25,6 @@ func (s *ScreenStage) Finalize() {
 }
 
 func (s *ScreenStage) Init(game *Game) tview.Primitive {
-
 	// TODO: move to levels' meta data
 	if s.Stage.Name == "map2" {
 		s.Stage.AddActor(NewClassActor(s.Stage, Position{X: 22, Y: 6}, ClassDialog))
@@ -40,7 +39,11 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 			}
 		}
 	}
-	//
+
+	// TODO remove after effect queue implementation.
+	auraEffect := NewEffectAura()
+	auraEffect.SetPosition(s.Stage.Hero.Position)
+	s.Stage.AddEffect(auraEffect)
 
 	// stage stuff:
 
@@ -92,6 +95,20 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 			}
 		}
 
+		// Effects
+		// TODO replace hardcode with event based effects emission.
+		var survivingEffects []Effect
+		for _, effect := range s.Stage.Effects {
+			if effect.Alive() {
+				effect.SetPosition(s.Stage.Hero.Position)
+				survivingEffects = append(survivingEffects, effect)
+			}
+		}
+		s.Stage.Effects = survivingEffects
+		for _, effect := range s.Stage.Effects {
+			s.drawEffect(port, screen, width, height, effect)
+		}
+
 		// HUD
 		box.SetTitle(fmt.Sprintf("%dx%d", s.Stage.Hero.Position.X, s.Stage.Hero.Position.Y))
 
@@ -104,16 +121,33 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 }
 
 func (s *ScreenStage) drawTile(screen tcell.Screen, tile *Tile, mapPos, screenPos Position) {
-
 	screen.SetContent(screenPos.X, screenPos.Y, tile.Rune, nil, tile.Style)
-
 }
 
 func (s *ScreenStage) drawActor(screen tcell.Screen, actor *Actor, screenPos Position) {
-
 	style := tcell.StyleDefault.Foreground(tcell.ColorRed)
 	_, bg, _ := s.Stage.Level.GetTile(actor.Position).Style.Decompose()
 	style = style.Background(bg)
 	screen.SetContent(screenPos.X, screenPos.Y, actor.Class.Rune, nil, style)
+}
 
+func (s *ScreenStage) drawEffect(port Port, screen tcell.Screen, width int, height int, effect Effect) {
+	renderedEffect := effect.Render()
+	for _, effectTile := range renderedEffect {
+		if effectTile.Position.X < 0 || effectTile.Position.X >= width {
+			continue
+		}
+		if effectTile.Position.Y < 0 || effectTile.Position.Y >= height {
+			continue
+		}
+		screenPos := port.ToScreen(effectTile.Position)
+		style := tcell.StyleDefault.Foreground(tcell.ColorGreen)
+		tile := s.Stage.Level.GetTile(effectTile.Position)
+		if tile == nil {
+			continue
+		}
+		_, bg, _ := tile.Style.Decompose()
+		style = style.Background(bg)
+		screen.SetContent(screenPos.X, screenPos.Y, effectTile.Rune, nil, style)
+	}
 }

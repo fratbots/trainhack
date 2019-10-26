@@ -10,6 +10,7 @@ type Stage struct {
 	Game    *Game
 	Hero    *Actor
 	Actors  []*Actor
+	Effects []Effect
 	Actions *Actions
 	Level   *Level
 
@@ -104,6 +105,10 @@ func (s *Stage) ActorAt(pos Position) *Actor {
 
 func (s *Stage) AddActor(actor *Actor) {
 	s.Actors = append(s.Actors, actor)
+}
+
+func (s *Stage) AddEffect(effect Effect) {
+	s.Effects = append(s.Effects, effect)
 }
 
 func (s *Stage) Update(d time.Duration) bool {
