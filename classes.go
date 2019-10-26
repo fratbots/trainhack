@@ -55,7 +55,7 @@ var Classes = map[string]Class{
 								stage.Game.SetScreen(NewDialogScreen("a_dialog", 0, NewScreenStage(stage.Game, "map2", nil)))
 								return Result{}
 							},
-						}, false, false)
+						}, false)
 					},
 				}
 			}
@@ -79,7 +79,7 @@ var Classes = map[string]Class{
 								stage.Game.SetScreen(NewBattleScreen(stage.Hero, target, NewScreenStage(stage.Game, "map2", nil), nil))
 								return Result{}
 							},
-						}, false, false)
+						}, false)
 					},
 				}
 			}
