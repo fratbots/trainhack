@@ -19,6 +19,7 @@ type Stage struct {
 
 	deferred *Actions
 	ticker   *Ticker
+	frame    int
 }
 
 func NewStage(g *Game) *Stage {
@@ -30,6 +31,7 @@ func NewStage(g *Game) *Stage {
 		Actors:   []*Actor{hero},
 		Actions:  NewActions(),
 		deferred: NewActions(),
+		frame:    0,
 	}
 }
 

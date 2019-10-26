@@ -119,13 +119,16 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 	return box
 }
 
-func (s *ScreenStage) drawTile(screen tcell.Screen, tile *Tile, mapPos, screenPos Position) {
-	screen.SetContent(screenPos.X, screenPos.Y, tile.Rune, nil, tile.Style)
+func (s *ScreenStage) drawTile(screen tcell.Screen, tile Tile, mapPos, screenPos Position) {
+	tileRune, tileStyle := tile.GetAppearance(s.Stage.frame, Position{screenPos.X, screenPos.Y})
+	screen.SetContent(screenPos.X, screenPos.Y, tileRune, nil, tileStyle)
 }
 
 func (s *ScreenStage) drawActor(screen tcell.Screen, actor *Actor, screenPos Position) {
 	style := tcell.StyleDefault.Foreground(tcell.ColorRed)
-	_, bg, _ := s.Stage.Level.GetTile(actor.Position).Style.Decompose()
+	tile := s.Stage.Level.GetTile(actor.Position)
+	_, tileStyle := tile.GetAppearance(s.Stage.frame, Position{screenPos.X, screenPos.Y})
+	_, bg, _ := tileStyle.Decompose()
 	style = style.Background(bg)
 	screen.SetContent(screenPos.X, screenPos.Y, actor.Class.Rune, nil, style)
 }
@@ -139,7 +142,8 @@ func (s *ScreenStage) drawEffect(port Port, screen tcell.Screen, width int, heig
 		if tile == nil {
 			continue
 		}
-		_, bg, _ := tile.Style.Decompose()
+		_, tileStyle := tile.GetAppearance(s.Stage.frame, Position{screenPos.X, screenPos.Y})
+		_, bg, _ := tileStyle.Decompose()
 		style = style.Background(bg)
 		screen.SetContent(screenPos.X, screenPos.Y, effectTile.Rune, nil, style)
 	}

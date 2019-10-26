@@ -10,13 +10,6 @@ import (
 	"github.com/gdamore/tcell"
 )
 
-type Tile struct {
-	Rune        rune
-	Style       tcell.Style
-	IsWalkable  bool
-	Interaction Interaction
-}
-
 type Level struct {
 	Dimensions Dimensions
 	Tiles      []Tile
@@ -30,14 +23,14 @@ type door struct {
 	Position Position
 }
 
-func (l *Level) GetTile(pos Position) *Tile {
+func (l *Level) GetTile(pos Position) Tile {
 	if !pos.IsOn(l.Dimensions) {
 		return nil
 	}
 
 	i := pos.Y*l.Dimensions.X + pos.X
 	if i >= 0 && i < len(l.Tiles) {
-		return &l.Tiles[i]
+		return l.Tiles[i]
 	}
 
 	return nil
@@ -129,51 +122,50 @@ var (
 	styleGround = tcell.StyleDefault.Background(tcell.ColorSandyBrown).Foreground(tcell.ColorSandyBrown)
 
 	tiles = map[rune]Tile{
-		'.': {
-			Rune:       '.',
-			Style:      styleGrass,
-			IsWalkable: true,
+		'.': TileStatic{
+			tileRune: '.',
+			style:    styleGrass,
+			walkable: true,
 		},
-		'u': {
-			Rune:       tcell.RuneBlock,
-			Style:      styleForest,
-			IsWalkable: false,
+		'u': TileStatic{
+			tileRune: tcell.RuneBlock,
+			style:    styleForest,
+			walkable: false,
 		},
-		'y': {
-			Rune:       tcell.RuneBoard,
-			Style:      styleForest,
-			IsWalkable: false,
+		'y': TileStatic{
+			tileRune: tcell.RuneBoard,
+			style:    styleForest,
+			walkable: false,
 		},
-		'k': {
-			Rune:       tcell.RuneCkBoard,
-			Style:      styleForest,
-			IsWalkable: false,
+		'k': TileStatic{
+			tileRune: tcell.RuneCkBoard,
+			style:    styleForest,
+			walkable: false,
 		},
-		'h': {
-			Rune:       tcell.RuneCkBoard,
-			Style:      styleForest,
-			IsWalkable: false,
+		'h': TileStatic{
+			tileRune: tcell.RuneCkBoard,
+			style:    styleForest,
+			walkable: false,
 		},
-		'/': {
-			Rune:       ' ',
-			Style:      styleWater,
-			IsWalkable: false,
+		'/': TileStatic{
+			tileRune: ' ',
+			style:    styleWater,
+			walkable: false,
 		},
-		'^': {
-			Rune:       '^',
-			Style:      styleWater,
-			IsWalkable: true,
+		'^': TileStatic{
+			tileRune: '^',
+			style:    styleWater,
+			walkable: true,
 		},
-		'_': {
-			Rune:       ' ',
-			Style:      styleGround,
-			IsWalkable: true,
+		'_': TileStatic{
+			tileRune: ' ',
+			style:    styleGround,
+			walkable: true,
 		},
 	}
 )
 
 func TileParser(g *Game, r rune, pos Position, doors map[rune]door) Tile {
-
 	isWalkable := false
 	var interaction Interaction
 	// rune is door
@@ -201,17 +193,17 @@ func TileParser(g *Game, r rune, pos Position, doors map[rune]door) Tile {
 	}
 
 	if t, ok := tiles[r]; ok {
-		if !t.IsWalkable && isWalkable {
-			t.IsWalkable = true
+		if !t.GetWalkable() && isWalkable {
+			t.SetWalkable(true)
 		}
-		t.Interaction = interaction
+		t.SetInteraction(interaction)
 		return t
 	}
 
-	return Tile{
-		Rune:        r,
-		Style:       tcell.StyleDefault,
-		Interaction: interaction,
-		IsWalkable:  isWalkable,
+	return TileStatic{
+		tileRune:    r,
+		style:       tcell.StyleDefault,
+		interaction: interaction,
+		walkable:    isWalkable,
 	}
 }

@@ -102,14 +102,15 @@ func ActionMove(stage *Stage, actor *Actor, dir Direction) *Action {
 			}
 
 			tile := stage.Level.GetTile(pos)
-			if !tile.IsWalkable {
+			if !tile.GetWalkable() {
 				return UpdatedResult // rest
 			}
 
 			actor.Position = pos
 
-			if tile.Interaction != nil {
-				return AlternativeAction(tile.Interaction(actor), true)
+			interaction := tile.GetInteraction()
+			if interaction != nil {
+				return AlternativeAction(interaction(actor), true)
 			}
 
 			return UpdatedResult
