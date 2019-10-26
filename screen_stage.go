@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/gdamore/tcell"
 	"github.com/rivo/tview"
@@ -24,6 +25,13 @@ func (s *ScreenStage) Finalize() {
 	s.Stage.Stop()
 }
 
+func BornThink(s *ScreenStage) {
+	for i := 0; i < 10; i++ {
+		time.Sleep(2000)
+		s.Stage.AddActor(NewClassActor(s.Stage, Position{X: 20, Y: 6}, ClassThink))
+	}
+}
+
 func (s *ScreenStage) Init(game *Game) tview.Primitive {
 	// TODO: move to levels' meta data
 	if s.Stage.Name == "map2" {
@@ -38,6 +46,10 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 				s.Stage.AddActor(NewClassActor(s.Stage, Position{X: x, Y: y}, ClassPursue))
 			}
 		}
+	}
+
+	if s.Stage.Name == "mapMiniGame" {
+		go BornThink(s)
 	}
 
 	// stage stuff:
@@ -59,6 +71,10 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 			s.Stage.Hero.SetNextAction(ActionMove(s.Stage, s.Stage.Hero, DirectionLeft))
 		case tcell.KeyRight:
 			s.Stage.Hero.SetNextAction(ActionMove(s.Stage, s.Stage.Hero, DirectionRight))
+		case tcell.KeyCtrlD:
+			if s.Stage.Name == "mapMiniGame" {
+				s.Stage.AddActor(NewClassActor(s.Stage, Position{25, 6}, ClassMirrorDown))
+			}
 		}
 
 		return nil
