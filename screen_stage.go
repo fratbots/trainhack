@@ -25,31 +25,31 @@ func (s *ScreenStage) Finalize() {
 	s.Stage.Stop()
 }
 
-func BornThink(s *ScreenStage) {
+func CreateThink(s *ScreenStage) {
 	for i := 0; i < 10; i++ {
 		time.Sleep(2000)
-		s.Stage.AddActor(NewClassActor(s.Stage, Position{X: 20, Y: 6}, ClassThink))
+		s.Stage.AddActor(NewClassActor(s.Stage, Position{X: 25, Y: 9}, DirectionLeft, ClassThink))
 	}
 }
 
 func (s *ScreenStage) Init(game *Game) tview.Primitive {
 	// TODO: move to levels' meta data
 	if s.Stage.Name == "map2" {
-		s.Stage.AddActor(NewClassActor(s.Stage, Position{X: 22, Y: 6}, ClassDialog))
-		s.Stage.AddActor(NewClassActor(s.Stage, Position{X: 46, Y: 6}, ClassBattle))
-		s.Stage.AddActor(NewClassActor(s.Stage, Position{X: 7, Y: 5}, ClassPursue))
+		s.Stage.AddActor(NewClassActor(s.Stage, Position{X: 22, Y: 6}, Direction{}, ClassDialog))
+		s.Stage.AddActor(NewClassActor(s.Stage, Position{X: 46, Y: 6}, Direction{}, ClassBattle))
+		s.Stage.AddActor(NewClassActor(s.Stage, Position{X: 7, Y: 5}, Direction{}, ClassPursue))
 	}
 
 	if s.Stage.Name == "map3" {
 		for y := 5; y <= 20; y = y + 3 {
 			for x := 5; x <= 68; x = x + 3 {
-				s.Stage.AddActor(NewClassActor(s.Stage, Position{X: x, Y: y}, ClassPursue))
+				s.Stage.AddActor(NewClassActor(s.Stage, Position{X: x, Y: y}, Direction{}, ClassPursue))
 			}
 		}
 	}
 
 	if s.Stage.Name == "mapMiniGame" {
-		go BornThink(s)
+		go CreateThink(s)
 	}
 
 	// stage stuff:
@@ -73,7 +73,8 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 			s.Stage.Hero.SetNextAction(ActionMove(s.Stage, s.Stage.Hero, DirectionRight))
 		case tcell.KeyCtrlD:
 			if s.Stage.Name == "mapMiniGame" {
-				s.Stage.AddActor(NewClassActor(s.Stage, Position{25, 6}, ClassMirrorDown))
+				s.Stage.RegisterRune('↓', Position{s.Stage.Hero.Position.X + 1, s.Stage.Hero.Position.Y})
+				s.Stage.AddActor(NewClassActor(s.Stage, Position{s.Stage.Hero.Position.X + 1, s.Stage.Hero.Position.Y}, Direction{}, ClassMirrorDown))
 			}
 		}
 

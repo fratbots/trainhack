@@ -14,6 +14,8 @@ type Actor struct {
 	Weapons   []Weapon
 	ManaRegen int
 	ImagePath string
+
+	Direction Direction
 }
 
 type Behavior func() *Action
@@ -27,7 +29,7 @@ func (a *Actor) SetNextAction(action *Action) {
 	}
 }
 
-func NewClassActor(stage *Stage, pos Position, class string) *Actor {
+func NewClassActor(stage *Stage, pos Position, direction Direction, class string) *Actor {
 	cls, ok := Classes[class]
 	if !ok {
 		return nil
@@ -41,6 +43,9 @@ func NewClassActor(stage *Stage, pos Position, class string) *Actor {
 
 		Behavior:    nil,
 		Interaction: nil,
+
+		// нужно для игры с мыслями
+		Direction: direction,
 	}
 
 	// default behavior
@@ -70,7 +75,6 @@ func NewHero() *Actor {
 
 		Behavior:    nil,
 		Interaction: nil,
-
 
 		// TODO rid off:
 		Hp:        100,

@@ -16,6 +16,12 @@ type Stage struct {
 
 	deferred *Actions
 	ticker   *Ticker
+
+	RuneCoords map[Position]rune
+}
+
+func (s *Stage) RegisterRune(name rune, coords Position) {
+	s.RuneCoords[coords] = name
 }
 
 func NewStage(g *Game) *Stage {
@@ -27,6 +33,8 @@ func NewStage(g *Game) *Stage {
 		Actors:   []*Actor{hero},
 		Actions:  NewActions(),
 		deferred: NewActions(),
+
+		RuneCoords: make(map[Position]rune),
 	}
 }
 
