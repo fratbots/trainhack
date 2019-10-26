@@ -6,14 +6,14 @@ import (
 )
 
 type Action struct {
-	Actor   *Actor
-	Perform func() Result
+	Actor    *Actor
+	Deferred bool
+	Perform  func() Result
 }
 
 type Result struct {
-	Updated               bool    // true - need to draw and etc.
-	Alternative           *Action // alternative action
-	AlternativeIsDeferred bool    // Alternative is for next update
+	Updated     bool    // need to draw and etc.
+	Alternative *Action // alternative action
 }
 
 type Actions struct {
@@ -63,9 +63,8 @@ func (a *Actions) Reset() {
 
 var (
 	UpdatedResult = Result{
-		Updated:               true,
-		Alternative:           nil,
-		AlternativeIsDeferred: false,
+		Updated:     true,
+		Alternative: nil,
 	}
 
 	FailureResult = Result{
@@ -74,11 +73,10 @@ var (
 	}
 )
 
-func AlternativeAction(action *Action, updated, deferred bool) Result {
+func AlternativeAction(action *Action, updated bool) Result {
 	return Result{
-		Updated:               updated,
-		Alternative:           action,
-		AlternativeIsDeferred: deferred,
+		Updated:     updated,
+		Alternative: action,
 	}
 }
 
@@ -93,7 +91,7 @@ func ActionMove(stage *Stage, actor *Actor, dir Direction) *Action {
 			if target != nil {
 				// target interacts to actor
 				if target.Interaction != nil {
-					return AlternativeAction(target.Interaction(actor), false, false)
+					return AlternativeAction(target.Interaction(actor), false)
 				}
 
 				return UpdatedResult // rest
@@ -111,8 +109,7 @@ func ActionMove(stage *Stage, actor *Actor, dir Direction) *Action {
 			actor.Position = pos
 
 			if tile.Interaction != nil {
-				return AlternativeAction(tile.Interaction(actor), false, false)
-				// stage.Actions.Add(tile.Interaction(actor))
+				return AlternativeAction(tile.Interaction(actor), true)
 			}
 
 			return UpdatedResult

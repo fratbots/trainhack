@@ -126,7 +126,11 @@ func (s *Stage) Update(d time.Duration) bool {
 		if actor.Energy.CanTakeTurn() || actor.Energy.Gain(timeFactor*actor.Class.Speed) {
 			action := actor.Behavior()
 			if action != nil {
-				s.Actions.Add(action)
+				if action.Deferred {
+					s.deferred.Add(action)
+				} else {
+					s.Actions.Add(action)
+				}
 			}
 		}
 	}
@@ -139,10 +143,15 @@ func (s *Stage) Update(d time.Duration) bool {
 			break
 		}
 
+		if action.Deferred {
+			s.deferred.Add(action)
+			continue
+		}
+
 		result := action.Perform()
 
 		for result.Alternative != nil {
-			if result.AlternativeIsDeferred {
+			if result.Alternative.Deferred {
 				s.deferred.Add(result.Alternative)
 				break
 			}
@@ -168,6 +177,7 @@ func (s *Stage) Update(d time.Duration) bool {
 		if a == nil {
 			break
 		}
+		a.Deferred = false
 		s.Actions.Add(a)
 	}
 
