@@ -20,6 +20,12 @@ type Stage struct {
 	deferred *Actions
 	ticker   *Ticker
 	frame    int
+
+	RuneCoords map[Position]rune
+}
+
+func (s *Stage) RegisterRune(name rune, coords Position) {
+	s.RuneCoords[coords] = name
 }
 
 func NewStage(g *Game) *Stage {
@@ -32,6 +38,8 @@ func NewStage(g *Game) *Stage {
 		Actions:  NewActions(),
 		deferred: NewActions(),
 		frame:    0,
+
+		RuneCoords: make(map[Position]rune),
 	}
 }
 
@@ -105,8 +113,18 @@ func (s *Stage) Update(d time.Duration) bool {
 	timeFactor := float64(d) / tickTimeoutFloat
 
 	l := len(s.Actors)
+
 	for i := 0; i < l; i++ {
+
 		actor := s.Actors[i]
+		if actor == nil {
+			continue
+		}
+		if actor.MustBeDeleted {
+			// FIXME
+			//s.Actors[i] = nil
+			continue
+		}
 		if actor.Behavior == nil {
 			continue
 		}
@@ -122,7 +140,6 @@ func (s *Stage) Update(d time.Duration) bool {
 			}
 		}
 	}
-
 	needToDraw := false
 
 	for {
@@ -170,6 +187,5 @@ func (s *Stage) Update(d time.Duration) bool {
 		a.Deferred = false
 		s.Actions.Add(a)
 	}
-
 	return needToDraw
 }

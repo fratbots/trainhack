@@ -42,6 +42,76 @@ func BehaviorPursue(stage *Stage, actor *Actor, target *Actor) Behavior {
 	}
 }
 
+func BehaviorThink(stage *Stage, actor *Actor, mirrorUp, mirrorDown, mirrorLeft, mirrorRight rune) Behavior {
+	endRune := '4'
+	return func() *Action {
+		switch actor.Direction {
+		case DirectionTop:
+			findPos := Position{actor.Position.X, actor.Position.Y - 1}
+			if value, ok := stage.RuneCoords[findPos]; ok {
+				switch value {
+				case mirrorLeft:
+					actor.Direction = DirectionLeft
+					return ActionMove(stage, actor, DirectionLeft)
+				case mirrorRight:
+					actor.Direction = DirectionRight
+					return ActionMove(stage, actor, DirectionRight)
+				case endRune:
+					actor.MustBeDeleted = true
+					return nil
+				}
+			}
+		case DirectionDown:
+			findPos := Position{actor.Position.X, actor.Position.Y + 1}
+			if value, ok := stage.RuneCoords[findPos]; ok {
+				switch value {
+				case mirrorLeft:
+					actor.Direction = DirectionLeft
+					return ActionMove(stage, actor, DirectionLeft)
+				case mirrorRight:
+					actor.Direction = DirectionRight
+					return ActionMove(stage, actor, DirectionRight)
+				case endRune:
+					actor.MustBeDeleted = true
+					return nil
+				}
+			}
+		case DirectionLeft:
+			findPos := Position{actor.Position.X - 1, actor.Position.Y}
+			if value, ok := stage.RuneCoords[findPos]; ok {
+				switch value {
+				case mirrorUp:
+					actor.Direction = DirectionTop
+					return ActionMove(stage, actor, DirectionTop)
+				case mirrorDown:
+					actor.Direction = DirectionDown
+					return ActionMove(stage, actor, DirectionDown)
+				case endRune:
+					actor.MustBeDeleted = true
+					return nil
+				}
+			}
+		case DirectionRight:
+			findPos := Position{actor.Position.X + 1, actor.Position.Y}
+			if value, ok := stage.RuneCoords[findPos]; ok {
+				switch value {
+				case mirrorUp:
+					actor.Direction = DirectionTop
+					return ActionMove(stage, actor, DirectionTop)
+				case mirrorDown:
+					actor.Direction = DirectionDown
+					return ActionMove(stage, actor, DirectionDown)
+				case endRune:
+					actor.MustBeDeleted = true
+					return nil
+				}
+			}
+		}
+
+		return ActionMove(stage, actor, actor.Direction)
+	}
+}
+
 func BehaviorGhost(actor *Actor, stage *Stage, target *Actor) *Actor {
 	actor.Behavior = func() *Action {
 		return &Action{

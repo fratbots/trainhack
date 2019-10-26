@@ -40,11 +40,11 @@ func LoadState(stage *Stage) bool {
 		return false
 	}
 
-	hero := NewClassActor(stage, Position{}, state.Hero.ClassName)
+	hero := NewClassActor(stage, Position{}, Direction{}, state.Hero.ClassName)
 	hero.Position = state.Hero.Position
 
 	for _, a := range state.Actors {
-		actor := NewClassActor(stage, Position{}, a.ClassName)
+		actor := NewClassActor(stage, Position{}, Direction{}, a.ClassName)
 		actor.Position = a.Position
 		stage.AddActor(actor)
 	}

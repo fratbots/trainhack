@@ -14,10 +14,15 @@ type Class struct {
 }
 
 const (
-	ClassHero   = "hero"
-	ClassPursue = "pursue"
-	ClassDialog = "dialog"
-	ClassBattle = "battle"
+	ClassHero        = "hero"
+	ClassPursue      = "pursue"
+	ClassDialog      = "dialog"
+	ClassBattle      = "battle"
+	ClassThink       = "think"
+	ClassMirrorDown  = "mirrorDown"
+	ClassMirrorUp    = "mirrorUp"
+	ClassMirrorLeft  = "mirrorLeft"
+	ClassMirrorRight = "mirrorRight"
 )
 
 func Classes() map[string]Class {
@@ -29,6 +34,39 @@ func Classes() map[string]Class {
 			IsHero: true,
 			Rune:   '@',
 			Speed:  1,
+		},
+
+		ClassThink: {
+			Name:  ClassThink,
+			Rune:  'd',
+			Speed: 1,
+			BehaviorInit: func(stage *Stage, actor *Actor) Behavior {
+				return BehaviorThink(stage, actor, '↑', '↓', '←', '→')
+			},
+		},
+
+		ClassMirrorDown: {
+			Name:  ClassMirrorDown,
+			Rune:  '↓',
+			Speed: 0,
+		},
+
+		ClassMirrorLeft: {
+			Name:  ClassMirrorLeft,
+			Rune:  '←',
+			Speed: 0,
+		},
+
+		ClassMirrorRight: {
+			Name:  ClassMirrorRight,
+			Rune:  '→',
+			Speed: 0,
+		},
+
+		ClassMirrorUp: {
+			Name:  ClassMirrorDown,
+			Rune:  '↑',
+			Speed: 0,
 		},
 
 		ClassPursue: {
