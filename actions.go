@@ -11,9 +11,9 @@ type Action struct {
 }
 
 type Result struct {
-	Success     bool
-	Deferred    bool
-	Alternative *Action
+	Updated               bool    // true - need to draw and etc.
+	Alternative           *Action // alternative action
+	AlternativeIsDeferred bool    // Alternative is for next update
 }
 
 type Actions struct {
@@ -62,21 +62,23 @@ func (a *Actions) Reset() {
 }
 
 var (
-	SuccessResult = Result{
-		Success:     true,
-		Alternative: nil,
+	UpdatedResult = Result{
+		Updated:               true,
+		Alternative:           nil,
+		AlternativeIsDeferred: false,
 	}
 
 	FailureResult = Result{
-		Success:     false,
+		Updated:     false,
 		Alternative: nil,
 	}
 )
 
-func alternativeAction(action *Action) Result {
+func AlternativeAction(action *Action, updated, deferred bool) Result {
 	return Result{
-		Success:     false,
-		Alternative: action,
+		Updated:               updated,
+		Alternative:           action,
+		AlternativeIsDeferred: deferred,
 	}
 }
 
@@ -91,29 +93,29 @@ func ActionMove(stage *Stage, actor *Actor, dir Direction) *Action {
 			if target != nil {
 				// target interacts to actor
 				if target.Interaction != nil {
-					return alternativeAction(target.Interaction(actor))
+					return AlternativeAction(target.Interaction(actor), false, false)
 				}
 
-				return SuccessResult // rest
+				return UpdatedResult // rest
 			}
 
 			if !pos.IsOn(stage.Level.Dimensions) {
-				return SuccessResult // rest, TODO: hit
+				return UpdatedResult // rest, TODO: hit
 			}
 
 			tile := stage.Level.GetTile(pos)
 			if !tile.IsWalkable {
-				return SuccessResult // rest
+				return UpdatedResult // rest
 			}
 
 			actor.Position = pos
 
 			if tile.Interaction != nil {
-				return alternativeAction(tile.Interaction(actor))
+				return AlternativeAction(tile.Interaction(actor), false, false)
 				// stage.Actions.Add(tile.Interaction(actor))
 			}
 
-			return SuccessResult
+			return UpdatedResult
 		},
 	}
 }

@@ -142,14 +142,14 @@ func (s *Stage) Update(d time.Duration) bool {
 
 		for result.Alternative != nil {
 			// action for the next update
-			if result.Deferred {
+			if result.AlternativeIsDeferred {
 				deferredActions.Add(result.Alternative)
 				break
 			}
 			result = result.Alternative.Perform()
 		}
 
-		if result.Success {
+		if result.Updated {
 			needToDraw = true
 
 			if action.Actor != nil {

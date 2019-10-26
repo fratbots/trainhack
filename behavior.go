@@ -50,7 +50,7 @@ func BehaviorGhost(actor *Actor, stage *Stage, target *Actor) *Actor {
 				pos := actor.Position.FollowGap(target.Position, 7)
 				if pos.IsOn(stage.Level.Dimensions) {
 					actor.Position = pos
-					return SuccessResult
+					return UpdatedResult
 				}
 
 				return FailureResult

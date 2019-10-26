@@ -48,14 +48,14 @@ var Classes = map[string]Class{
 				return &Action{
 					Actor: actor,
 					Perform: func() Result {
-						return alternativeAction(&Action{
+						return AlternativeAction(&Action{
 							Actor: actor,
 							Perform: func() Result {
 								stage.Game.Sound.SetTheme(SoundThemePursuit)
 								stage.Game.SetScreen(NewDialogScreen("a_dialog", 0, NewScreenStage(stage.Game, "map2", nil)))
 								return Result{}
 							},
-						})
+						}, false, false)
 					},
 				}
 			}
@@ -72,14 +72,14 @@ var Classes = map[string]Class{
 				return &Action{
 					Actor: actor,
 					Perform: func() Result {
-						return alternativeAction(&Action{
+						return AlternativeAction(&Action{
 							Actor: actor,
 							Perform: func() Result {
 								stage.Game.Sound.SetTheme(SoundThemePursuit)
 								stage.Game.SetScreen(NewBattleScreen(stage.Hero, target, NewScreenStage(stage.Game, "map2", nil), nil))
 								return Result{}
 							},
-						})
+						}, false, false)
 					},
 				}
 			}

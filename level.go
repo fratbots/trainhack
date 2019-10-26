@@ -201,9 +201,9 @@ func TileParser(g *Game, r rune, pos Position, doors map[rune]door) Tile {
 				Actor: actor,
 				Perform: func() Result {
 					return Result{
-						Success:     true,
-						Deferred:    true,
-						Alternative: &openTheDoor,
+						Updated:               true,
+						AlternativeIsDeferred: true,
+						Alternative:           &openTheDoor,
 					}
 				},
 			}
