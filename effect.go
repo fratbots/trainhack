@@ -10,6 +10,4 @@ type EffectTile struct {
 type Effect interface {
 	Update() bool
 	Render() []EffectTile
-	GetBehavior() EffectBehavior
-	Equals(Effect) bool
 }
