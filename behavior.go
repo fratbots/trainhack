@@ -20,9 +20,9 @@ func BehaviorPursue(stage *Stage, actor *Actor, target *Actor) Behavior {
 		}
 
 		// Show aura effect around Hero when he is being pursued.
-		auraEffect := NewEffectAura(16)
-		auraEffect.SetPosition(stage.Hero.Position)
-		stage.AddEffect(auraEffect)
+		auraEffectBehavior := NewEffectBehaviorBuilder(EffectBehaviorAddRefresh, EffectBehaviorFollowActor)
+		auraEffect := NewEffectAura(auraEffectBehavior, 16, stage.Hero)
+		stage.Effects.Add(auraEffect)
 
 		if dxAbs > dyAbs {
 			if dx < 0 {

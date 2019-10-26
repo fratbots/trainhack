@@ -8,18 +8,39 @@ type EffectTile struct {
 type Effect interface {
 	Update() bool
 	Render() []EffectTile
-	SetPosition(Position)
+	GetBehavior() EffectBehavior
+	Equals(Effect) bool
 }
 
 type EffectAura struct {
-	position Position
+	behavior EffectBehavior
 	age      int
+	target   *Actor
 }
 
-func NewEffectAura(age int) *EffectAura {
+func NewEffectAura(behavior EffectBehavior, age int, target *Actor) *EffectAura {
 	return &EffectAura{
-		age: age,
+		behavior: behavior,
+		age:      age,
+		target:   target,
 	}
+}
+
+func (e *EffectAura) GetBehavior() EffectBehavior {
+	return e.behavior
+}
+
+func (e *EffectAura) GetTarget() *Actor {
+	return e.target
+}
+
+func (e *EffectAura) Equals(other Effect) bool {
+	if otherEffectAura, ok := other.(*EffectAura); ok {
+		if e.GetTarget() == otherEffectAura.GetTarget() {
+			return true
+		}
+	}
+	return false
 }
 
 func (e *EffectAura) Update() bool {
@@ -30,26 +51,22 @@ func (e *EffectAura) Update() bool {
 	return true
 }
 
-func (e *EffectAura) SetPosition(position Position) {
-	e.position = position
-}
-
 func (e *EffectAura) Render() []EffectTile {
 	return []EffectTile{
 		EffectTile{
-			Position: Position{e.position.X - 1, e.position.Y},
+			Position: Position{e.target.Position.X - 1, e.target.Position.Y},
 			Rune:     '-',
 		},
 		EffectTile{
-			Position: Position{e.position.X + 1, e.position.Y},
+			Position: Position{e.target.Position.X + 1, e.target.Position.Y},
 			Rune:     '-',
 		},
 		EffectTile{
-			Position: Position{e.position.X, e.position.Y - 1},
+			Position: Position{e.target.Position.X, e.target.Position.Y - 1},
 			Rune:     '|',
 		},
 		EffectTile{
-			Position: Position{e.position.X, e.position.Y + 1},
+			Position: Position{e.target.Position.X, e.target.Position.Y + 1},
 			Rune:     '|',
 		},
 	}

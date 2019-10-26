@@ -91,15 +91,8 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 		}
 
 		// Effects
-		var activeEffects []Effect
-		for _, effect := range s.Stage.Effects {
-			if effect.Update() {
-				effect.SetPosition(s.Stage.Hero.Position)
-				activeEffects = append(activeEffects, effect)
-			}
-		}
-		s.Stage.Effects = activeEffects
-		for _, effect := range s.Stage.Effects {
+		s.Stage.Effects.Update()
+		for _, effect := range s.Stage.Effects.effects {
 			s.drawEffect(port, screen, width, height, effect)
 		}
 
