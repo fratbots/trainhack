@@ -57,7 +57,7 @@ func BehaviorThink(stage *Stage, actor *Actor, mirrorUp, mirrorDown, mirrorLeft,
 					actor.Direction = DirectionRight
 					return ActionMove(stage, actor, DirectionRight)
 				case endRune:
-					stage.DeleteActor(actor)
+					actor.MustBeDeleted = true
 					return nil
 				}
 			}
@@ -72,7 +72,7 @@ func BehaviorThink(stage *Stage, actor *Actor, mirrorUp, mirrorDown, mirrorLeft,
 					actor.Direction = DirectionRight
 					return ActionMove(stage, actor, DirectionRight)
 				case endRune:
-					stage.DeleteActor(actor)
+					actor.MustBeDeleted = true
 					return nil
 				}
 			}
@@ -87,7 +87,7 @@ func BehaviorThink(stage *Stage, actor *Actor, mirrorUp, mirrorDown, mirrorLeft,
 					actor.Direction = DirectionDown
 					return ActionMove(stage, actor, DirectionDown)
 				case endRune:
-					stage.DeleteActor(actor)
+					actor.MustBeDeleted = true
 					return nil
 				}
 			}
@@ -102,7 +102,7 @@ func BehaviorThink(stage *Stage, actor *Actor, mirrorUp, mirrorDown, mirrorLeft,
 					actor.Direction = DirectionDown
 					return ActionMove(stage, actor, DirectionDown)
 				case endRune:
-					stage.DeleteActor(actor)
+					actor.MustBeDeleted = true
 					return nil
 				}
 			}

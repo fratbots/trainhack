@@ -1,7 +1,6 @@
 package main
 
 import (
-	"sync"
 	"time"
 )
 
@@ -17,7 +16,6 @@ type Stage struct {
 
 	deferred *Actions
 	ticker   *Ticker
-	mu       sync.RWMutex
 
 	RuneCoords map[Position]rune
 }
@@ -119,17 +117,6 @@ func (s *Stage) AddActor(actor *Actor) {
 	s.Actors = append(s.Actors, actor)
 }
 
-func (s *Stage) DeleteActor(actor *Actor) {
-	s.mu.RLock()
-	for i, v := range s.Actors {
-		if v == actor {
-			s.Actors = append(s.Actors[:i], s.Actors[i+1:]...)
-		}
-	}
-
-	s.mu.RUnlock()
-}
-
 func (s *Stage) Update(d time.Duration) bool {
 
 	if d > tickTimeout {
@@ -137,11 +124,19 @@ func (s *Stage) Update(d time.Duration) bool {
 	}
 	timeFactor := float64(d) / tickTimeoutFloat
 
-	s.mu.RLock()
 	l := len(s.Actors)
 
 	for i := 0; i < l; i++ {
+
 		actor := s.Actors[i]
+		if actor == nil {
+			continue
+		}
+		if actor.MustBeDeleted {
+			// FIXME
+			//s.Actors[i] = nil
+			continue
+		}
 		if actor.Behavior == nil {
 			continue
 		}
@@ -157,7 +152,6 @@ func (s *Stage) Update(d time.Duration) bool {
 			}
 		}
 	}
-
 	needToDraw := false
 
 	for {
@@ -203,6 +197,5 @@ func (s *Stage) Update(d time.Duration) bool {
 		a.Deferred = false
 		s.Actions.Add(a)
 	}
-	s.mu.RUnlock()
 	return needToDraw
 }

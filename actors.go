@@ -15,7 +15,8 @@ type Actor struct {
 	ManaRegen int
 	ImagePath string
 
-	Direction Direction
+	MustBeDeleted bool
+	Direction     Direction
 }
 
 type Behavior func() *Action
