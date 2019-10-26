@@ -121,8 +121,8 @@ func (s *Stage) Update(d time.Duration) bool {
 			continue
 		}
 		if actor.MustBeDeleted {
-			// FIXME
-			//s.Actors[i] = nil
+			s.Actors = append(s.Actors[:i], s.Actors[i+1:]...)
+			l--
 			continue
 		}
 		if actor.Behavior == nil {
