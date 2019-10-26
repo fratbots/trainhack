@@ -98,6 +98,10 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 		return nil
 	})
 
+	// Add helicopter effect.
+	helicopterEffect := NewEffectHelicopter()
+	s.Stage.Effects.Set("helicopter", helicopterEffect)
+
 	box.SetDrawFunc(func(screen tcell.Screen, x, y, width, height int) (int, int, int, int) {
 		x, y, width, height = box.GetInnerRect()
 
@@ -156,7 +160,7 @@ func (s *ScreenStage) drawEffect(port Port, screen tcell.Screen, width int, heig
 	renderedEffect := effect.Render()
 	for _, effectTile := range renderedEffect {
 		screenPos := port.ToScreen(effectTile.Position)
-		style := tcell.StyleDefault.Foreground(tcell.ColorGreen)
+		style := tcell.StyleDefault.Foreground(effectTile.Foreground)
 		tile := s.Stage.Level.GetTile(effectTile.Position)
 		if tile == nil {
 			continue

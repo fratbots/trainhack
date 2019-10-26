@@ -5,6 +5,7 @@ type Effects struct {
 	effects []LabelledEffect
 }
 
+// LabelledEffect is an effect marked with string label.
 type LabelledEffect struct {
 	Label  string
 	Effect Effect
