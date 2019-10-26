@@ -28,3 +28,8 @@ func (t *TileStatic) GetInteraction() Interaction {
 func (t *TileStatic) SetInteraction(interaction Interaction) {
 	t.interaction = interaction
 }
+
+func (t *TileStatic) Copy() Tile {
+	c := *t
+	return &c
+}

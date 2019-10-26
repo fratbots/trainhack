@@ -254,21 +254,12 @@ func TileParser(g *Game, r rune, pos Position, doors map[rune]door) Tile {
 	}
 
 	if t, ok := tiles[r]; ok {
-		if t != nil {
-			var tile Tile
-			if tt, ok := t.(*TileStatic); ok {
-				c := *tt
-				tile = &c
-			} else if tt, ok := t.(*TileAnimated); ok {
-				c := *tt
-				tile = &c
-			}
-			if !tile.GetWalkable() && isWalkable {
-				tile.SetWalkable(true)
-			}
-			tile.SetInteraction(interaction)
-			return tile
+		tile := t.Copy()
+		if !tile.GetWalkable() && isWalkable {
+			tile.SetWalkable(true)
 		}
+		tile.SetInteraction(interaction)
+		return tile
 	}
 
 	return &TileStatic{
