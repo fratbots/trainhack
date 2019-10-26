@@ -67,7 +67,7 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 
 	if s.Stage.Name == "mapMiniGame" {
 		s.Stage.RegisterRune('4', Position{0, 13})
-		s.Stage.RegisterRune('4', Position{29, 0})
+		s.Stage.RegisterRune('4', Position{29, 23})
 		go CreateThink(s)
 	}
 

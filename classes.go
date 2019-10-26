@@ -39,7 +39,7 @@ func Classes() map[string]Class {
 		ClassThink: {
 			Name:  ClassThink,
 			Rune:  'd',
-			Speed: 1,
+			Speed: 0.7,
 			BehaviorInit: func(stage *Stage, actor *Actor) Behavior {
 				return BehaviorThink(stage, actor, '↑', '↓', '←', '→')
 			},
