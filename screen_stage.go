@@ -120,7 +120,7 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 }
 
 func (s *ScreenStage) drawTile(screen tcell.Screen, tile Tile, mapPos, screenPos Position) {
-	tileRune, tileStyle := tile.GetAppearance(s.Stage.frame, Position{screenPos.X, screenPos.Y})
+	tileRune, tileStyle := tile.GetAppearance(s.Stage.frame, Position{mapPos.X, mapPos.Y})
 	screen.SetContent(screenPos.X, screenPos.Y, tileRune, nil, tileStyle)
 }
 
