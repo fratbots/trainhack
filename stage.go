@@ -14,7 +14,8 @@ type Stage struct {
 	Actions *Actions
 	Level   *Level
 
-	ticker *Ticker
+	deferred *Actions
+	ticker   *Ticker
 }
 
 func NewStage(g *Game) *Stage {
@@ -23,8 +24,9 @@ func NewStage(g *Game) *Stage {
 		Game: g,
 		Hero: hero,
 
-		Actors:  []*Actor{hero},
-		Actions: NewActions(),
+		Actors:   []*Actor{hero},
+		Actions:  NewActions(),
+		deferred: NewActions(),
 	}
 }
 
@@ -131,7 +133,6 @@ func (s *Stage) Update(d time.Duration) bool {
 
 	needToDraw := false
 
-	deferredActions := NewActions()
 	for {
 		action := s.Actions.Get()
 		if action == nil {
@@ -141,11 +142,11 @@ func (s *Stage) Update(d time.Duration) bool {
 		result := action.Perform()
 
 		for result.Alternative != nil {
-			// action for the next update
 			if result.AlternativeIsDeferred {
-				deferredActions.Add(result.Alternative)
+				s.deferred.Add(result.Alternative)
 				break
 			}
+
 			result = result.Alternative.Perform()
 		}
 
@@ -162,8 +163,12 @@ func (s *Stage) Update(d time.Duration) bool {
 		needToDraw = true
 	}
 
-	if deferredActions.Len() > 0 {
-		s.Actions = deferredActions
+	for {
+		a := s.deferred.Get()
+		if a == nil {
+			break
+		}
+		s.Actions.Add(a)
 	}
 
 	return needToDraw
