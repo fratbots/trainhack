@@ -43,6 +43,7 @@ func BehaviorPursue(stage *Stage, actor *Actor, target *Actor) Behavior {
 }
 
 func BehaviorThink(stage *Stage, actor *Actor, mirrorUp, mirrorDown, mirrorLeft, mirrorRight rune) Behavior {
+	endRune := '4'
 	return func() *Action {
 		switch actor.Direction {
 		case DirectionTop:
@@ -55,6 +56,9 @@ func BehaviorThink(stage *Stage, actor *Actor, mirrorUp, mirrorDown, mirrorLeft,
 				case mirrorRight:
 					actor.Direction = DirectionRight
 					return ActionMove(stage, actor, DirectionRight)
+				case endRune:
+					stage.DeleteActor(actor)
+					return nil
 				}
 			}
 		case DirectionDown:
@@ -67,6 +71,9 @@ func BehaviorThink(stage *Stage, actor *Actor, mirrorUp, mirrorDown, mirrorLeft,
 				case mirrorRight:
 					actor.Direction = DirectionRight
 					return ActionMove(stage, actor, DirectionRight)
+				case endRune:
+					stage.DeleteActor(actor)
+					return nil
 				}
 			}
 		case DirectionLeft:
@@ -79,6 +86,9 @@ func BehaviorThink(stage *Stage, actor *Actor, mirrorUp, mirrorDown, mirrorLeft,
 				case mirrorDown:
 					actor.Direction = DirectionDown
 					return ActionMove(stage, actor, DirectionDown)
+				case endRune:
+					stage.DeleteActor(actor)
+					return nil
 				}
 			}
 		case DirectionRight:
@@ -91,6 +101,9 @@ func BehaviorThink(stage *Stage, actor *Actor, mirrorUp, mirrorDown, mirrorLeft,
 				case mirrorDown:
 					actor.Direction = DirectionDown
 					return ActionMove(stage, actor, DirectionDown)
+				case endRune:
+					stage.DeleteActor(actor)
+					return nil
 				}
 			}
 		}

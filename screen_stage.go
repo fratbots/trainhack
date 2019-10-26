@@ -28,7 +28,7 @@ func (s *ScreenStage) Finalize() {
 func CreateThink(s *ScreenStage) {
 	for i := 0; i < 10; i++ {
 		time.Sleep(2000)
-		s.Stage.AddActor(NewClassActor(s.Stage, Position{X: 25, Y: 9}, DirectionLeft, ClassThink))
+		s.Stage.AddActor(NewClassActor(s.Stage, Position{X: 78, Y: 13}, DirectionLeft, ClassThink))
 	}
 }
 
@@ -49,6 +49,8 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 	}
 
 	if s.Stage.Name == "mapMiniGame" {
+		s.Stage.RegisterRune('4', Position{0, 13})
+		s.Stage.RegisterRune('4', Position{29, 0})
 		go CreateThink(s)
 	}
 

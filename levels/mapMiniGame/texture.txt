@@ -21,6 +21,6 @@ h..............................................................................h
 h..............................................................................h
 h..............................................................................h
 h..............................................................................h
-hhhhhhhhhhhhhhhhhhhhhhhhhhhhh5hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+hhhhhhhhhhhhhhhhhhhhhhhhhhhhh4hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
 
 // rune:1 display:= map:map2 location:2
