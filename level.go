@@ -185,14 +185,26 @@ func TileParser(g *Game, r rune, pos Position, doors map[rune]door) Tile {
 
 		r = door.Rune
 		isWalkable = true
+
+		openTheDoor := Action{
+			Actor: nil,
+			Perform: func() Result {
+				d := door.Door
+				g.Sound.PlayContext(SoundContextDoor)
+				g.SetScreen(NewScreenStage(g, door.Map, &d))
+				return Result{}
+			},
+		}
+
 		interaction = func(actor *Actor) *Action {
 			return &Action{
 				Actor: actor,
 				Perform: func() Result {
-					d := door.Door
-					g.Sound.PlayContext(SoundContextDoor)
-					g.SetScreen(NewScreenStage(g, door.Map, &d))
-					return Result{}
+					return Result{
+						Success:     true,
+						Deferred:    true,
+						Alternative: &openTheDoor,
+					}
 				},
 			}
 		}

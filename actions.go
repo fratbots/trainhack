@@ -12,6 +12,7 @@ type Action struct {
 
 type Result struct {
 	Success     bool
+	Deferred    bool
 	Alternative *Action
 }
 
@@ -29,6 +30,10 @@ func (a *Actions) Add(action *Action) {
 	defer a.mu.Unlock()
 
 	a.list.PushBack(action)
+}
+
+func (a *Actions) Len() int {
+	return a.list.Len()
 }
 
 func (a *Actions) Get() *Action {
@@ -57,12 +62,12 @@ func (a *Actions) Reset() {
 }
 
 var (
-	successResult = Result{
+	SuccessResult = Result{
 		Success:     true,
 		Alternative: nil,
 	}
 
-	failureResult = Result{
+	FailureResult = Result{
 		Success:     false,
 		Alternative: nil,
 	}
@@ -89,25 +94,26 @@ func ActionMove(stage *Stage, actor *Actor, dir Direction) *Action {
 					return alternativeAction(target.Interaction(actor))
 				}
 
-				return successResult // rest
+				return SuccessResult // rest
 			}
 
 			if !pos.IsOn(stage.Level.Dimensions) {
-				return successResult // rest, TODO: hit
+				return SuccessResult // rest, TODO: hit
 			}
 
 			tile := stage.Level.GetTile(pos)
 			if !tile.IsWalkable {
-				return successResult // rest
+				return SuccessResult // rest
 			}
 
 			actor.Position = pos
 
 			if tile.Interaction != nil {
-				stage.Actions.Add(tile.Interaction(actor))
+				return alternativeAction(tile.Interaction(actor))
+				// stage.Actions.Add(tile.Interaction(actor))
 			}
 
-			return successResult
+			return SuccessResult
 		},
 	}
 }
