@@ -34,3 +34,8 @@ func (t *TileAnimated) GetInteraction() Interaction {
 func (t *TileAnimated) SetInteraction(interaction Interaction) {
 	t.interaction = interaction
 }
+
+func (t *TileAnimated) Copy() Tile {
+	c := *t
+	return &c
+}

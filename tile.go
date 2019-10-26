@@ -8,4 +8,5 @@ type Tile interface {
 	SetWalkable(bool)
 	GetInteraction() Interaction
 	SetInteraction(Interaction)
+	Copy() Tile
 }
