@@ -60,3 +60,39 @@ func BehaviorGhost(actor *Actor, stage *Stage, target *Actor) *Actor {
 
 	return actor
 }
+
+func BehaviorDialog(stage *Stage, actor *Actor) Interaction {
+	return func(target *Actor) *Action {
+		return &Action{
+			Actor: actor,
+			Perform: func() Result {
+				return AlternativeAction(&Action{
+					Actor: actor,
+					Perform: func() Result {
+						stage.Game.Sound.SetTheme(SoundThemePursuit)
+						stage.Game.SetScreen(NewDialogScreen("a_dialog", 0, NewScreenStage(stage.Game, "map2", nil)))
+						return Result{}
+					},
+				}, false)
+			},
+		}
+	}
+}
+
+func BehaviorBattle(stage *Stage, actor *Actor) Interaction {
+	return func(target *Actor) *Action {
+		return &Action{
+			Actor: actor,
+			Perform: func() Result {
+				return AlternativeAction(&Action{
+					Actor: actor,
+					Perform: func() Result {
+						stage.Game.Sound.SetTheme(SoundThemePursuit)
+						stage.Game.SetScreen(NewBattleScreen(stage.Hero, target, NewScreenStage(stage.Game, "map2", nil), nil))
+						return Result{}
+					},
+				}, false)
+			},
+		}
+	}
+}

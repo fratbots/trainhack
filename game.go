@@ -27,6 +27,8 @@ func NewGame(playSounds bool) (*Game, error) {
 	return &Game{
 		UI: UI{},
 
+		State: State{Stages: map[string]StateStage{}},
+
 		Dialoger: NewDialoger("./example/dialogs", "./example/hero.png", "Великий поработитель Уно"),
 		Sound:    sound,
 	}, nil

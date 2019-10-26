@@ -28,7 +28,8 @@ func (a *Actor) SetNextAction(action *Action) {
 }
 
 func NewClassActor(stage *Stage, pos Position, class string) *Actor {
-	cls, ok := Classes[class]
+	classes := Classes()
+	cls, ok := classes[class]
 	if !ok {
 		return nil
 	}
@@ -54,6 +55,14 @@ func NewClassActor(stage *Stage, pos Position, class string) *Actor {
 	}
 
 	return actor
+}
+
+func GetActorState(actor *Actor) ActorState {
+	return ActorState{
+		ClassName: actor.Class.Name,
+		Position:  actor.Position,
+		Energy:    actor.Energy,
+	}
 }
 
 func NewHero() *Actor {

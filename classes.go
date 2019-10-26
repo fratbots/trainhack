@@ -20,69 +20,42 @@ const (
 	ClassBattle = "battle"
 )
 
-var Classes = map[string]Class{
+func Classes() map[string]Class {
 
-	ClassHero: {
-		Name:   ClassHero,
-		IsHero: true,
-		Rune:   '@',
-		Speed:  1,
-	},
+	return map[string]Class{
 
-	ClassPursue: {
-		Name:  ClassPursue,
-		Rune:  '$',
-		Speed: 0.3,
-		BehaviorInit: func(stage *Stage, actor *Actor) Behavior {
-			return BehaviorPursue(stage, actor, stage.Hero)
+		ClassHero: {
+			Name:   ClassHero,
+			IsHero: true,
+			Rune:   '@',
+			Speed:  1,
 		},
-	},
 
-	ClassDialog: {
-		Name:  ClassDialog,
-		Rune:  'D',
-		Speed: 0,
-		InteractionInit: func(stage *Stage, actor *Actor) Interaction {
-			// extract interaction function
-			return func(target *Actor) *Action {
-				return &Action{
-					Actor: actor,
-					Perform: func() Result {
-						return AlternativeAction(&Action{
-							Actor: actor,
-							Perform: func() Result {
-								stage.Game.Sound.SetTheme(SoundThemePursuit)
-								stage.Game.SetScreen(NewDialogScreen("a_dialog", 0, NewScreenStage(stage.Game, "map2", nil)))
-								return Result{}
-							},
-						}, false)
-					},
-				}
-			}
+		ClassPursue: {
+			Name:  ClassPursue,
+			Rune:  '$',
+			Speed: 0.3,
+			BehaviorInit: func(stage *Stage, actor *Actor) Behavior {
+				return BehaviorPursue(stage, actor, stage.Hero)
+			},
 		},
-	},
 
-	ClassBattle: {
-		Name:  ClassBattle,
-		Rune:  'B',
-		Speed: 0,
-		InteractionInit: func(stage *Stage, actor *Actor) Interaction {
-			// extract interaction function
-			return func(target *Actor) *Action {
-				return &Action{
-					Actor: actor,
-					Perform: func() Result {
-						return AlternativeAction(&Action{
-							Actor: actor,
-							Perform: func() Result {
-								stage.Game.Sound.SetTheme(SoundThemePursuit)
-								stage.Game.SetScreen(NewBattleScreen(stage.Hero, target, NewScreenStage(stage.Game, "map2", nil), nil))
-								return Result{}
-							},
-						}, false)
-					},
-				}
-			}
+		ClassDialog: {
+			Name:  ClassDialog,
+			Rune:  'D',
+			Speed: 0,
+			InteractionInit: func(stage *Stage, actor *Actor) Interaction {
+				return BehaviorDialog(stage, actor)
+			},
 		},
-	},
+
+		ClassBattle: {
+			Name:  ClassBattle,
+			Rune:  'B',
+			Speed: 0,
+			InteractionInit: func(stage *Stage, actor *Actor) Interaction {
+				return BehaviorBattle(stage, actor)
+			},
+		},
+	}
 }

@@ -45,16 +45,14 @@ func (s *Stage) Load(name string, location *rune) *Stage {
 		return s
 	}
 
-	// save state
-	s.Save()
+	// reset
+	s.Name = name
+	s.Level = level
+	s.Actions.Reset()
+	s.deferred.Reset()
 
-	// load or create state
-	if state, ok := s.Game.State.Stages[name]; ok {
-		// TODO: chage / cleanup actors from levelMap
-		s.Actors = state.Actors
-		// TODO: use target to locate or:
-		s.Hero.Position = state.HeroPosition
-	} else {
+	// load state
+	if !LoadState(s) {
 		// TODO: create actors from levelMap
 		s.Hero = NewHero()
 		s.Hero.Position = Position{X: 39, Y: 5}
@@ -67,23 +65,7 @@ func (s *Stage) Load(name string, location *rune) *Stage {
 		}
 	}
 
-	s.Name = name
-	s.Actions.Reset()
-
-	s.Level = level
-
 	return s
-}
-
-func (s *Stage) Save() string {
-	if s.Name == "" {
-		return ""
-	}
-	s.Game.State.Stages[s.Name] = StateStage{
-		HeroPosition: s.Hero.Position,
-		Actors:       s.Actors,
-	}
-	return s.Name
 }
 
 func (s *Stage) Start() {
