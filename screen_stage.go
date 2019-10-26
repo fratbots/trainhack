@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/gdamore/tcell"
 	"github.com/rivo/tview"
@@ -12,12 +13,14 @@ func NewScreenStage(g *Game, mapName string, location *rune) *ScreenStage {
 	stage.Load(mapName, location)
 
 	return &ScreenStage{
-		Stage: stage,
+		Stage:         stage,
+		effectsToDraw: []LabelledEffect{},
 	}
 }
 
 type ScreenStage struct {
-	Stage *Stage
+	Stage         *Stage
+	effectsToDraw []LabelledEffect
 }
 
 func (s *ScreenStage) Finalize() {
@@ -95,9 +98,10 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 		}
 
 		// Effects
-		s.Stage.Effects.Update()
-		for _, effect := range s.Stage.Effects.effects {
-			s.drawEffect(port, screen, width, height, effect.Effect)
+		if len(s.effectsToDraw) > 0 {
+			for _, effect := range s.Stage.Effects.effects {
+				s.drawEffect(port, screen, width, height, effect.Effect)
+			}
 		}
 
 		// HUD
@@ -105,6 +109,16 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 
 		return x, y, width, height
 	})
+
+	s.Stage.UpdateCallback = func(d time.Duration) bool {
+		s.Stage.Effects.Update()
+		s.effectsToDraw = s.Stage.Effects.effects
+		if len(s.effectsToDraw) > 0 {
+			return true
+		}
+
+		return false
+	}
 
 	s.Stage.Start()
 

@@ -10,9 +10,12 @@ type Stage struct {
 	Game    *Game
 	Hero    *Actor
 	Actors  []*Actor
-	Effects Effects
 	Actions *Actions
 	Level   *Level
+
+	Effects Effects
+
+	UpdateCallback func(d time.Duration) bool
 
 	deferred *Actions
 	ticker   *Ticker
@@ -168,8 +171,10 @@ func (s *Stage) Update(d time.Duration) bool {
 		}
 	}
 
-	if s.Effects.Count() > 0 {
-		needToDraw = true
+	if s.UpdateCallback != nil {
+		if s.UpdateCallback(d) {
+			needToDraw = true
+		}
 	}
 
 	for {
