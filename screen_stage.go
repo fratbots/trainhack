@@ -13,14 +13,12 @@ func NewScreenStage(g *Game, mapName string, location *rune) *ScreenStage {
 	stage.Load(mapName, location)
 
 	return &ScreenStage{
-		Stage:         stage,
-		effectsToDraw: []LabelledEffect{},
+		Stage: stage,
 	}
 }
 
 type ScreenStage struct {
-	Stage         *Stage
-	effectsToDraw []LabelledEffect
+	Stage *Stage
 }
 
 func (s *ScreenStage) Finalize() {
@@ -98,10 +96,8 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 		}
 
 		// Effects
-		if len(s.effectsToDraw) > 0 {
-			for _, effect := range s.Stage.Effects.effects {
-				s.drawEffect(port, screen, width, height, effect.Effect)
-			}
+		for _, effect := range s.Stage.Effects.effects {
+			s.drawEffect(port, screen, width, height, effect.Effect)
 		}
 
 		// HUD
@@ -112,11 +108,9 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 
 	s.Stage.UpdateCallback = func(d time.Duration) bool {
 		s.Stage.Effects.Update()
-		s.effectsToDraw = s.Stage.Effects.effects
-		if len(s.effectsToDraw) > 0 {
+		if len(s.Stage.Effects.effects) > 0 {
 			return true
 		}
-
 		return false
 	}
 
