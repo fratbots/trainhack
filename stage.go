@@ -189,5 +189,6 @@ func (s *Stage) Update(d time.Duration) bool {
 		s.Actions.Add(a)
 	}
 
+	needToDraw = true
 	return needToDraw
 }
