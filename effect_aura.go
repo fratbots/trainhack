@@ -1,5 +1,7 @@
 package main
 
+import "github.com/gdamore/tcell"
+
 // EffectAura is an Aura effect around actor.
 type EffectAura struct {
 	longevity int
@@ -32,6 +34,8 @@ func (e *EffectAura) Render() []EffectTile {
 	var runeTop rune
 	var runeBottom rune
 
+	color := tcell.ColorGreen
+
 	if e.frame >= e.longevity/2 {
 		runeLeft = '+'
 		runeRight = '+'
@@ -46,20 +50,24 @@ func (e *EffectAura) Render() []EffectTile {
 
 	return []EffectTile{
 		EffectTile{
-			Position: Position{e.target.Position.X - 1, e.target.Position.Y},
-			Rune:     runeLeft,
+			Position:   Position{e.target.Position.X - 1, e.target.Position.Y},
+			Rune:       runeLeft,
+			Foreground: color,
 		},
 		EffectTile{
-			Position: Position{e.target.Position.X + 1, e.target.Position.Y},
-			Rune:     runeRight,
+			Position:   Position{e.target.Position.X + 1, e.target.Position.Y},
+			Rune:       runeRight,
+			Foreground: color,
 		},
 		EffectTile{
-			Position: Position{e.target.Position.X, e.target.Position.Y - 1},
-			Rune:     runeTop,
+			Position:   Position{e.target.Position.X, e.target.Position.Y - 1},
+			Rune:       runeTop,
+			Foreground: color,
 		},
 		EffectTile{
-			Position: Position{e.target.Position.X, e.target.Position.Y + 1},
-			Rune:     runeBottom,
+			Position:   Position{e.target.Position.X, e.target.Position.Y + 1},
+			Rune:       runeBottom,
+			Foreground: color,
 		},
 	}
 }
