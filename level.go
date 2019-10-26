@@ -113,9 +113,9 @@ var (
 	colorDarkGreen   = tcell.NewRGBColor(0, 200, 0)
 	colorGreen       = tcell.NewRGBColor(0, 255, 0)
 	colorForestGreen = tcell.NewRGBColor(0, 200, 0)
-	colorDarkBlue    = tcell.NewRGBColor(0, 10, 215)
-	colorBlue        = tcell.NewRGBColor(10, 30, 240)
-	colorLightBlue   = tcell.NewRGBColor(50, 50, 255)
+	colorDarkBlue    = tcell.NewRGBColor(0, 212, 255)
+	colorBlue        = tcell.NewRGBColor(50, 220, 255)
+	colorLightBlue   = tcell.NewRGBColor(89, 227, 255)
 	colorWhite       = tcell.NewRGBColor(255, 255, 255)
 
 	styleGrass       = tcell.StyleDefault.Background(colorGreen).Foreground(colorDarkGreen)
