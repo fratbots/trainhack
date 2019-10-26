@@ -14,23 +14,23 @@ type TileAnimated struct {
 	animationSpeed int
 }
 
-func (t TileAnimated) GetAppearance(frame int, position Position) (rune, tcell.Style) {
+func (t *TileAnimated) GetAppearance(frame int, position Position) (rune, tcell.Style) {
 	idx := frame % len(t.frames)
 	return t.frames[idx].tileRune, t.frames[idx].style
 }
 
-func (t TileAnimated) GetWalkable() bool {
+func (t *TileAnimated) GetWalkable() bool {
 	return t.walkable
 }
 
-func (t TileAnimated) SetWalkable(walkable bool) {
+func (t *TileAnimated) SetWalkable(walkable bool) {
 	t.walkable = walkable
 }
 
-func (t TileAnimated) GetInteraction() Interaction {
+func (t *TileAnimated) GetInteraction() Interaction {
 	return t.interaction
 }
 
-func (t TileAnimated) SetInteraction(interaction Interaction) {
+func (t *TileAnimated) SetInteraction(interaction Interaction) {
 	t.interaction = interaction
 }

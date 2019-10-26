@@ -9,22 +9,22 @@ type TileStatic struct {
 	style       tcell.Style
 }
 
-func (t TileStatic) GetAppearance(frame int, position Position) (rune, tcell.Style) {
+func (t *TileStatic) GetAppearance(frame int, position Position) (rune, tcell.Style) {
 	return t.tileRune, t.style
 }
 
-func (t TileStatic) GetWalkable() bool {
+func (t *TileStatic) GetWalkable() bool {
 	return t.walkable
 }
 
-func (t TileStatic) SetWalkable(walkable bool) {
+func (t *TileStatic) SetWalkable(walkable bool) {
 	t.walkable = walkable
 }
 
-func (t TileStatic) GetInteraction() Interaction {
+func (t *TileStatic) GetInteraction() Interaction {
 	return t.interaction
 }
 
-func (t TileStatic) SetInteraction(interaction Interaction) {
+func (t *TileStatic) SetInteraction(interaction Interaction) {
 	t.interaction = interaction
 }

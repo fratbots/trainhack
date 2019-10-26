@@ -122,32 +122,32 @@ var (
 	styleGround = tcell.StyleDefault.Background(tcell.ColorSandyBrown).Foreground(tcell.ColorSandyBrown)
 
 	tiles = map[rune]Tile{
-		'.': TileStatic{
+		'.': &TileStatic{
 			tileRune: '.',
 			style:    styleGrass,
 			walkable: true,
 		},
-		'u': TileStatic{
+		'u': &TileStatic{
 			tileRune: tcell.RuneBlock,
 			style:    styleForest,
 			walkable: false,
 		},
-		'y': TileStatic{
+		'y': &TileStatic{
 			tileRune: tcell.RuneBoard,
 			style:    styleForest,
 			walkable: false,
 		},
-		'k': TileStatic{
+		'k': &TileStatic{
 			tileRune: tcell.RuneCkBoard,
 			style:    styleForest,
 			walkable: false,
 		},
-		'h': TileStatic{
+		'h': &TileStatic{
 			tileRune: tcell.RuneCkBoard,
 			style:    styleForest,
 			walkable: false,
 		},
-		'/': TileAnimated{
+		'/': &TileAnimated{
 			frames: []TileAnimatedFrame{
 				TileAnimatedFrame{
 					tileRune: '/',
@@ -169,7 +169,7 @@ var (
 			animationSpeed: 1,
 			walkable:       false,
 		},
-		'^': TileAnimated{
+		'^': &TileAnimated{
 			frames: []TileAnimatedFrame{
 				TileAnimatedFrame{
 					tileRune: '.',
@@ -187,7 +187,7 @@ var (
 			animationSpeed: 1,
 			walkable:       true,
 		},
-		'_': TileStatic{
+		'_': &TileStatic{
 			tileRune: ' ',
 			style:    styleGround,
 			walkable: true,
@@ -222,14 +222,24 @@ func TileParser(g *Game, r rune, pos Position, doors map[rune]door) Tile {
 	}
 
 	if t, ok := tiles[r]; ok {
-		if !t.GetWalkable() && isWalkable {
-			t.SetWalkable(true)
+		if t != nil {
+			var tile Tile
+			if tt, ok := t.(*TileStatic); ok {
+				c := *tt
+				tile = &c
+			} else if tt, ok := t.(*TileAnimated); ok {
+				c := *tt
+				tile = &c
+			}
+			if !tile.GetWalkable() && isWalkable {
+				tile.SetWalkable(true)
+			}
+			tile.SetInteraction(interaction)
+			return tile
 		}
-		t.SetInteraction(interaction)
-		return t
 	}
 
-	return TileStatic{
+	return &TileStatic{
 		tileRune:    r,
 		style:       tcell.StyleDefault,
 		interaction: interaction,
