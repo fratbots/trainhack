@@ -6,20 +6,27 @@ type EffectTile struct {
 }
 
 type Effect interface {
-	Alive() bool
+	Update() bool
 	Render() []EffectTile
 	SetPosition(Position)
 }
 
 type EffectAura struct {
 	position Position
+	age      int
 }
 
-func NewEffectAura() *EffectAura {
-	return &EffectAura{}
+func NewEffectAura(age int) *EffectAura {
+	return &EffectAura{
+		age: age,
+	}
 }
 
-func (e *EffectAura) Alive() bool {
+func (e *EffectAura) Update() bool {
+	e.age = e.age - 1
+	if e.age <= 0 {
+		return false
+	}
 	return true
 }
 

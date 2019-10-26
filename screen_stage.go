@@ -40,11 +40,6 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 		}
 	}
 
-	// TODO remove after effect queue implementation.
-	auraEffect := NewEffectAura()
-	auraEffect.SetPosition(s.Stage.Hero.Position)
-	s.Stage.AddEffect(auraEffect)
-
 	// stage stuff:
 
 	lookAt := s.Stage.Hero.Position
@@ -96,15 +91,14 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 		}
 
 		// Effects
-		// TODO replace hardcode with event based effects emission.
-		var survivingEffects []Effect
+		var activeEffects []Effect
 		for _, effect := range s.Stage.Effects {
-			if effect.Alive() {
+			if effect.Update() {
 				effect.SetPosition(s.Stage.Hero.Position)
-				survivingEffects = append(survivingEffects, effect)
+				activeEffects = append(activeEffects, effect)
 			}
 		}
-		s.Stage.Effects = survivingEffects
+		s.Stage.Effects = activeEffects
 		for _, effect := range s.Stage.Effects {
 			s.drawEffect(port, screen, width, height, effect)
 		}

@@ -1,9 +1,5 @@
 package main
 
-import (
-	"fmt"
-)
-
 func abs(a int) int {
 	if a < 0 {
 		return -a
@@ -22,6 +18,11 @@ func BehaviorPursue(stage *Stage, actor *Actor, target *Actor) Behavior {
 		if dxAbs > 5 || dyAbs > 5 {
 			return nil
 		}
+
+		// Show aura effect around Hero when he is being pursued.
+		auraEffect := NewEffectAura(16)
+		auraEffect.SetPosition(stage.Hero.Position)
+		stage.AddEffect(auraEffect)
 
 		if dxAbs > dyAbs {
 			if dx < 0 {
@@ -42,14 +43,11 @@ func BehaviorPursue(stage *Stage, actor *Actor, target *Actor) Behavior {
 }
 
 func BehaviorGhost(actor *Actor, stage *Stage, target *Actor) *Actor {
-
 	actor.Behavior = func() *Action {
 		return &Action{
 			Actor: actor,
 			Perform: func() Result {
 				pos := actor.Position.FollowGap(target.Position, 7)
-				fmt.Printf("pos: %#v\n", pos)
-
 				if pos.IsOn(stage.Level.Dimensions) {
 					actor.Position = pos
 					return successResult
