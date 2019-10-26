@@ -27,25 +27,28 @@ func (s *ScreenStage) Finalize() {
 	s.Stage.Stop()
 }
 
-var once = sync.Once{}
+var onceMap2 = sync.Once{}
+var onceMap3 = sync.Once{}
 
 func (s *ScreenStage) Init(game *Game) tview.Primitive {
 	// TODO: move to levels' meta data
-	once.Do(func() {
-		if s.Stage.Name == "map2" {
+	if s.Stage.Name == "map2" {
+		onceMap2.Do(func() {
 			s.Stage.AddActor(NewClassActor(s.Stage, Position{X: 22, Y: 6}, ClassDialog))
 			s.Stage.AddActor(NewClassActor(s.Stage, Position{X: 46, Y: 6}, ClassBattle))
 			s.Stage.AddActor(NewClassActor(s.Stage, Position{X: 7, Y: 5}, ClassPursue))
-		}
+		})
+	}
 
-		if s.Stage.Name == "map3" {
+	if s.Stage.Name == "map3" {
+		onceMap3.Do(func() {
 			for y := 5; y <= 20; y = y + 3 {
 				for x := 5; x <= 68; x = x + 3 {
 					s.Stage.AddActor(NewClassActor(s.Stage, Position{X: x, Y: y}, ClassPursue))
 				}
 			}
-		}
-	})
+		})
+	}
 
 	// stage stuff:
 
