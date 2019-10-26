@@ -93,7 +93,7 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 		// Effects
 		s.Stage.Effects.Update()
 		for _, effect := range s.Stage.Effects.effects {
-			s.drawEffect(port, screen, width, height, effect)
+			s.drawEffect(port, screen, width, height, effect.Effect)
 		}
 
 		// HUD

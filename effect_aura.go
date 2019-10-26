@@ -2,56 +2,37 @@ package main
 
 // EffectAura is an Aura effect around actor.
 type EffectAura struct {
-	behavior EffectBehavior
-	age      int
-	target   *Actor
+	longevity int
+	frame     int
+	target    *Actor
 }
 
 // NewEffectAura creates Aura effect.
-func NewEffectAura(behavior EffectBehavior, age int, target *Actor) *EffectAura {
+func NewEffectAura(longevity int, target *Actor) *EffectAura {
 	return &EffectAura{
-		behavior: behavior,
-		age:      age,
-		target:   target,
+		frame:     0,
+		longevity: longevity,
+		target:    target,
 	}
-}
-
-// GetBehavior returns Aura effect behavior.
-func (e *EffectAura) GetBehavior() EffectBehavior {
-	return e.behavior
-}
-
-// GetTarget returns actor that Aura effect assigned to.
-func (e *EffectAura) GetTarget() *Actor {
-	return e.target
-}
-
-// Equals checks whether other effect is also Aura effect that is assigned to the same actor.
-func (e *EffectAura) Equals(other Effect) bool {
-	if otherEffectAura, ok := other.(*EffectAura); ok {
-		if e.GetTarget() == otherEffectAura.GetTarget() {
-			return true
-		}
-	}
-	return false
 }
 
 // Update moves forward effect animation progress and returns false if animation has ended.
 func (e *EffectAura) Update() bool {
-	e.age = e.age - 1
-	if e.age <= 0 {
+	e.frame = e.frame + 1
+	if e.frame >= e.longevity {
 		return false
 	}
 	return true
 }
 
+// Render creates a set of tiles representing current frame of effect animation.
 func (e *EffectAura) Render() []EffectTile {
 	var runeLeft rune
 	var runeRight rune
 	var runeTop rune
 	var runeBottom rune
 
-	if e.age <= 6 {
+	if e.frame >= e.longevity/2 {
 		runeLeft = '+'
 		runeRight = '+'
 		runeTop = '+'
