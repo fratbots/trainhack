@@ -158,6 +158,10 @@ func (s *Stage) Update(d time.Duration) bool {
 		}
 	}
 
+	if s.Effects.Count() > 0 {
+		needToDraw = true
+	}
+
 	if deferredActions.Len() > 0 {
 		s.Actions = deferredActions
 	}

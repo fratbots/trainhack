@@ -38,3 +38,8 @@ func (e *Effects) Update() {
 	e.effects = nil
 	e.effects = updated
 }
+
+// Count returns the number of active effects.
+func (e *Effects) Count() int {
+	return len(e.effects)
+}
