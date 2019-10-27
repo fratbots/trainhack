@@ -114,6 +114,8 @@ func (s *ScreenStage) Init(game *Game) tview.Primitive {
 				s.Stage.RegisterRune('↑', Position{s.Stage.Hero.Position.X + 1, s.Stage.Hero.Position.Y})
 				s.Stage.AddActor(NewClassActor(s.Stage, Position{s.Stage.Hero.Position.X + 1, s.Stage.Hero.Position.Y}, Direction{}, ClassMirrorUp))
 			}
+		case tcell.KeyEsc:
+			s.Stage.Game.SetScreen(NewScreenSave(s.Stage.Name))
 		}
 
 		switch event.Rune() {

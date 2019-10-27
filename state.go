@@ -1,6 +1,12 @@
 package main
 
+import (
+	"encoding/json"
+	"io/ioutil"
+)
+
 type State struct {
+	Stage  string
 	Stages map[string]StateStage
 }
 
@@ -31,6 +37,7 @@ func SaveState(stage *Stage) {
 		}
 	}
 
+	stage.Game.State.Stage = stage.Name
 	stage.Game.State.Stages[stage.Name] = stateStage
 }
 
@@ -40,14 +47,23 @@ func LoadState(stage *Stage) bool {
 		return false
 	}
 
-	hero := NewClassActor(stage, Position{}, Direction{}, state.Hero.ClassName)
-	hero.Position = state.Hero.Position
+	stage.Hero.Position = state.Hero.Position
+	stage.Hero.Energy = state.Hero.Energy
 
 	for _, a := range state.Actors {
-		actor := NewClassActor(stage, Position{}, Direction{}, a.ClassName)
-		actor.Position = a.Position
+		actor := NewClassActor(stage, a.Position, Direction{}, a.ClassName)
 		stage.AddActor(actor)
 	}
 
 	return true
+}
+
+func SaveToFile(state *State) {
+	b, _ := json.Marshal(state)
+	_ = ioutil.WriteFile("./progress.json", b, 0666)
+}
+
+func LoadFromFile(state *State) {
+	r, _ := ioutil.ReadFile("./progress.json")
+	_ = json.Unmarshal(r, state)
 }
