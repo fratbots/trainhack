@@ -16,8 +16,11 @@ func NewScreenSave(currentMap string) Screen {
 					LoadFromFile(&game.State)
 					game.SetScreen(NewScreenStage(game, game.State.Stage, nil))
 				},
-				"Cancel", func() {
+				"Continue", func() {
 					game.SetScreen(NewScreenStage(game, currentMap, nil))
+				},
+				"Exit", func() {
+					game.SetScreen(NewScreenFinal())
 				},
 			)
 		},
