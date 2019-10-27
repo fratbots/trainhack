@@ -23,6 +23,9 @@ func NewUIModal(text string, buttons ...interface{}) tview.Primitive {
 	p.AddButtons(buttonsList)
 
 	p.SetDoneFunc(func(i int, l string) {
+		if i < 0 {
+			return
+		}
 		if i < len(functions) {
 			functions[i]()
 		}
