@@ -244,6 +244,9 @@ func TileParser(g *Game, r rune, pos Position, doors map[rune]door) Tile {
 				Actor:    actor,
 				Deferred: true,
 				Perform: func() Result {
+					if !actor.Class.IsHero {
+						return FailureResult
+					}
 					d := door.Door
 					g.Sound.PlayContext(SoundContextDoor)
 					g.SetScreen(NewScreenStage(g, door.Map, &d))
