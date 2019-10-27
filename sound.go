@@ -23,6 +23,7 @@ const (
 type SoundLibrary interface {
 	SetTheme(soundID string)
 	PlayContext(soundID string)
+	Pause()
 }
 
 // SoundLibraryNoop is an implementation of a sound library that just mimics an interface and does nothing.
@@ -41,6 +42,10 @@ func (s *SoundLibraryNoop) SetTheme(soundID string) {
 
 // PlayContext does nothing by design.
 func (s *SoundLibraryNoop) PlayContext(soundID string) {
+	// does nothing
+}
+
+func (s *SoundLibraryNoop) Pause() {
 	// does nothing
 }
 
@@ -176,6 +181,12 @@ func (l *SoundLibraryDefault) SetTheme(soundID string) {
 		l.themes[theme].Pause()
 	}
 	l.themes[soundID].Unpause()
+}
+
+func (l *SoundLibraryDefault) Pause() {
+	for theme, _ := range l.themes {
+		l.themes[theme].Pause()
+	}
 }
 
 // PlayContext plays context sound once.
